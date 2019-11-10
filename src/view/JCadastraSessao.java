@@ -31,6 +31,7 @@ public class JCadastraSessao extends JFrame {
 	private JTextField txtUsuario;
 	private JTextField txtSenha;
 	
+	private Random numeroRandomico = new Random();
 	private BilheteriaBiz objBilheteria = new BilheteriaBiz();
 	private LtpLib objLib = new LtpLib();
 
@@ -39,7 +40,7 @@ public class JCadastraSessao extends JFrame {
 	 */
 	@SuppressWarnings({ "unchecked", "static-access" })
 	public JCadastraSessao() {
-		super("Cadastra sessão");
+		super("Cadastra ses");
 		
 		try {
 			if(new File("Funcionarios.obj").exists()) {
