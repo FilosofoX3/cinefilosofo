@@ -1,0 +1,18 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="model.BilheteEntity" table="Bilhete" schema="cinema">
+        <id name="bilheteId">
+            <column name="bilhete_id" sql-type="mediumint(9)"/>
+        </id>
+        <property name="clienteNome">
+            <column name="cliente_nome" sql-type="varchar(100)" length="100" not-null="true"/>
+        </property>
+        <property name="clienteCpf">
+            <column name="cliente_cpf" sql-type="varchar(11)" length="11" not-null="true"/>
+        </property>
+    </class>
+</hibernate-mapping>

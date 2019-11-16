@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="model.SessaoEntity" table="Sessao" schema="cinema">
+        <id name="sessaoId">
+            <column name="sessao_id" sql-type="mediumint(9)"/>
+        </id>
+        <property name="dataInicio">
+            <column name="data_inicio" sql-type="date" not-null="true"/>
+        </property>
+        <property name="dataFim">
+            <column name="data_fim" sql-type="date" not-null="true"/>
+        </property>
+        <property name="hora">
+            <column name="hora" sql-type="time" not-null="true"/>
+        </property>
+        <property name="valor">
+            <column name="valor" sql-type="decimal(13,2)" precision="13" scale="2" not-null="true"/>
+        </property>
+    </class>
+</hibernate-mapping>

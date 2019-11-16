@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="model.FilmeEntity" table="Filme" schema="cinema">
+        <id name="filmeId">
+            <column name="filme_id" sql-type="mediumint(9)"/>
+        </id>
+        <property name="titulo">
+            <column name="titulo" sql-type="varchar(35)" length="35" not-null="true"/>
+        </property>
+        <property name="duracaoMinutos">
+            <column name="duracao_minutos" sql-type="tinyint(4)" not-null="true"/>
+        </property>
+        <property name="duracaoHoras">
+            <column name="duracao_horas" sql-type="tinyint(4)" not-null="true"/>
+        </property>
+        <property name="anoLancamento">
+            <column name="ano_lancamento" sql-type="tinyint(4)" not-null="true"/>
+        </property>
+    </class>
+</hibernate-mapping>

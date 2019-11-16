@@ -1,0 +1,18 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="model.GerenteEntity" table="Gerente" schema="cinema">
+        <id name="gerenteId">
+            <column name="gerente_id" sql-type="mediumint(9)"/>
+        </id>
+        <property name="usuario">
+            <column name="usuario" sql-type="varchar(35)" length="35" not-null="true"/>
+        </property>
+        <property name="senha">
+            <column name="senha" sql-type="varchar(35)" length="35" not-null="true"/>
+        </property>
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="model.FuncionarioTelefoneEntity" table="FuncionarioTelefone" schema="cinema">
+        <id name="funcionarioTelefoneId">
+            <column name="funcionario_telefone_id" sql-type="mediumint(9)"/>
+        </id>
+        <property name="telefone">
+            <column name="telefone" sql-type="varchar(50)" length="50" not-null="true"/>
+        </property>
+    </class>
+</hibernate-mapping>

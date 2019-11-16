@@ -1,0 +1,18 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="model.SalaEntity" table="Sala" schema="cinema">
+        <id name="salaId">
+            <column name="sala_id" sql-type="mediumint(9)"/>
+        </id>
+        <property name="capacidade">
+            <column name="capacidade" sql-type="tinyint(4)" not-null="true"/>
+        </property>
+        <property name="quatroD">
+            <column name="quatro_d" sql-type="tinyint(1)" not-null="true"/>
+        </property>
+    </class>
+</hibernate-mapping>

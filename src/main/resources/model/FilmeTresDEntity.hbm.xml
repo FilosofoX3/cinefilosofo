@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="model.FilmeTresDEntity" table="FilmeTresD" schema="cinema">
+        <id name="filmeTresDId">
+            <column name="filme_tres_d_id" sql-type="mediumint(9)"/>
+        </id>
+        <property name="valorOculosAtivo">
+            <column name="valor_oculos_ativo" sql-type="decimal(13,2)" precision="13" scale="2" not-null="true"/>
+        </property>
+        <property name="valorOculosPassivo">
+            <column name="valor_oculos_passivo" sql-type="decimal(13,2)" precision="13" scale="2" not-null="true"/>
+        </property>
+        <property name="oculosAtivo">
+            <column name="oculos_ativo" sql-type="tinyint(1)" not-null="true"/>
+        </property>
+    </class>
+</hibernate-mapping>
