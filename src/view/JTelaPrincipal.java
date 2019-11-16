@@ -22,10 +22,14 @@ import java.awt.Dimension;
 import javax.swing.JTextField;
 import javax.swing.DropMode;
 import java.awt.Component;
+import java.awt.Cursor;
 
 public class JTelaPrincipal extends JFrame {
 	private JButton Cadastro;
-	private JTextField textField;
+	private JTextField txtGerenciamentoCinema;
+	private JTextField txtCadastrarFuncionrio;
+	private JTextField txtCadastrarSesses;
+	private JTextField txtVenderBilhete;
 	
 	/**
 	 * Launch the application.
@@ -45,6 +49,8 @@ public class JTelaPrincipal extends JFrame {
 	
 	public JTelaPrincipal() {
 		super("CINEMA");
+		setBackground(new Color(102, 51, 0));
+		setLocationRelativeTo(null);
 		setResizable(false);
 		setBounds(100, 100, 1056, 569);
 		
@@ -54,7 +60,7 @@ public class JTelaPrincipal extends JFrame {
 		panel.setMaximumSize(new Dimension(2500, 120));
 		panel.setLayout(null);
 		panel.setBorder(new LineBorder(Color.LIGHT_GRAY));
-		panel.setBackground(new Color(255, 255, 255, 250));
+		panel.setBackground(new Color(102, 102, 102));
 		setContentPane(panel);
 		setLocationRelativeTo(null);
 
@@ -62,69 +68,81 @@ public class JTelaPrincipal extends JFrame {
 		JLabel label = new JLabel("");
 		label.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		label.setIcon(new ImageIcon(JTelaPrincipal.class.getResource("/imagens/TelaPrincipal.jpg")));
-		label.setBounds(0, 193, 800, 364);
+		label.setBounds(0, 193, 932, 364);
 		panel.add(label);
 		
-		//Botão de cadastro gerente
-		JButton btnCadastroGerente = new JButton();
-		btnCadastroGerente.setBounds(33, 43, 106, 65);
-		panel.add(btnCadastroGerente);
-		btnCadastroGerente.setForeground(Color.PINK);
-		btnCadastroGerente.setBackground(Color.WHITE);
-		btnCadastroGerente.setBorder(new EmptyBorder(0, 0, 0, 0));
-		btnCadastroGerente.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				JCadastrosFuncionarios jCad = new JCadastrosFuncionarios();
-				jCad.setVisible(true);
+		txtGerenciamentoCinema = new JTextField();
+		txtGerenciamentoCinema.setBackground(new Color(51, 51, 51));
+		txtGerenciamentoCinema.setForeground(new Color(255, 51, 0));
+		txtGerenciamentoCinema.setCaretColor(new Color(255, 51, 0));
+		txtGerenciamentoCinema.setFont(new Font("Verdana", Font.BOLD, 21));
+		txtGerenciamentoCinema.setSelectedTextColor(new Color(153, 51, 0));
+		txtGerenciamentoCinema.setSelectionColor(new Color(51, 102, 153));
+		txtGerenciamentoCinema.setBounds(0, 0, 1050, 59);
+		panel.add(txtGerenciamentoCinema);
+		txtGerenciamentoCinema.setText("\t\t Gerenciamento  Cinema");
+		txtGerenciamentoCinema.setColumns(10);
+		
+		JButton btnNewButton = new JButton("");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				jCadastroFuncionario cadFunc = new jCadastroFuncionario();
+				cadFunc.setVisible(true);
 			}
 		});
-		btnCadastroGerente.setIcon(new ImageIcon(JTelaPrincipal.class.getResource("/imagens/engineer.png")));
+		btnNewButton.setIcon(new ImageIcon("C:\\Users\\Vin\u00EDcius Santos\\Ufla\\2019-2\\Tabalho Final\\Imagens\\Func.png"));
+		btnNewButton.setBounds(76, 70, 90, 70);
+		panel.add(btnNewButton);
 		
-		//Botão de cadastro gerente
-				JButton btnCadastroVendedor = new JButton();
-				btnCadastroVendedor.setBounds(194, 43, 106, 65);
-				panel.add(btnCadastroVendedor);
-				btnCadastroVendedor.setForeground(Color.PINK);
-				btnCadastroVendedor.setBackground(Color.WHITE);
-				btnCadastroVendedor.setBorder(new EmptyBorder(0, 0, 0, 0));
-				btnCadastroVendedor.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent arg0) {
-						JCadastroVendedor cadV = new JCadastroVendedor();
-						cadV.setVisible(true);
-						
-					}
-				});
-				btnCadastroVendedor.setIcon(new ImageIcon(JTelaPrincipal.class.getResource("/imagens/vendedor.png")));
+		txtCadastrarFuncionrio = new JTextField();
+		txtCadastrarFuncionrio.setBackground(new Color(204, 255, 255));
+		txtCadastrarFuncionrio.setForeground(new Color(0, 0, 153));
+		txtCadastrarFuncionrio.setFont(new Font("Yu Gothic", Font.BOLD, 13));
+		txtCadastrarFuncionrio.setText("\t Cadastrar Funcion\u00E1rios");
+		txtCadastrarFuncionrio.setBounds(50, 148, 154, 20);
+		panel.add(txtCadastrarFuncionrio);
+		txtCadastrarFuncionrio.setColumns(10);
 		
-		JTextField txtCadastroGerente = new JTextField();
-		txtCadastroGerente.setAlignmentX(Component.RIGHT_ALIGNMENT);
-		txtCadastroGerente.setRequestFocusEnabled(false);
-		txtCadastroGerente.setOpaque(false);
-		txtCadastroGerente.setEnabled(true);
-		txtCadastroGerente.setEditable(true);
-		txtCadastroGerente.setForeground(new Color(157, 105, 128));
-		txtCadastroGerente.setDropMode(DropMode.INSERT);
-		txtCadastroGerente.setFont(new Font("Yu Gothic Light", Font.PLAIN, 12));
-		txtCadastroGerente.setBackground(new Color(72, 209, 204));
-		txtCadastroGerente.setText("Cadastro Gerente");
-		txtCadastroGerente.setBounds(33, 119, 106, 25);
-		panel.add(txtCadastroGerente);
-		txtCadastroGerente.setColumns(10);
+		JButton btnCadSessao = new JButton("");
+		btnCadSessao.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JCadastraSessao cadSes = new JCadastraSessao();
+				cadSes.setVisible(true);
+				}
+		});
+		btnCadSessao.setIcon(new ImageIcon("C:\\Users\\Vin\u00EDcius Santos\\Ufla\\2019-2\\Tabalho Final\\Imagens\\cinema.png"));
+		btnCadSessao.setBounds(250, 70, 81, 70);
+		panel.add(btnCadSessao);
 		
-		textField = new JTextField();
-		textField.setText("Cadastro Vendedor");
-		textField.setRequestFocusEnabled(false);
-		textField.setOpaque(false);
-		textField.setForeground(new Color(128, 0, 128));
-		textField.setFont(new Font("Yu Gothic Light", Font.PLAIN, 12));
-		textField.setEnabled(true);
-		textField.setEditable(true);
-		textField.setDropMode(DropMode.INSERT);
-		textField.setColumns(10);
-		textField.setBackground(new Color(172, 209, 205));
-		textField.setAlignmentX(1.0f);
-		textField.setBounds(194, 119, 106, 25);
-		panel.add(textField);
+		txtCadastrarSesses = new JTextField();
+		txtCadastrarSesses.setText("   Cadastrar Sess\u00F5es");
+		txtCadastrarSesses.setForeground(new Color(0, 0, 153));
+		txtCadastrarSesses.setFont(new Font("Yu Gothic", Font.BOLD, 13));
+		txtCadastrarSesses.setColumns(10);
+		txtCadastrarSesses.setBackground(new Color(204, 255, 255));
+		txtCadastrarSesses.setBounds(214, 148, 146, 20);
+		panel.add(txtCadastrarSesses);
+		
+		JButton btnNewButton_1 = new JButton("");
+		btnNewButton_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				JVendaBilhete cadBil = new JVendaBilhete();
+				cadBil.setVisible(true);
+				
+			}
+		});
+		btnNewButton_1.setIcon(new ImageIcon("C:\\Users\\Vin\u00EDcius Santos\\Ufla\\2019-2\\Tabalho Final\\Imagens\\ticket.png"));
+		btnNewButton_1.setBounds(403, 81, 81, 59);
+		panel.add(btnNewButton_1);
+		
+		txtVenderBilhete = new JTextField();
+		txtVenderBilhete.setText("   Vender Bilhete");
+		txtVenderBilhete.setForeground(new Color(0, 0, 153));
+		txtVenderBilhete.setFont(new Font("Yu Gothic", Font.BOLD, 13));
+		txtVenderBilhete.setColumns(10);
+		txtVenderBilhete.setBackground(new Color(204, 255, 255));
+		txtVenderBilhete.setBounds(380, 148, 126, 20);
+		panel.add(txtVenderBilhete);
 
 	}
 }

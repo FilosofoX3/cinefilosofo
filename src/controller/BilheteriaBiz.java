@@ -9,6 +9,11 @@ public class BilheteriaBiz {
 
 // Criando listas
 	private ArrayList<Bilhete> bilhetesVendidos = new ArrayList<Bilhete>();
+	public ArrayList<Bilhete> getBilhetesVendidos() {
+		return bilhetesVendidos;
+	}
+
+
 	private ArrayList<Sessao> sessoesCadastradas = new ArrayList<Sessao>();
 	private ArrayList<Sessao> filmeEncontrado = new ArrayList<Sessao>();
 	private ArrayList<Sessao> sesDisp = new ArrayList<Sessao>();
@@ -38,7 +43,53 @@ public class BilheteriaBiz {
 		sala3 = new SalaCinema(3, 90, true);// 4D
 		sala4 = new SalaCinema(4, 5, true);// 4D
 	}
+	public void setBilhetesVendidos(ArrayList<Bilhete> bilhetesVendidos) {
+		this.bilhetesVendidos = bilhetesVendidos;
+	}
 
+	public ArrayList<Sessao> getSessaoDisponiveis() {
+		return SessaoDisponiveis;
+	}
+
+	public void setSessaoDisponiveis(ArrayList<Sessao> sessaoDisponiveis) {
+		SessaoDisponiveis = sessaoDisponiveis;
+	}
+
+	public SalaCinema getSala1() {
+		return sala1;
+	}
+
+	public void setSala1(SalaCinema sala1) {
+		this.sala1 = sala1;
+	}
+
+	public SalaCinema getSala2() {
+		return sala2;
+	}
+
+	public void setSala2(SalaCinema sala2) {
+		this.sala2 = sala2;
+	}
+
+	public SalaCinema getSala3() {
+		return sala3;
+	}
+
+	public void setSala3(SalaCinema sala3) {
+		this.sala3 = sala3;
+	}
+
+	public SalaCinema getSala4() {
+		return sala4;
+	}
+
+	public void setSala4(SalaCinema sala4) {
+		this.sala4 = sala4;
+	}
+
+	public void setSessoesCadastradas(ArrayList<Sessao> sessoesCadastradas) {
+		this.sessoesCadastradas = sessoesCadastradas;
+	}
 	public ArrayList<Sessao> getSessoesCadastradas() {
 		return sessoesCadastradas;
 	}
@@ -157,9 +208,9 @@ public class BilheteriaBiz {
 	 * @return
 	 */
 
-	public Filme buscaFilme(String titulo) {
+	public Filme buscaFilme(String titulo, boolean quatroD) {
 		for (Sessao sessao : sessoesCadastradas) {
-			if ((!sessoesCadastradas.isEmpty()) && (sessao.getFilme().getTitulo().equals(titulo))) {
+			if ((!sessoesCadastradas.isEmpty()) && (sessao.getFilme().getTitulo().equals(titulo)) && quatroD == sessao.getSalaCinema().isQuatroD()) {
 				System.out.println("casdastrou..." + sessao.getFilme().getTitulo());
 				filmeEncontrado.add(sessao);
 				return sessao.getFilme();

@@ -285,16 +285,17 @@ public class InterfaceUsuario {
 		if (objBiz.existeSessao()) {
 			System.out.println("Entre com o nome do Filme: ");
 			String nomeFilme = Console.readLine("Digite o nome do filme que deseja vender o bilhete. ");
-			Filme objFilme = objBiz.buscaFilme(nomeFilme);
+			int flags = Console.readInt("Digite 3 para filme 3D.\nDigite 4 para filmes 4D. ");
+			boolean tipoVendaQuatroD = false; // por default o filme é 3D
+			if (flags == 4) {
+				tipoVendaQuatroD = true;
+			}
+			Filme objFilme = objBiz.buscaFilme(nomeFilme,tipoVendaQuatroD);
 			if (objFilme != null) {
 				System.out.println("Filme encontrado.\n");
 				System.out.println(objFilme.toString());
 				System.out.println("Qual tipo de filme você deseja comprar? ");
-				int flags = Console.readInt("Digite 3 para filme 3D.\nDigite 4 para filmes 4D. ");
-				boolean tipoVendaQuatroD = false; // por default o filme é 3D
-				if (flags == 4) {
-					tipoVendaQuatroD = true;
-				}
+		
 				Boolean validaData = false;
 				String dataInicio;
 
