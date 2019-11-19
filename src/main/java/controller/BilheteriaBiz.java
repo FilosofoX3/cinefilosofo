@@ -5,7 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import model.*;
-import org.hibernate.Query;
+import org.hibernate.query.Query;
 import org.hibernate.Session;
 import utils.SessionFactoryHelper;
 import org.hibernate.SessionFactory;
@@ -320,7 +320,7 @@ public class BilheteriaBiz {
 
 	/**
 	 * 
-	 * @param consultar bilhete pelo cpf
+	 * @param cpf bilhete pelo cpf
 	 * @return o bilhete
 	 */
 	public Bilhete consultarBilhete(String cpf) {
@@ -446,12 +446,41 @@ public class BilheteriaBiz {
 	/**
 	 * método que cadastra funcinarios
 	 * 
-	 * @param funcionario
+	 * @param nome
+	 * @param email
+	 * @param dataCadastro
 	 * @return
 	 */
-	public Boolean cadastrarFuncionario(Funcionarios funcionario) {
-		return listaFuncionario.add(funcionario);
+	public FuncionarioEntity cadastrarFuncionario(String nome, String email, java.sql.Date dataCadastro) {
+		FuncionarioEntity funcionario = new FuncionarioEntity();
+		//funcionario.setFuncionarioId(java.lang.Long.valueOf('2'));
+		funcionario.setNome(nome);
+		funcionario.setCodigo("-1");
+		funcionario.setEmail(email);
+		funcionario.setDataCadastro(dataCadastro);
+
+		session.save(funcionario);
+
+		return funcionario;
 	}
+
+	/**
+	 * método que cadastra funcinarios
+	 *
+	 * @param funcionario
+	 * @param telefone
+	 * @return
+	 */
+	public FuncionarioTelefoneEntity cadastrarFuncionarioTelefone(FuncionarioEntity funcionario, String telefone) {
+		FuncionarioTelefoneEntity funcionarioTelefone = new FuncionarioTelefoneEntity();
+		funcionarioTelefone.setFuncionario(funcionario);
+		funcionarioTelefone.setTelefone(telefone);
+
+		session.save(funcionarioTelefone);
+
+		return funcionarioTelefone;
+	}
+
 
 	/**
 	 * Verifica se há alguma sessão cadastrada valida

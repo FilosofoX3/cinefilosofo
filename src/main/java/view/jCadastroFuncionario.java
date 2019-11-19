@@ -20,14 +20,14 @@ public class jCadastroFuncionario extends JFrame{
 	private JTextField txtVoltar;
 	private JTextField txtCadastroGerente;
 	public jCadastroFuncionario() {
-		super("Cadastro de Funcionários");
+		super("Cadastro de Funcion?rios");
 		setBounds(100, 100, 406, 298);
 		getContentPane().setLayout(null);
 		
-		//Cadastro de Geremte
+		//Cadastro de Gerente
 		JButton btnGerente = new JButton("");
 		btnGerente.setFocusCycleRoot(true);
-		btnGerente.setIcon(new ImageIcon("C:\\Users\\Vin\u00EDcius Santos\\Ufla\\2019-2\\Tabalho Final\\Imagens\\engineer1.png"));
+		btnGerente.setIcon(new ImageIcon(getClass().getResource("/imagens/engineer.png")));
 		btnGerente.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				JCadastrosFuncionarios cadGer= new JCadastrosFuncionarios();
@@ -41,10 +41,10 @@ public class jCadastroFuncionario extends JFrame{
 		//Cadastro de Vendedor
 		JButton btnVendedor = new JButton("");
 		btnVendedor.setFocusCycleRoot(true);
-		btnVendedor.setIcon(new ImageIcon("C:\\Users\\Vin\u00EDcius Santos\\Ufla\\2019-2\\Tabalho Final\\Imagens\\vendedor.png"));
+		btnVendedor.setIcon(new ImageIcon(getClass().getResource("/imagens/vendedor.png")));
 		btnVendedor.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				JCadastrosFuncionarios cadVend= new JCadastrosFuncionarios();
+				JCadastroVendedor cadVend= new JCadastroVendedor();
 				cadVend.setVisible(true);
 			}
 		});

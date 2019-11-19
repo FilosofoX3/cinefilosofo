@@ -6,6 +6,11 @@ import javax.persistence.*;
 @Table(name = "FuncionarioTelefone", schema = "cinema", catalog = "")
 public class FuncionarioTelefoneEntity {
     private String funcionarioTelefoneId;
+
+    @ManyToOne
+    @JoinColumn(name = "funcionario_id")
+    private FuncionarioEntity funcionario;
+
     private String telefone;
 
     @Id
@@ -16,6 +21,14 @@ public class FuncionarioTelefoneEntity {
 
     public void setFuncionarioTelefoneId(String funcionarioTelefoneId) {
         this.funcionarioTelefoneId = funcionarioTelefoneId;
+    }
+
+    public FuncionarioEntity getFuncionario() {
+        return funcionario;
+    }
+
+    public void setFuncionario(FuncionarioEntity funcionario) {
+        this.funcionario = funcionario;
     }
 
     @Basic
@@ -48,4 +61,6 @@ public class FuncionarioTelefoneEntity {
         result = 31 * result + (telefone != null ? telefone.hashCode() : 0);
         return result;
     }
+
+
 }

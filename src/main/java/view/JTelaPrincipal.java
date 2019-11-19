@@ -90,7 +90,7 @@ public class JTelaPrincipal extends JFrame {
 				cadFunc.setVisible(true);
 			}
 		});
-		btnNewButton.setIcon(new ImageIcon("C:\\Users\\Vin\u00EDcius Santos\\Ufla\\2019-2\\Tabalho Final\\Imagens\\Func.png"));
+		btnNewButton.setIcon(new ImageIcon(getClass().getResource("/imagens/Funcionario.jpg")));
 		btnNewButton.setBounds(76, 70, 90, 70);
 		panel.add(btnNewButton);
 		
@@ -98,7 +98,7 @@ public class JTelaPrincipal extends JFrame {
 		txtCadastrarFuncionrio.setBackground(new Color(204, 255, 255));
 		txtCadastrarFuncionrio.setForeground(new Color(0, 0, 153));
 		txtCadastrarFuncionrio.setFont(new Font("Yu Gothic", Font.BOLD, 13));
-		txtCadastrarFuncionrio.setText("\t Cadastrar Funcion\u00E1rios");
+		txtCadastrarFuncionrio.setText("\t Cadastrar Funcionários");
 		txtCadastrarFuncionrio.setBounds(50, 148, 154, 20);
 		panel.add(txtCadastrarFuncionrio);
 		txtCadastrarFuncionrio.setColumns(10);
@@ -110,12 +110,12 @@ public class JTelaPrincipal extends JFrame {
 				cadSes.setVisible(true);
 				}
 		});
-		btnCadSessao.setIcon(new ImageIcon("C:\\Users\\Vin\u00EDcius Santos\\Ufla\\2019-2\\Tabalho Final\\Imagens\\cinema.png"));
+		btnCadSessao.setIcon(new ImageIcon(getClass().getResource("/imagens/videocamera.png")));
 		btnCadSessao.setBounds(250, 70, 81, 70);
 		panel.add(btnCadSessao);
 		
 		txtCadastrarSesses = new JTextField();
-		txtCadastrarSesses.setText("   Cadastrar Sess\u00F5es");
+		txtCadastrarSesses.setText("   Cadastrar Sessões");
 		txtCadastrarSesses.setForeground(new Color(0, 0, 153));
 		txtCadastrarSesses.setFont(new Font("Yu Gothic", Font.BOLD, 13));
 		txtCadastrarSesses.setColumns(10);
@@ -131,7 +131,7 @@ public class JTelaPrincipal extends JFrame {
 				
 			}
 		});
-		btnNewButton_1.setIcon(new ImageIcon("C:\\Users\\Vin\u00EDcius Santos\\Ufla\\2019-2\\Tabalho Final\\Imagens\\ticket.png"));
+		btnNewButton_1.setIcon(new ImageIcon(getClass().getResource("/imagens/videocamera.png")));
 		btnNewButton_1.setBounds(403, 81, 81, 59);
 		panel.add(btnNewButton_1);
 		

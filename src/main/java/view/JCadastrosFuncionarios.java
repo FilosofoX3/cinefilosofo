@@ -129,7 +129,7 @@ public class JCadastrosFuncionarios extends JFrame {
 				gerente.setUsuario(txtUsuario.getText());
 				gerente.setSenha(txtSenha.getText());
 								
-				objBilheteria.cadastrarFuncionario(gerente);
+				//objBilheteria.cadastrarFuncionario(gerente);
 					
 				try {
 					objLib.gravarArquivoObjetos("Funcionarios.obj", objBilheteria.getListaFuncionario());

@@ -131,11 +131,12 @@ public class InterfaceUsuario {
 			// setando atributos de gerente
 			objGerente.setUsuario(usuario);
 			objGerente.setSenha(senha);
-			Boolean valida = objBiz.cadastrarFuncionario(objGerente);
+			/*Boolean valida = objBiz.cadastrarFuncionario(objGerente);
 			if (valida) {
 				System.out.println("Gerente cadastrado com sucesso. ");
 			} else
 				System.out.println("Erro ao cadastrar gerente. ");
+			 */
 		} else if (opcao == 2) {
 			// atributos de funcionario
 			System.out.println("Cadastrar vendedor");
@@ -150,11 +151,12 @@ public class InterfaceUsuario {
 			// Criando obj de vendedor
 			Vendedor objVendedor = new Vendedor(nome, telefone, email, data, idUsuario);
 
-			Boolean valida = objBiz.cadastrarFuncionario(objVendedor);
+			/*Boolean valida = objBiz.cadastrarFuncionario(objVendedor);
 			if (valida) {
 				System.out.println("Gerente vendedor com sucesso. ");
 			} else
 				System.out.println("Erro ao vendedor gerente. ");
+			 */
 
 		}
 		System.out.println("Deseja iniciar jornada? ");

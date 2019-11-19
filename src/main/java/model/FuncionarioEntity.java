@@ -6,24 +6,36 @@ import java.sql.Date;
 @Entity
 @Table(name = "Funcionario", schema = "cinema", catalog = "")
 public class FuncionarioEntity {
-    private String funcionarioId;
-    private String codigo;
-    private String nome;
-    private String email;
-    private Date dataCadastro;
 
     @Id
-    @Column(name = "funcionario_id", nullable = false)
-    public String getFuncionarioId() {
-        return funcionarioId;
-    }
-
-    public void setFuncionarioId(String funcionarioId) {
-        this.funcionarioId = funcionarioId;
-    }
+    @Column(name="funcionario_id")
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long funcionarioId;
 
     @Basic
     @Column(name = "codigo", nullable = true, length = 10)
+    private String codigo;
+
+    @Basic
+    @Column(name = "nome", nullable = true, length = 100)
+    private String nome;
+
+    @Basic
+    @Column(name = "email", nullable = true, length = 50)
+    private String email;
+
+    @Basic
+    @Column(name = "data_cadastro", nullable = true)
+    private Date dataCadastro;
+
+    public Long getFuncionarioId() {
+        return funcionarioId;
+    }
+
+    public void setFuncionarioId(Long funcionarioId) {
+        this.funcionarioId = funcionarioId;
+    }
+
     public String getCodigo() {
         return codigo;
     }
@@ -32,8 +44,6 @@ public class FuncionarioEntity {
         this.codigo = codigo;
     }
 
-    @Basic
-    @Column(name = "nome", nullable = true, length = 100)
     public String getNome() {
         return nome;
     }
@@ -42,8 +52,6 @@ public class FuncionarioEntity {
         this.nome = nome;
     }
 
-    @Basic
-    @Column(name = "email", nullable = true, length = 50)
     public String getEmail() {
         return email;
     }
@@ -52,8 +60,6 @@ public class FuncionarioEntity {
         this.email = email;
     }
 
-    @Basic
-    @Column(name = "data_cadastro", nullable = true)
     public Date getDataCadastro() {
         return dataCadastro;
     }

@@ -8,6 +8,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import controller.BilheteriaBiz;
+import model.FuncionarioEntity;
 import model.Gerente;
 import model.Vendedor;
 import utils.LtpLib;
@@ -18,6 +19,7 @@ import javax.swing.JTextField;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Random;
 import java.awt.event.ActionEvent;
@@ -40,15 +42,6 @@ public class JCadastroVendedor extends JFrame {
 	@SuppressWarnings({ "unchecked", "static-access" })
 	public JCadastroVendedor() {
 		super("Cadastro Vendedor");
-		
-		try {
-			if(new File("Funcionarios.obj").exists()) {
-				objBilheteria.setListaFuncionario(objLib.lerArquivoObjetos("Funcionarios.obj"));
-			}
-			
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-		}
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 281, 298);
@@ -97,7 +90,7 @@ public class JCadastroVendedor extends JFrame {
 		panel.add(txtTelefones);
 		txtTelefones.setColumns(10);
 		
-		JLabel lblUsuario = new JLabel("ID Usu�rio");
+		JLabel lblUsuario = new JLabel("ID Usuário");
 		lblUsuario.setBounds(10, 139, 56, 14);
 		panel.add(lblUsuario);
 		
@@ -111,21 +104,24 @@ public class JCadastroVendedor extends JFrame {
 		btnSalvar.addActionListener(new ActionListener() {
 			@SuppressWarnings("static-access")
 			public void actionPerformed(ActionEvent arg0) {
-				Vendedor objVendedor  = new Vendedor();			
-				objVendedor.setCodigo(numeroRandomico.nextInt(100));
-				objVendedor.setDataCad(new Date());
-				objVendedor.setNome(txtNome.getText());
-				objVendedor.setEmail(txtEmail.getText());
-				objVendedor.setTelefones(txtTelefones.getText());
-				objVendedor.setIdUsuario(txtUsuario.getText());					
-				objBilheteria.cadastrarFuncionario(objVendedor);
-				
-				try {
-					objLib.gravarArquivoObjetos("Funcionarios.obj", objBilheteria.getListaFuncionario());
-					JOptionPane.showMessageDialog(null, "Cadastrado com sucesso!");
-				} catch (Exception e) {
-					JOptionPane.showMessageDialog(null, "Vendedor n�o cadastrado!!");
-				}				
+				FuncionarioEntity funcionario = objBilheteria.cadastrarFuncionario(
+						txtNome.getText(),
+						txtEmail.getText(),
+						new java.sql.Date(Calendar.getInstance().getTime().getTime())
+				);
+
+				objBilheteria.cadastrarFuncionarioTelefone(
+						funcionario,
+						txtTelefones.getText()
+				);
+				/*
+				objBilheteria.cadastrarVendedor(
+						funcionarioId,
+						txtUsuario.getText()
+				);
+				*/
+
+				JOptionPane.showMessageDialog(null, "Cadastrado com sucesso!");
 			}
 		});
 		btnSalvar.setBounds(63, 217, 89, 23);
