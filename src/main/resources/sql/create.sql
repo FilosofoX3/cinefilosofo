@@ -111,3 +111,7 @@ CREATE TABLE Bilhete (
 	CONSTRAINT fk_sessao_dia_bilhete FOREIGN KEY (sessao_dia_id) REFERENCES SessaoDia (sessao_dia_id),
 	INDEX (sessao_dia_id)
 );
+
+
+/* CONFIGURAÇÕES */
+SET GLOBAL time_zone = '+3:00';
