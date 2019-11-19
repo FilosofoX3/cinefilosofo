@@ -4,6 +4,7 @@
     "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
 <hibernate-configuration>
   <session-factory>
+    <property name="mapping.precedence">class, hbm</property>
     <property name="connection.url">jdbc:mysql://localhost:3306/cinema</property>
     <property name="connection.username">root</property>
     <property name="connection.password">@mysql03OTM</property>
@@ -41,8 +42,5 @@
       <mapping class="model.VendedorEntity"/>
       <mapping resource="model/VendedorEntity.hbm.xml"/>
 
-
-    <!-- DB schema will be updated if needed -->
-    <!-- <property name="hibernate.hbm2ddl.auto">update</property> -->
   </session-factory>
 </hibernate-configuration>
