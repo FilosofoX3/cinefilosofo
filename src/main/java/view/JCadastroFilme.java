@@ -8,7 +8,9 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import controller.BilheteriaBiz;
+import model.FuncionarioEntity;
 import model.Gerente;
+import model.Vendedor;
 import utils.LtpLib;
 
 import javax.swing.JLabel;
@@ -17,11 +19,12 @@ import javax.swing.JTextField;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Random;
 import java.awt.event.ActionEvent;
 
-public class JCadastrosFuncionarios extends JFrame {
+public class JCadastroVendedor extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField txtNome;
@@ -29,8 +32,6 @@ public class JCadastrosFuncionarios extends JFrame {
 	private JTextField txtEmail;
 	private JTextField txtTelefones;
 	private JTextField txtUsuario;
-	private JTextField txtSenha;
-	
 	private Random numeroRandomico = new Random();
 	private BilheteriaBiz objBilheteria = new BilheteriaBiz();
 	private LtpLib objLib = new LtpLib();
@@ -39,17 +40,8 @@ public class JCadastrosFuncionarios extends JFrame {
 	 * Create the frame.
 	 */
 	@SuppressWarnings({ "unchecked", "static-access" })
-	public JCadastrosFuncionarios() {
-		super("Cadastro Gerente");
-		
-		try {
-			if(new File("Funcionarios.obj").exists()) {
-				objBilheteria.setListaFuncionario(objLib.lerArquivoObjetos("Funcionarios.obj"));
-			}
-			
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-		}
+	public JCadastroVendedor() {
+		super("Cadastro Vendedor");
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 281, 298);
@@ -98,45 +90,43 @@ public class JCadastrosFuncionarios extends JFrame {
 		panel.add(txtTelefones);
 		txtTelefones.setColumns(10);
 		
-		JLabel lblUsuario = new JLabel("Usuario");
-		lblUsuario.setBounds(10, 139, 46, 14);
+		JLabel lblUsuario = new JLabel("ID Usuário");
+		lblUsuario.setBounds(10, 139, 56, 14);
 		panel.add(lblUsuario);
 		
 		txtUsuario = new JTextField();
-		txtUsuario.setBounds(66, 130, 86, 20);
+		txtUsuario.setBounds(66, 136, 86, 20);
 		panel.add(txtUsuario);
 		txtUsuario.setColumns(10);
-		
-		JLabel lblSenha = new JLabel("Senha");
-		lblSenha.setBounds(10, 164, 46, 14);
-		panel.add(lblSenha);
-		
-		txtSenha = new JTextField();
-		txtSenha.setBounds(66, 161, 86, 20);
-		panel.add(txtSenha);
-		txtSenha.setColumns(10);
+;
 		
 		JButton btnSalvar = new JButton("Salvar");
 		btnSalvar.addActionListener(new ActionListener() {
 			@SuppressWarnings("static-access")
 			public void actionPerformed(ActionEvent arg0) {
-				Gerente gerente  = new Gerente();			
-				gerente.setCodigo(numeroRandomico.nextInt(100));
-				gerente.setDataCad(new Date());
-				gerente.setNome(txtNome.getText());
-				gerente.setEmail(txtEmail.getText());
-				gerente.setTelefones(txtTelefones.getText());
-				gerente.setUsuario(txtUsuario.getText());
-				gerente.setSenha(txtSenha.getText());
-								
-				//objBilheteria.cadastrarFuncionario(gerente);
-					
-				try {
-					objLib.gravarArquivoObjetos("Funcionarios.obj", objBilheteria.getListaFuncionario());
-					JOptionPane.showMessageDialog(null, "Cadastrado com sucesso!");
-				} catch (Exception e) {
-					JOptionPane.showMessageDialog(null, "Gerente n�o cadastrado!!");
-				}				
+				Long funcionarioId = objBilheteria.cadastrarFuncionario(
+						txtNome.getText(),
+						txtEmail.getText(),
+						new java.sql.Date(Calendar.getInstance().getTime().getTime())
+				);
+
+				objBilheteria.cadastrarFuncionarioTelefone(
+						funcionarioId,
+						txtTelefones.getText()
+				);
+
+                objBilheteria.cadastrarVendedor(
+                        funcionarioId,
+                        txtUsuario.getText()
+                );
+				/*
+				objBilheteria.cadastrarVendedor(
+						funcionarioId,
+						txtUsuario.getText()
+				);
+				*/
+
+				JOptionPane.showMessageDialog(null, "Cadastrado com sucesso!");
 			}
 		});
 		btnSalvar.setBounds(63, 217, 89, 23);
