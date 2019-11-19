@@ -3,23 +3,38 @@ package model;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "Vendedor", schema = "cinema", catalog = "")
+@Table(name = "Vendedor", schema = "cinema")
 public class VendedorEntity {
-    private String vendedorId;
-    private String usuarioId;
-
     @Id
-    @Column(name = "vendedor_id", nullable = false)
-    public String getVendedorId() {
-        return vendedorId;
-    }
+    @Column(name = "vendedor_id", updatable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long vendedorId;
 
-    public void setVendedorId(String vendedorId) {
-        this.vendedorId = vendedorId;
-    }
+
+    @Basic
+    @Column(name = "funcionario_id", nullable = false)
+    private Long funcionarioId;
 
     @Basic
     @Column(name = "usuario_id", nullable = true, length = 35)
+    private String usuarioId;
+
+    public Long getVendedorId() {
+        return vendedorId;
+    }
+
+    public void setVendedorId(Long vendedorId) {
+        this.vendedorId = vendedorId;
+    }
+
+    public Long getFuncionarioId() {
+        return funcionarioId;
+    }
+
+    public void setFuncionarioId(Long funcionarioId) {
+        this.funcionarioId = funcionarioId;
+    }
+
     public String getUsuarioId() {
         return usuarioId;
     }

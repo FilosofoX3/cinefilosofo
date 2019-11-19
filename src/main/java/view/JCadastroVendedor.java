@@ -115,6 +115,10 @@ public class JCadastroVendedor extends JFrame {
 						txtTelefones.getText()
 				);
 
+                objBilheteria.cadastrarVendedor(
+                        funcionarioId,
+                        txtUsuario.getText()
+                );
 				/*
 				objBilheteria.cadastrarVendedor(
 						funcionarioId,
