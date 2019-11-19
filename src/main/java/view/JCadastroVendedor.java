@@ -104,16 +104,17 @@ public class JCadastroVendedor extends JFrame {
 		btnSalvar.addActionListener(new ActionListener() {
 			@SuppressWarnings("static-access")
 			public void actionPerformed(ActionEvent arg0) {
-				FuncionarioEntity funcionario = objBilheteria.cadastrarFuncionario(
+				Long funcionarioId = objBilheteria.cadastrarFuncionario(
 						txtNome.getText(),
 						txtEmail.getText(),
 						new java.sql.Date(Calendar.getInstance().getTime().getTime())
 				);
 
 				objBilheteria.cadastrarFuncionarioTelefone(
-						funcionario,
+						funcionarioId,
 						txtTelefones.getText()
 				);
+
 				/*
 				objBilheteria.cadastrarVendedor(
 						funcionarioId,

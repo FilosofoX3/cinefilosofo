@@ -16,7 +16,7 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
-import java.io.File;
+import java.util.List;
 import java.util.Random;
 import java.awt.event.ActionEvent;
 
@@ -52,17 +52,9 @@ public class JConsultaFuncionarios extends JFrame {
 	 */
 	public JConsultaFuncionarios() {
 		super("Cadastro Gerente");
-		try {
-			if(new File("Funcionarios.obj").exists()) {
-				objBilheteria.setListaFuncionario(objLib.lerArquivoObjetos("Funcionarios.obj"));
-			}
-			
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-		}
-		
+
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 480, 300);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
@@ -72,12 +64,12 @@ public class JConsultaFuncionarios extends JFrame {
 		contentPane.add(panel, BorderLayout.CENTER);
 		panel.setLayout(null);
 		
-		JLabel lblDigiteONome = new JLabel("Digite o nome do funcionario:");
-		lblDigiteONome.setBounds(25, 24, 145, 14);
+		JLabel lblDigiteONome = new JLabel("Digite o nome do funcionário:");
+		lblDigiteONome.setBounds(25, 21, 245, 20);
 		panel.add(lblDigiteONome);
 		
 		txtNome = new JTextField();
-		txtNome.setBounds(176, 21, 213, 20);
+		txtNome.setBounds(206, 21, 213, 20);
 		panel.add(txtNome);
 		txtNome.setColumns(10);
 		
@@ -89,10 +81,10 @@ public class JConsultaFuncionarios extends JFrame {
 		btnPesquisa.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				
-				FuncionarioEntity func =  objBilheteria.procuraFuncionario(txtNome.getText());
+				List<FuncionarioEntity> funcionarios =  objBilheteria.procuraFuncionario(txtNome.getText());
 
-				if(func != null) {
-					lblNomeFuncionario.setText(func.getNome());
+				if(!funcionarios.isEmpty()) {
+					lblNomeFuncionario.setText(funcionarios.toString());
 				}
 				else {
 					lblNomeFuncionario.setText("Nenhum resultado encontrado!");

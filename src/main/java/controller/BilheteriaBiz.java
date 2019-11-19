@@ -5,10 +5,10 @@ import java.util.Date;
 import java.util.List;
 
 import model.*;
+import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 import org.hibernate.Session;
 import utils.SessionFactoryHelper;
-import org.hibernate.SessionFactory;
 
 public class BilheteriaBiz {
 
@@ -60,6 +60,21 @@ public class BilheteriaBiz {
 			;
 		}
 	}
+
+	private Long save(Object obj) {
+		if(!session.getTransaction().isActive())
+			session.getTransaction().begin();
+
+		Long id = (Long) session.save(obj);
+
+		session.getTransaction().commit();
+
+		SessionFactoryHelper sh = new SessionFactoryHelper();
+		session = sh.getSessionFactory().getCurrentSession();
+
+		return id;
+	}
+
 	public void setBilhetesVendidos(ArrayList<Bilhete> bilhetesVendidos) {
 		this.bilhetesVendidos = bilhetesVendidos;
 	}
@@ -241,7 +256,7 @@ public class BilheteriaBiz {
 	 * Método que consulta as sessões entre determinadas datas
 	 * 
 	 * @param dataInicio
-	 * @param dataFim
+	 * @param quatroD
 	 * @return
 	 */
 	public String consultaSessao(Date dataInicio, boolean quatroD) {
@@ -274,7 +289,7 @@ public class BilheteriaBiz {
 	 * 
 	 * @param horaDesejada
 	 * @param meiaEntrada
-	 * @param equipamentoDesejado
+	 * @param poltronaInteligente
 	 * @param data
 	 * @param nome
 	 * @param cpf
@@ -372,32 +387,13 @@ public class BilheteriaBiz {
 	}
 
 	/**
-	 * procura o funcionario na lista de funcionarios
-	 * 
-	 * @param nome
-	 * @return Funcionarios
-	 */
-	public FuncionarioEntity procuraFuncionario(String nome) {
-
-		Query query = session.createQuery("from FuncionarioEntity where nome = :nome ");
-		FuncionarioEntity funcionario;
-		try {
-			 funcionario = (FuncionarioEntity) query.setParameter("nome", nome).getSingleResult();
-		} catch( javax.persistence.NoResultException err) {
-			funcionario = null;
-		}
-
-		return funcionario;
-	}
-
-	/**
 	 * valida o gerente por base do usuario e senha
 	 * 
 	 * @return boolean
 	 * 
 	 */
 	public boolean validaGerente(String usuario, String senha, String nome) {
-		FuncionarioEntity objFunc = procuraFuncionario(nome);
+		//FuncionarioEntity objFunc = procuraFuncionario(nome);
 
 		/*
 		if (objFunc != null && objFunc instanceof Gerente) {
@@ -418,7 +414,7 @@ public class BilheteriaBiz {
 	 * @return true se o id for validador, e false caso não.
 	 */
 	public boolean validaVendedor(String idUsuario, String nome) {
-		FuncionarioEntity objFunc = procuraFuncionario(nome);
+		//FuncionarioEntity objFunc = procuraFuncionario(nome);
 		/*
 		if (objFunc != null && objFunc instanceof Vendedor) {
 			if (idUsuario.equalsIgnoreCase(((Vendedor) objFunc).getIdUsuario())) {
@@ -444,41 +440,55 @@ public class BilheteriaBiz {
 	}
 
 	/**
-	 * método que cadastra funcinarios
+	 * procura o funcionario na lista de funcionarios
+	 *
+	 * @param nome
+	 * @return Funcionarios
+	 */
+	public List<FuncionarioEntity> procuraFuncionario(String nome) {
+
+		Query query = session.createQuery("from FuncionarioEntity where nome = :nome ");
+		List<FuncionarioEntity> funcionarios;
+		try {
+			funcionarios = query.setParameter("nome", nome).list();
+		} catch( javax.persistence.NoResultException err) {
+			funcionarios = null;
+		}
+
+		return funcionarios;
+	}
+
+	/**
+	 * método que cadastra funcionário
 	 * 
 	 * @param nome
 	 * @param email
 	 * @param dataCadastro
 	 * @return
 	 */
-	public FuncionarioEntity cadastrarFuncionario(String nome, String email, java.sql.Date dataCadastro) {
+
+	public Long cadastrarFuncionario(String nome, String email, java.sql.Date dataCadastro) {
 		FuncionarioEntity funcionario = new FuncionarioEntity();
-		//funcionario.setFuncionarioId(java.lang.Long.valueOf('2'));
 		funcionario.setNome(nome);
-		funcionario.setCodigo("-1");
 		funcionario.setEmail(email);
 		funcionario.setDataCadastro(dataCadastro);
 
-		session.save(funcionario);
-
-		return funcionario;
+		return save(funcionario);
 	}
 
 	/**
-	 * método que cadastra funcinarios
+	 * método que cadastra telefone de funcionário
 	 *
-	 * @param funcionario
+	 * @param funcionarioId
 	 * @param telefone
 	 * @return
 	 */
-	public FuncionarioTelefoneEntity cadastrarFuncionarioTelefone(FuncionarioEntity funcionario, String telefone) {
+	public Long cadastrarFuncionarioTelefone(Long funcionarioId, String telefone) {
 		FuncionarioTelefoneEntity funcionarioTelefone = new FuncionarioTelefoneEntity();
-		funcionarioTelefone.setFuncionario(funcionario);
+		funcionarioTelefone.setFuncionarioId(funcionarioId);
 		funcionarioTelefone.setTelefone(telefone);
 
-		session.save(funcionarioTelefone);
-
-		return funcionarioTelefone;
+		return save(funcionarioTelefone);
 	}
 
 

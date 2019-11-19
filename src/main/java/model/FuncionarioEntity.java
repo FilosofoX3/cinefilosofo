@@ -1,15 +1,16 @@
 package model;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.sql.Date;
 
 @Entity
-@Table(name = "Funcionario", schema = "cinema", catalog = "")
-public class FuncionarioEntity {
+@Table(name = "Funcionario", schema = "cinema")
+public class FuncionarioEntity implements Serializable {
 
     @Id
-    @Column(name="funcionario_id")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "funcionario_id", updatable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long funcionarioId;
 
     @Basic
@@ -97,6 +98,6 @@ public class FuncionarioEntity {
 
     @Override
     public String toString() {
-        return "#" + funcionarioId + " / " + nome;
+        return "ID:" + funcionarioId + " | Nome: " + nome;
     }
 }

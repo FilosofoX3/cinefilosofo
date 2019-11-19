@@ -3,36 +3,37 @@ package model;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "FuncionarioTelefone", schema = "cinema", catalog = "")
+@Table(name = "FuncionarioTelefone", schema = "cinema")
 public class FuncionarioTelefoneEntity {
-    private String funcionarioTelefoneId;
-
-    @ManyToOne
-    @JoinColumn(name = "funcionario_id")
-    private FuncionarioEntity funcionario;
-
-    private String telefone;
-
     @Id
-    @Column(name = "funcionario_telefone_id", nullable = false)
-    public String getFuncionarioTelefoneId() {
-        return funcionarioTelefoneId;
-    }
+    @Column(name = "funcionario_telefone_id", updatable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long funcionarioTelefoneId;
 
-    public void setFuncionarioTelefoneId(String funcionarioTelefoneId) {
-        this.funcionarioTelefoneId = funcionarioTelefoneId;
-    }
-
-    public FuncionarioEntity getFuncionario() {
-        return funcionario;
-    }
-
-    public void setFuncionario(FuncionarioEntity funcionario) {
-        this.funcionario = funcionario;
-    }
+    @Basic
+    @Column(name = "funcionario_id", nullable = false)
+    private Long funcionarioId;
 
     @Basic
     @Column(name = "telefone", nullable = true, length = 50)
+    private String telefone;
+
+    public Long getFuncionarioTelefoneId() {
+        return funcionarioTelefoneId;
+    }
+
+    public void setFuncionarioTelefoneId(Long funcionarioTelefoneId) {
+        this.funcionarioTelefoneId = funcionarioTelefoneId;
+    }
+
+    public Long getFuncionarioId() {
+        return funcionarioId;
+    }
+
+    public void setFuncionarioId(Long funcionarioId) {
+        this.funcionarioId = funcionarioId;
+    }
+
     public String getTelefone() {
         return telefone;
     }
