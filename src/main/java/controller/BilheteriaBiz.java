@@ -490,8 +490,9 @@ public class BilheteriaBiz {
 
 		return save(funcionarioTelefone);
 	}
+
     /**
-     * método que cadastra telefone de funcionário
+     * método que cadastra vendedor
      *
      * @param funcionarioId
      * @param usuarioId
@@ -505,6 +506,24 @@ public class BilheteriaBiz {
 
         return save(vendedor);
     }
+
+	/**
+	 * método que cadastra gerente
+	 *
+	 * @param funcionarioId
+	 * @param usuario
+	 * @param senha
+	 * @return
+	 */
+
+	public Long cadastrarGerente(Long funcionarioId, String usuario, String senha) {
+		GerenteEntity gerente = new GerenteEntity();
+		gerente.setFuncionarioId(funcionarioId);
+		gerente.setUsuario(usuario);
+		gerente.setSenha(senha);
+
+		return save(gerente);
+	}
 
 	/**
 	 * Verifica se há alguma sessão cadastrada valida

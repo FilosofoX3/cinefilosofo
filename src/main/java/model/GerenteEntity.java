@@ -1,26 +1,46 @@
 package model;
 
+import org.hibernate.annotations.ColumnTransformer;
+
 import javax.persistence.*;
 
 @Entity
-@Table(name = "Gerente", schema = "cinema", catalog = "")
+@Table(name = "Gerente", schema = "cinema")
 public class GerenteEntity {
-    private String gerenteId;
+    @Id
+    @Column(name = "gerente_id", updatable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long gerenteId;
+
+    @Basic
+    @Column(name = "funcionario_id", nullable = false)
+    private Long funcionarioId;
+
+    @Basic
+    @Column(name = "usuario", nullable = false, length = 35)
     private String usuario;
+
+    @Basic
+    @Column(name = "senha", nullable = false, length = 35)
+    @ColumnTransformer(write = "MD5(?)")
     private String senha;
 
-    @Id
-    @Column(name = "gerente_id", nullable = false)
-    public String getGerenteId() {
+    public Long getGerenteId() {
         return gerenteId;
     }
 
-    public void setGerenteId(String gerenteId) {
+    public void setGerenteId(Long gerenteId) {
         this.gerenteId = gerenteId;
     }
 
-    @Basic
-    @Column(name = "usuario", nullable = true, length = 35)
+    public Long getFuncionarioId() {
+        return funcionarioId;
+    }
+
+    public void setFuncionarioId(Long funcionarioId) {
+        this.funcionarioId = funcionarioId;
+    }
+
     public String getUsuario() {
         return usuario;
     }
@@ -29,8 +49,6 @@ public class GerenteEntity {
         this.usuario = usuario;
     }
 
-    @Basic
-    @Column(name = "senha", nullable = true, length = 35)
     public String getSenha() {
         return senha;
     }

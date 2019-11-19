@@ -30,7 +30,7 @@ public class jCadastroFuncionario extends JFrame{
 		btnGerente.setIcon(new ImageIcon(getClass().getResource("/imagens/engineer.png")));
 		btnGerente.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				JCadastrosFuncionarios cadGer= new JCadastrosFuncionarios();
+				JCadastroGerente cadGer = new JCadastroGerente();
 				cadGer.setVisible(true);
 			}
 		});
@@ -44,7 +44,7 @@ public class jCadastroFuncionario extends JFrame{
 		btnVendedor.setIcon(new ImageIcon(getClass().getResource("/imagens/vendedor.png")));
 		btnVendedor.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				JCadastroVendedor cadVend= new JCadastroVendedor();
+				JCadastroVendedor cadVend = new JCadastroVendedor();
 				cadVend.setVisible(true);
 			}
 		});
