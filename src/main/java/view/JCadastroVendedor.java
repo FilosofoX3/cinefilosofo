@@ -5,15 +5,18 @@ import java.awt.EventQueue;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.text.MaskFormatter;
 
 import controller.BilheteriaBiz;
 import model.*;
 import utils.LtpLib;
+import utils.RegExFieldVerifier;
 
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.sql.Date;
+import java.text.ParseException;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.Random;
 import java.awt.event.ActionEvent;
@@ -27,6 +30,7 @@ public class JCadastroVendedor extends JFrame {
 	private JTextField txtTelefones;
 	private JTextField txtUsuario;
 	private JTextField txtMetaVendas;
+	private JFormattedTextField txtDataNascimento;
 	private JPasswordField txtSenha;
 	private JComboBox dropGerentes;
 	private Random numeroRandomico = new Random();
@@ -37,11 +41,11 @@ public class JCadastroVendedor extends JFrame {
 	 * Create the frame.
 	 */
 	@SuppressWarnings({ "unchecked", "static-access" })
-	public JCadastroVendedor() {
+	public JCadastroVendedor(){
 		super("Cadastro Vendedor");
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 281, 338);
+		setBounds(100, 100, 281, 368);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
@@ -123,6 +127,26 @@ public class JCadastroVendedor extends JFrame {
 		panel.add(txtMetaVendas);
 		txtMetaVendas.setColumns(10);
 
+		JLabel lblDataNascimento = new JLabel("Data de nascimento");
+		lblDataNascimento.setBounds(10, 260, 120, 14);
+		panel.add(lblDataNascimento);
+
+		JLabel lblDataNascimentoFormat = new JLabel("   (yyyy-mm-dd)");
+		lblDataNascimentoFormat.setBounds(10, 274, 120, 14);
+		panel.add(lblDataNascimentoFormat);
+
+
+		txtDataNascimento = new JFormattedTextField();
+		txtDataNascimento.setBounds(136, 260, 76, 20);
+		txtDataNascimento.setInputVerifier(new RegExFieldVerifier("\\d{4}-\\d{2}-\\d{2}"));
+		panel.add(txtDataNascimento);
+		txtDataNascimento.setColumns(10);
+
+		try {
+			MaskFormatter dataMask = new MaskFormatter("####-##-##");
+			dataMask.install(txtDataNascimento);
+		} catch (ParseException err) {}
+
 		JButton btnSalvar = new JButton("Salvar");
 		btnSalvar.addActionListener(new ActionListener() {
 			@SuppressWarnings("static-access")
@@ -132,8 +156,7 @@ public class JCadastroVendedor extends JFrame {
 						txtNome.getText(),
 						txtEmail.getText(),
 						new java.sql.Date(Calendar.getInstance().getTime().getTime()),
-						// TODO: ADICIONAR CAMPO NO FORM
-						new java.sql.Date(Calendar.getInstance().getTime().getTime())
+						Date.valueOf(txtDataNascimento.getText())
 				);
 
 				Long funcionarioId = objBilheteria.cadastrarFuncionario(
@@ -157,7 +180,7 @@ public class JCadastroVendedor extends JFrame {
 				JOptionPane.showMessageDialog(null, "Cadastrado com sucesso!");
 			}
 		});
-		btnSalvar.setBounds(63, 260, 89, 23);
+		btnSalvar.setBounds(63, 290, 89, 23);
 		panel.add(btnSalvar);
 	}
 }
