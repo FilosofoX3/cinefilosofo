@@ -172,7 +172,6 @@ public class BilheteriaBiz {
 	 * @return true or false // se conseguir cadastrar retorna true
 	 * 
 	 */
-
 	public Boolean cadastrarSessao(int horario, Date dataInicio, Date dataFim, boolean tipoQuatroD, String titulo,
 			int duracao, int anoLancamento, int clasInd, String genero, boolean oculosAtivo,
 			boolean poltronaInteligente) {
@@ -239,7 +238,6 @@ public class BilheteriaBiz {
 	 * @param titulo
 	 * @return
 	 */
-
 	public Filme buscaFilme(String titulo, boolean quatroD) {
 		for (Sessao sessao : sessoesCadastradas) {
 			if ((!sessoesCadastradas.isEmpty()) && (sessao.getFilme().getTitulo().equals(titulo)) && quatroD == sessao.getSalaCinema().isQuatroD()) {
@@ -249,7 +247,72 @@ public class BilheteriaBiz {
 			}
 		}
 		return null;
+	}
 
+	/**
+	 * Método que cadastra novo filme
+	 *
+	 * @param titulo
+	 * @param classificacaoId
+	 * @param generoId
+	 * @param duracaoMinutos
+	 * @param duracaoHoras
+	 * @param anoLancamento
+	 * @return
+	 */
+	public Long cadastrarFilme(
+			String titulo,
+			Long classificacaoId,
+			Long generoId,
+			int duracaoMinutos,
+			int duracaoHoras,
+			int anoLancamento
+	) {
+		FilmeEntity filme = new FilmeEntity();
+		filme.setTitulo(titulo);
+		filme.setClassificacaoId(classificacaoId);
+		filme.setGeneroId(generoId);
+		filme.setDuracaoMinutos(duracaoMinutos);
+		filme.setDuracaoHoras(duracaoHoras);
+		filme.setAnoLancamento(anoLancamento);
+
+		return save(filme);
+	}
+
+	/**
+	 * Lista todos os gêneros
+	 *
+	 * @return
+	 */
+	public List<GeneroEntity> listaGenero(
+	) {
+		Query query = session.createQuery("from GeneroEntity");
+		List<GeneroEntity> generos;
+		try {
+			generos = query.list();
+		} catch( javax.persistence.NoResultException err) {
+			generos = null;
+		}
+
+		return generos;
+	}
+
+	/**
+	 * Lista todas as classificações
+	 *
+	 * @return
+	 */
+	public List<ClassificacaoEntity> listaClassificacao(
+	) {
+		Query query = session.createQuery("from ClassificacaoEntity ");
+		List<ClassificacaoEntity> classificacoes;
+		try {
+			classificacoes = query.list();
+		} catch( javax.persistence.NoResultException err) {
+			classificacoes = null;
+		}
+
+		return classificacoes;
 	}
 
 	/**
@@ -330,7 +393,6 @@ public class BilheteriaBiz {
 
 		}
 		return null;
-
 	}
 
 	/**
@@ -466,7 +528,6 @@ public class BilheteriaBiz {
 	 * @param dataCadastro
 	 * @return
 	 */
-
 	public Long cadastrarFuncionario(String nome, String email, java.sql.Date dataCadastro) {
 		FuncionarioEntity funcionario = new FuncionarioEntity();
 		funcionario.setNome(nome);
@@ -498,7 +559,6 @@ public class BilheteriaBiz {
      * @param usuarioId
      * @return
      */
-
     public Long cadastrarVendedor(Long funcionarioId, String usuarioId) {
         VendedorEntity vendedor = new VendedorEntity();
         vendedor.setFuncionarioId(funcionarioId);
@@ -515,7 +575,6 @@ public class BilheteriaBiz {
 	 * @param senha
 	 * @return
 	 */
-
 	public Long cadastrarGerente(Long funcionarioId, String usuario, String senha) {
 		GerenteEntity gerente = new GerenteEntity();
 		gerente.setFuncionarioId(funcionarioId);

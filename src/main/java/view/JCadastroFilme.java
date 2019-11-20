@@ -1,48 +1,53 @@
 package view;
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-
 import controller.BilheteriaBiz;
-import model.FuncionarioEntity;
-import model.Gerente;
-import model.Vendedor;
+import model.ClassificacaoEntity;
+import model.GeneroEntity;
 import utils.LtpLib;
 
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JTextField;
-import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.io.File;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Random;
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-public class JCadastroVendedor extends JFrame {
+import java.util.List;
+
+public class JCadastroFilme extends JFrame {
 
 	private JPanel contentPane;
-	private JTextField txtNome;
-	private JTextField txtCpf;
-	private JTextField txtEmail;
-	private JTextField txtTelefones;
-	private JTextField txtUsuario;
-	private Random numeroRandomico = new Random();
+	private JTextField txtTitulo;
+	private JComboBox dropGenero; // Dropdown
+	private JComboBox dropClassificacao; // Dropdown
+	private JTextField txtAnoLancamento;
+	private JTextField txtDuracaoMinutos;
+	private JTextField txtDuracaoHoras;
 	private BilheteriaBiz objBilheteria = new BilheteriaBiz();
 	private LtpLib objLib = new LtpLib();
+
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					JCadastroFilme frame = new JCadastroFilme();
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
 
 	/**
 	 * Create the frame.
 	 */
 	@SuppressWarnings({ "unchecked", "static-access" })
-	public JCadastroVendedor() {
+	public JCadastroFilme() {
 		super("Cadastro Vendedor");
-		
+
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 281, 298);
 		contentPane = new JPanel();
@@ -54,77 +59,73 @@ public class JCadastroVendedor extends JFrame {
 		contentPane.add(panel, BorderLayout.CENTER);
 		panel.setLayout(null);
 		
-		JLabel lblNome = new JLabel("Nome");
-		lblNome.setBounds(10, 11, 46, 14);
-		panel.add(lblNome);
+		JLabel lblTitulo = new JLabel("Titulo");
+		lblTitulo.setBounds(10, 11, 46, 14);
+		panel.add(lblTitulo);
 		
-		txtNome = new JTextField();
-		txtNome.setBounds(66, 8, 86, 20);
-		panel.add(txtNome);
-		txtNome.setColumns(10);
+		txtTitulo = new JTextField();
+		txtTitulo.setBounds(66, 8, 86, 20);
+		panel.add(txtTitulo);
+		txtTitulo.setColumns(10);
 		
-		JLabel lblCpf = new JLabel("CPF");
-		lblCpf.setBounds(10, 36, 46, 14);
-		panel.add(lblCpf);
+		JLabel lblGenero = new JLabel("Gênero");
+		lblGenero.setBounds(10, 36, 46, 14);
+		panel.add(lblGenero);
+
+		List <GeneroEntity> generos = objBilheteria.listaGenero();
+		dropGenero = new JComboBox(generos.toArray());
+		dropGenero.setVisible(true);
+		dropGenero.setBounds(66, 33, 86, 20);
+		panel.add(dropGenero);
+
+		JLabel lblClassificacao = new JLabel("Classificação");
+		lblClassificacao.setBounds(10, 70, 46, 14);
+		panel.add(lblClassificacao);
+
+		List <ClassificacaoEntity> classificacoes = objBilheteria.listaClassificacao();
+		dropClassificacao = new JComboBox(classificacoes.toArray());
+		dropClassificacao.setBounds(66, 64, 86, 20);
+		panel.add(dropClassificacao);
+
+		JLabel lblDuracaoMinutos = new JLabel("Duração (minutos)");
+		lblDuracaoMinutos.setBounds(10, 105, 65, 14);
+		panel.add(lblDuracaoMinutos);
 		
-		txtCpf = new JTextField();
-		txtCpf.setBounds(66, 33, 86, 20);
-		panel.add(txtCpf);
-		txtCpf.setColumns(10);
+		txtDuracaoMinutos = new JTextField();
+		txtDuracaoMinutos.setBounds(66, 102, 86, 20);
+		panel.add(txtDuracaoMinutos);
+		txtDuracaoMinutos.setColumns(10);
 		
-		JLabel lblEmail = new JLabel("Email");
-		lblEmail.setBounds(10, 70, 46, 14);
-		panel.add(lblEmail);
-		
-		txtEmail = new JTextField();
-		txtEmail.setBounds(66, 64, 86, 20);
-		panel.add(txtEmail);
-		txtEmail.setColumns(10);
-		
-		JLabel lblTelefones = new JLabel("Telefones");
-		lblTelefones.setBounds(10, 105, 65, 14);
-		panel.add(lblTelefones);
-		
-		txtTelefones = new JTextField();
-		txtTelefones.setBounds(66, 102, 86, 20);
-		panel.add(txtTelefones);
-		txtTelefones.setColumns(10);
-		
-		JLabel lblUsuario = new JLabel("ID Usuário");
-		lblUsuario.setBounds(10, 139, 56, 14);
-		panel.add(lblUsuario);
-		
-		txtUsuario = new JTextField();
-		txtUsuario.setBounds(66, 136, 86, 20);
-		panel.add(txtUsuario);
-		txtUsuario.setColumns(10);
+		JLabel lblDuracaoHoras = new JLabel("Duração (horas)");
+		lblDuracaoHoras.setBounds(10, 139, 56, 14);
+		panel.add(lblDuracaoHoras);
+
+		txtDuracaoHoras = new JTextField();
+		txtDuracaoHoras.setBounds(66, 136, 86, 20);
+		panel.add(txtDuracaoHoras);
+		txtDuracaoHoras.setColumns(10);
 ;
-		
+		JLabel lblAnoLancamento = new JLabel("Ano de Lançamento");
+		lblAnoLancamento.setBounds(10, 179, 56, 14);
+		panel.add(lblAnoLancamento);
+
+		txtAnoLancamento = new JTextField();
+		txtAnoLancamento.setBounds(66, 176, 86, 20);
+		panel.add(txtAnoLancamento);
+		txtAnoLancamento.setColumns(10);
+
 		JButton btnSalvar = new JButton("Salvar");
 		btnSalvar.addActionListener(new ActionListener() {
 			@SuppressWarnings("static-access")
 			public void actionPerformed(ActionEvent arg0) {
-				Long funcionarioId = objBilheteria.cadastrarFuncionario(
-						txtNome.getText(),
-						txtEmail.getText(),
-						new java.sql.Date(Calendar.getInstance().getTime().getTime())
+				Long filmeId = objBilheteria.cadastrarFilme(
+						txtTitulo.getText(),
+						((ClassificacaoEntity) dropClassificacao.getSelectedItem()).getClassificacaoId(),
+						((GeneroEntity) dropGenero.getSelectedItem()).getGeneroId(),
+						Integer.parseInt(txtDuracaoMinutos.getText()),
+						Integer.parseInt(txtDuracaoHoras.getText()),
+						Integer.parseInt(txtAnoLancamento.getText())
 				);
-
-				objBilheteria.cadastrarFuncionarioTelefone(
-						funcionarioId,
-						txtTelefones.getText()
-				);
-
-                objBilheteria.cadastrarVendedor(
-                        funcionarioId,
-                        txtUsuario.getText()
-                );
-				/*
-				objBilheteria.cadastrarVendedor(
-						funcionarioId,
-						txtUsuario.getText()
-				);
-				*/
 
 				JOptionPane.showMessageDialog(null, "Cadastrado com sucesso!");
 			}

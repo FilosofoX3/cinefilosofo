@@ -3,26 +3,61 @@ package model;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "Filme", schema = "cinema", catalog = "")
+@Table(name = "Filme", schema = "cinema")
 public class FilmeEntity {
-    private String filmeId;
-    private String titulo;
-    private Byte duracaoMinutos;
-    private Byte duracaoHoras;
-    private Byte anoLancamento;
-
     @Id
-    @Column(name = "filme_id", nullable = false)
-    public String getFilmeId() {
+    @Column(name = "filme_id", updatable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long filmeId;
+
+    @Basic
+    @Column(name = "genero_id", nullable = false, length = 35)
+    private Long generoId;
+
+    @Basic
+    @Column(name = "classificacao_id", nullable = false, length = 35)
+    private Long classificacaoId;
+
+    @Basic
+    @Column(name = "titulo", nullable = false, length = 35)
+    private String titulo;
+
+    @Basic
+    @Column(name = "duracao_minutos", nullable = false)
+    private int duracaoMinutos;
+
+    @Basic
+    @Column(name = "duracao_horas", nullable = false)
+    private int duracaoHoras;
+
+    @Basic
+    @Column(name = "ano_lancamento", nullable = false)
+    private int anoLancamento;
+
+    public Long getFilmeId() {
         return filmeId;
     }
 
-    public void setFilmeId(String filmeId) {
+    public void setFilmeId(Long filmeId) {
         this.filmeId = filmeId;
     }
 
-    @Basic
-    @Column(name = "titulo", nullable = true, length = 35)
+    public Long getGeneroId() {
+        return generoId;
+    }
+
+    public void setGeneroId(Long generoId) {
+        this.generoId = generoId;
+    }
+
+    public Long getClassificacaoId() {
+        return classificacaoId;
+    }
+
+    public void setClassificacaoId(Long classificacaoId) {
+        this.classificacaoId = classificacaoId;
+    }
+
     public String getTitulo() {
         return titulo;
     }
@@ -31,33 +66,27 @@ public class FilmeEntity {
         this.titulo = titulo;
     }
 
-    @Basic
-    @Column(name = "duracao_minutos", nullable = true)
-    public Byte getDuracaoMinutos() {
+    public int getDuracaoMinutos() {
         return duracaoMinutos;
     }
 
-    public void setDuracaoMinutos(Byte duracaoMinutos) {
+    public void setDuracaoMinutos(int duracaoMinutos) {
         this.duracaoMinutos = duracaoMinutos;
     }
 
-    @Basic
-    @Column(name = "duracao_horas", nullable = true)
-    public Byte getDuracaoHoras() {
+    public int getDuracaoHoras() {
         return duracaoHoras;
     }
 
-    public void setDuracaoHoras(Byte duracaoHoras) {
+    public void setDuracaoHoras(int duracaoHoras) {
         this.duracaoHoras = duracaoHoras;
     }
 
-    @Basic
-    @Column(name = "ano_lancamento", nullable = true)
-    public Byte getAnoLancamento() {
+    public int getAnoLancamento() {
         return anoLancamento;
     }
 
-    public void setAnoLancamento(Byte anoLancamento) {
+    public void setAnoLancamento(int anoLancamento) {
         this.anoLancamento = anoLancamento;
     }
 
@@ -70,10 +99,10 @@ public class FilmeEntity {
 
         if (filmeId != null ? !filmeId.equals(that.filmeId) : that.filmeId != null) return false;
         if (titulo != null ? !titulo.equals(that.titulo) : that.titulo != null) return false;
-        if (duracaoMinutos != null ? !duracaoMinutos.equals(that.duracaoMinutos) : that.duracaoMinutos != null)
+        if (duracaoMinutos != 0 ? duracaoMinutos != that.duracaoMinutos : that.duracaoMinutos != 0)
             return false;
-        if (duracaoHoras != null ? !duracaoHoras.equals(that.duracaoHoras) : that.duracaoHoras != null) return false;
-        if (anoLancamento != null ? !anoLancamento.equals(that.anoLancamento) : that.anoLancamento != null)
+        if (duracaoHoras != 0 ? duracaoHoras != that.duracaoHoras : that.duracaoHoras != 0) return false;
+        if (anoLancamento != 0 ? anoLancamento != that.anoLancamento : that.anoLancamento != 0)
             return false;
 
         return true;
@@ -83,9 +112,9 @@ public class FilmeEntity {
     public int hashCode() {
         int result = filmeId != null ? filmeId.hashCode() : 0;
         result = 31 * result + (titulo != null ? titulo.hashCode() : 0);
-        result = 31 * result + (duracaoMinutos != null ? duracaoMinutos.hashCode() : 0);
-        result = 31 * result + (duracaoHoras != null ? duracaoHoras.hashCode() : 0);
-        result = 31 * result + (anoLancamento != null ? anoLancamento.hashCode() : 0);
+        result = 31 * result + duracaoMinutos;
+        result = 31 * result + duracaoHoras;
+        result = 31 * result + anoLancamento;
         return result;
     }
 }
