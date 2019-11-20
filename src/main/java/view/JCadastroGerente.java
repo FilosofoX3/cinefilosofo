@@ -2,12 +2,16 @@ package view;
 
 import controller.BilheteriaBiz;
 import utils.LtpLib;
+import utils.RegExFieldVerifier;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.text.MaskFormatter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Date;
+import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Random;
 
@@ -20,7 +24,7 @@ public class JCadastroGerente extends JFrame {
 	private JTextField txtTelefones;
 	private JTextField txtUsuario;
 	private JPasswordField txtSenha;
-	private Random numeroRandomico = new Random();
+	private JFormattedTextField txtDataNascimento;
 	private BilheteriaBiz objBilheteria = new BilheteriaBiz();
 	private LtpLib objLib = new LtpLib();
 
@@ -32,7 +36,7 @@ public class JCadastroGerente extends JFrame {
 		super("Cadastro Gerente");
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 281, 298);
+		setBounds(100, 100, 281, 360);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
@@ -96,7 +100,26 @@ public class JCadastroGerente extends JFrame {
 		txtSenha.setBounds(66, 170, 86, 20);
 		panel.add(txtSenha);
 		txtSenha.setColumns(30);
-		
+
+		JLabel lblDataNascimento = new JLabel("Data de nascimento");
+		lblDataNascimento.setBounds(10, 200,120, 14);
+		panel.add(lblDataNascimento);
+
+		JLabel lblDataNascimentoFormat = new JLabel("   (yyyy-mm-dd)");
+		lblDataNascimentoFormat.setBounds(10, 214,120, 14);
+		panel.add(lblDataNascimentoFormat);
+
+		txtDataNascimento = new JFormattedTextField();
+		txtDataNascimento.setBounds(136, 200,76, 20);
+		txtDataNascimento.setInputVerifier(new RegExFieldVerifier("\\d{4}-\\d{2}-\\d{2}"));
+		panel.add(txtDataNascimento);
+		txtDataNascimento.setColumns(10);
+
+		try {
+			MaskFormatter dataMask = new MaskFormatter("####-##-##");
+			dataMask.install(txtDataNascimento);
+		} catch (ParseException err) {}
+
 		JButton btnSalvar = new JButton("Salvar");
 		btnSalvar.addActionListener(new ActionListener() {
 			@SuppressWarnings("static-access")
@@ -106,8 +129,7 @@ public class JCadastroGerente extends JFrame {
 						txtNome.getText(),
 						txtEmail.getText(),
 						new java.sql.Date(Calendar.getInstance().getTime().getTime()),
-						// TODO: ADICIONAR CAMPO NO FORM
-						new java.sql.Date(Calendar.getInstance().getTime().getTime())
+						Date.valueOf(txtDataNascimento.getText())
 				);
 
 				Long funcionarioId = objBilheteria.cadastrarFuncionario(
@@ -128,7 +150,7 @@ public class JCadastroGerente extends JFrame {
 				JOptionPane.showMessageDialog(null, "Cadastrado com sucesso!");
 			}
 		});
-		btnSalvar.setBounds(63, 217, 89, 23);
+		btnSalvar.setBounds(63, 257, 89, 23);
 		panel.add(btnSalvar);
 	}
 }
