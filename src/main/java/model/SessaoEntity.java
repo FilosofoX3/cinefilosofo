@@ -6,26 +6,49 @@ import java.sql.Date;
 import java.sql.Time;
 
 @Entity
-@Table(name = "Sessao", schema = "cinema", catalog = "")
+@Table(name = "Sessao", schema = "cinema")
 public class SessaoEntity {
-    private String sessaoId;
+    @Id
+    @Column(name = "sessao_id", updatable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long sessaoId;
+
+    @Basic
+    @Column(name = "sala_id", nullable = false)
+    private Long salaId;
+
+    @Basic
+    @Column(name = "filme_id", nullable = false)
+    private Long filmeId;
+
+    @Basic
+    @Column(name = "data_inicio", nullable = false)
     private Date dataInicio;
+
+    @Basic
+    @Column(name = "data_fim", nullable = false)
     private Date dataFim;
+
+    @Basic
+    @Column(name = "hora", nullable = false)
     private Time hora;
+
+    @Basic
+    @Column(name = "valor", nullable = false, precision = 2)
     private BigDecimal valor;
 
-    @Id
-    @Column(name = "sessao_id", nullable = false)
-    public String getSessaoId() {
+    @Basic
+    @Column(name = "legendado", nullable = true)
+    private Boolean legendado;
+
+    public Long getSessaoId() {
         return sessaoId;
     }
 
-    public void setSessaoId(String sessaoId) {
+    public void setSessaoId(Long sessaoId) {
         this.sessaoId = sessaoId;
     }
 
-    @Basic
-    @Column(name = "data_inicio", nullable = true)
     public Date getDataInicio() {
         return dataInicio;
     }
@@ -34,8 +57,6 @@ public class SessaoEntity {
         this.dataInicio = dataInicio;
     }
 
-    @Basic
-    @Column(name = "data_fim", nullable = true)
     public Date getDataFim() {
         return dataFim;
     }
@@ -44,8 +65,6 @@ public class SessaoEntity {
         this.dataFim = dataFim;
     }
 
-    @Basic
-    @Column(name = "hora", nullable = true)
     public Time getHora() {
         return hora;
     }
@@ -54,14 +73,36 @@ public class SessaoEntity {
         this.hora = hora;
     }
 
-    @Basic
-    @Column(name = "valor", nullable = true, precision = 2)
     public BigDecimal getValor() {
         return valor;
     }
 
     public void setValor(BigDecimal valor) {
         this.valor = valor;
+    }
+
+    public Boolean getLegendado() {
+        return legendado;
+    }
+
+    public void setLegendado(Boolean legendado) {
+        this.legendado = legendado;
+    }
+
+    public Long getSalaId() {
+        return salaId;
+    }
+
+    public void setSalaId(Long salaId) {
+        this.salaId = salaId;
+    }
+
+    public Long getFilmeId() {
+        return filmeId;
+    }
+
+    public void setFilmeId(Long filmeId) {
+        this.filmeId = filmeId;
     }
 
     @Override
