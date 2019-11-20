@@ -10,14 +10,17 @@ public class VendedorEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long vendedorId;
 
-
     @Basic
     @Column(name = "funcionario_id", nullable = false)
     private Long funcionarioId;
 
     @Basic
-    @Column(name = "usuario_id", nullable = true, length = 35)
-    private String usuarioId;
+    @Column(name = "gerente_id", nullable = false)
+    private Long gerenteId;
+
+    @Basic
+    @Column(name = "meta_vendas", nullable = true)
+    private int metaVendas;
 
     public Long getVendedorId() {
         return vendedorId;
@@ -35,12 +38,20 @@ public class VendedorEntity {
         this.funcionarioId = funcionarioId;
     }
 
-    public String getUsuarioId() {
-        return usuarioId;
+    public Long getGerenteId() {
+        return gerenteId;
     }
 
-    public void setUsuarioId(String usuarioId) {
-        this.usuarioId = usuarioId;
+    public void setGerenteId(Long gerenteId) {
+        this.gerenteId = gerenteId;
+    }
+
+    public int getMetaVendas() {
+        return metaVendas;
+    }
+
+    public void setMetaVendas(int metaVendas) {
+        this.metaVendas = metaVendas;
     }
 
     @Override
@@ -51,7 +62,8 @@ public class VendedorEntity {
         VendedorEntity that = (VendedorEntity) o;
 
         if (vendedorId != null ? !vendedorId.equals(that.vendedorId) : that.vendedorId != null) return false;
-        if (usuarioId != null ? !usuarioId.equals(that.usuarioId) : that.usuarioId != null) return false;
+        if (gerenteId != null ? !gerenteId.equals(that.gerenteId) : that.gerenteId != null) return false;
+        if (metaVendas != 0 ? metaVendas != that.metaVendas : that.metaVendas != 0) return false;
 
         return true;
     }
@@ -59,7 +71,9 @@ public class VendedorEntity {
     @Override
     public int hashCode() {
         int result = vendedorId != null ? vendedorId.hashCode() : 0;
-        result = 31 * result + (usuarioId != null ? usuarioId.hashCode() : 0);
+        result = 31 * result + (gerenteId != null ? gerenteId.hashCode() : 0);
+        result = 31 * result + metaVendas;
         return result;
     }
+
 }

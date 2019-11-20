@@ -1,0 +1,27 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="model.PessoaEntity" table="pessoa" schema="cinema">
+        <id name="pessoaId">
+            <column name="pessoa_id" sql-type="mediumint(9)"/>
+        </id>
+        <property name="cpf">
+            <column name="cpf" sql-type="varchar(11)" length="11"/>
+        </property>
+        <property name="nome">
+            <column name="nome" sql-type="varchar(100)" length="100" not-null="true"/>
+        </property>
+        <property name="email">
+            <column name="email" sql-type="varchar(50)" length="50" not-null="true"/>
+        </property>
+        <property name="dataNascimento">
+            <column name="data_nascimento" sql-type="date" not-null="true"/>
+        </property>
+        <property name="dataCadastro">
+            <column name="data_cadastro" sql-type="date" not-null="true"/>
+        </property>
+    </class>
+</hibernate-mapping>

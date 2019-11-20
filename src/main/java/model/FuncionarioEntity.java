@@ -1,8 +1,9 @@
 package model;
 
+import org.hibernate.annotations.ColumnTransformer;
+
 import javax.persistence.*;
 import java.io.Serializable;
-import java.sql.Date;
 
 @Entity
 @Table(name = "Funcionario", schema = "cinema")
@@ -14,20 +15,17 @@ public class FuncionarioEntity implements Serializable {
     private Long funcionarioId;
 
     @Basic
-    @Column(name = "codigo", nullable = true, length = 10)
-    private String codigo;
+    @Column(name = "pessoa_id", nullable = false, length = 50)
+    private Long pessoaId;
 
     @Basic
-    @Column(name = "nome", nullable = true, length = 100)
-    private String nome;
+    @Column(name = "usuario", unique = true, nullable = false, length = 50)
+    private String usuario;
 
     @Basic
-    @Column(name = "email", nullable = true, length = 50)
-    private String email;
-
-    @Basic
-    @Column(name = "data_cadastro", nullable = true)
-    private Date dataCadastro;
+    @Column(name = "senha", nullable = false, length = 50)
+    @ColumnTransformer(write = "MD5(?)")
+    private String senha;
 
     public Long getFuncionarioId() {
         return funcionarioId;
@@ -37,36 +35,28 @@ public class FuncionarioEntity implements Serializable {
         this.funcionarioId = funcionarioId;
     }
 
-    public String getCodigo() {
-        return codigo;
+    public Long getPessoaId() {
+        return pessoaId;
     }
 
-    public void setCodigo(String codigo) {
-        this.codigo = codigo;
+    public void setPessoaId(Long pessoaId) {
+        this.pessoaId = pessoaId;
     }
 
-    public String getNome() {
-        return nome;
+    public String getUsuario() {
+        return usuario;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
+    public void setUsuario(String usuario) {
+        this.usuario = usuario;
     }
 
-    public String getEmail() {
-        return email;
+    public String getSenha() {
+        return senha;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public Date getDataCadastro() {
-        return dataCadastro;
-    }
-
-    public void setDataCadastro(Date dataCadastro) {
-        this.dataCadastro = dataCadastro;
+    public void setSenha(String senha) {
+        this.senha = senha;
     }
 
     @Override
@@ -78,10 +68,9 @@ public class FuncionarioEntity implements Serializable {
 
         if (funcionarioId != null ? !funcionarioId.equals(that.funcionarioId) : that.funcionarioId != null)
             return false;
-        if (codigo != null ? !codigo.equals(that.codigo) : that.codigo != null) return false;
-        if (nome != null ? !nome.equals(that.nome) : that.nome != null) return false;
-        if (email != null ? !email.equals(that.email) : that.email != null) return false;
-        if (dataCadastro != null ? !dataCadastro.equals(that.dataCadastro) : that.dataCadastro != null) return false;
+        if (pessoaId != null ? !pessoaId.equals(that.pessoaId) : that.pessoaId != null) return false;
+        if (usuario != null ? !usuario.equals(that.usuario) : that.usuario != null) return false;
+        if (senha != null ? !senha.equals(that.senha) : that.senha != null) return false;
 
         return true;
     }
@@ -89,15 +78,14 @@ public class FuncionarioEntity implements Serializable {
     @Override
     public int hashCode() {
         int result = funcionarioId != null ? funcionarioId.hashCode() : 0;
-        result = 31 * result + (codigo != null ? codigo.hashCode() : 0);
-        result = 31 * result + (nome != null ? nome.hashCode() : 0);
-        result = 31 * result + (email != null ? email.hashCode() : 0);
-        result = 31 * result + (dataCadastro != null ? dataCadastro.hashCode() : 0);
+        result = 31 * result + (pessoaId != null ? pessoaId.hashCode() : 0);
+        result = 31 * result + (usuario != null ? usuario.hashCode() : 0);
+        result = 31 * result + (senha != null ? senha.hashCode() : 0);
         return result;
     }
 
     @Override
     public String toString() {
-        return "ID:" + funcionarioId + " | Nome: " + nome;
+        return "ID:" + funcionarioId + " | PessoaID: " + pessoaId;
     }
 }
