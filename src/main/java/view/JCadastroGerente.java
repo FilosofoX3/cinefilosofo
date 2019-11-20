@@ -101,10 +101,19 @@ public class JCadastroGerente extends JFrame {
 		btnSalvar.addActionListener(new ActionListener() {
 			@SuppressWarnings("static-access")
 			public void actionPerformed(ActionEvent arg0) {
-				Long funcionarioId = objBilheteria.cadastrarFuncionario(
+				Long pessoaId = objBilheteria.cadastrarPessoa(
+						txtCpf.getText(),
 						txtNome.getText(),
 						txtEmail.getText(),
+						new java.sql.Date(Calendar.getInstance().getTime().getTime()),
+						// TODO: ADICIONAR CAMPO NO FORM
 						new java.sql.Date(Calendar.getInstance().getTime().getTime())
+				);
+
+				Long funcionarioId = objBilheteria.cadastrarFuncionario(
+						pessoaId,
+						txtUsuario.getText(),
+						txtSenha.getPassword().toString()
 				);
 
 				objBilheteria.cadastrarFuncionarioTelefone(
@@ -113,9 +122,7 @@ public class JCadastroGerente extends JFrame {
 				);
 
                 objBilheteria.cadastrarGerente(
-                        funcionarioId,
-                        txtUsuario.getText(),
-						txtSenha.getPassword().toString()
+                        funcionarioId
                 );
 
 				JOptionPane.showMessageDialog(null, "Cadastrado com sucesso!");

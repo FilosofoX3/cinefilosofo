@@ -1,7 +1,7 @@
 package controller;
 
 import java.util.ArrayList;
-import java.util.Date;
+import java.sql.Date;
 import java.util.List;
 
 import model.*;
@@ -502,7 +502,7 @@ public class BilheteriaBiz {
 	}
 
 	/**
-	 * procura o funcionario na lista de funcionarios
+	 * Busca por funcionários, por nome
 	 *
 	 * @param nome
 	 * @return Funcionarios
@@ -521,18 +521,80 @@ public class BilheteriaBiz {
 	}
 
 	/**
-	 * método que cadastra funcionário
-	 * 
+	 * Busca por funcionários, por nome
+	 *
+	 * @return Funcionarios
+	 */
+	public String getPessoaNome(Long funcionarioId) {
+
+		Query query = session.createQuery("" +
+				"SELECT P.nome FROM PessoaEntity P " +
+				"INNER JOIN FuncionarioEntity F " +
+				"ON P.pessoaId = F.pessoaId " +
+				"WHERE F.funcionarioId = :funcionarioId");
+
+		String pessoaNome;
+		try {
+			pessoaNome = query.setParameter("funcionarioId", funcionarioId).getSingleResult().toString();
+		} catch( javax.persistence.NoResultException err) {
+			pessoaNome = null;
+		}
+
+		return pessoaNome;
+	}
+
+	/**
+	 * Busca por funcionários, por nome
+	 *
+	 * @return Funcionarios
+	 */
+	public List<GerenteEntity> listaGerente() {
+
+		Query query = session.createQuery("from GerenteEntity");
+		List<GerenteEntity> gerentes;
+		try {
+			gerentes = query.list();
+		} catch( javax.persistence.NoResultException err) {
+			gerentes = null;
+		}
+
+		return gerentes;
+	}
+
+	/**
+	 * método que cadastra pessoa
+	 *
+	 * @param cpf
 	 * @param nome
 	 * @param email
+	 * @param dataNascimento
 	 * @param dataCadastro
 	 * @return
 	 */
-	public Long cadastrarFuncionario(String nome, String email, java.sql.Date dataCadastro) {
+	public Long cadastrarPessoa(String cpf, String nome, String email, Date dataNascimento, Date dataCadastro) {
+		PessoaEntity pessoa = new PessoaEntity();
+		pessoa.setCpf(cpf);
+		pessoa.setNome(nome);
+		pessoa.setEmail(email);
+		pessoa.setDataNascimento(dataNascimento);
+		pessoa.setDataCadastro(dataCadastro);
+
+		return save(pessoa);
+	}
+
+	/**
+	 * método que cadastra funcionário
+	 * 
+	 * @param pessoaId
+	 * @param usuario
+	 * @param senha
+	 * @return
+	 */
+	public Long cadastrarFuncionario(Long pessoaId, String usuario, String senha) {
 		FuncionarioEntity funcionario = new FuncionarioEntity();
-		funcionario.setNome(nome);
-		funcionario.setEmail(email);
-		funcionario.setDataCadastro(dataCadastro);
+		funcionario.setPessoaId(pessoaId);
+		funcionario.setUsuario(usuario);
+		funcionario.setSenha(senha);
 
 		return save(funcionario);
 	}
@@ -556,30 +618,28 @@ public class BilheteriaBiz {
      * método que cadastra vendedor
      *
      * @param funcionarioId
-     * @param usuarioId
-     * @return
+     * @param gerenteId
+	 * @param metaVendas
+	 * @return
      */
-    public Long cadastrarVendedor(Long funcionarioId, String usuarioId) {
+    public Long cadastrarVendedor(Long funcionarioId, Long gerenteId, int metaVendas) {
         VendedorEntity vendedor = new VendedorEntity();
         vendedor.setFuncionarioId(funcionarioId);
-        vendedor.setUsuarioId(usuarioId);
+        vendedor.setGerenteId(gerenteId);
+		vendedor.setMetaVendas(metaVendas);
 
-        return save(vendedor);
+		return save(vendedor);
     }
 
 	/**
 	 * método que cadastra gerente
 	 *
 	 * @param funcionarioId
-	 * @param usuario
-	 * @param senha
 	 * @return
 	 */
-	public Long cadastrarGerente(Long funcionarioId, String usuario, String senha) {
+	public Long cadastrarGerente(Long funcionarioId) {
 		GerenteEntity gerente = new GerenteEntity();
 		gerente.setFuncionarioId(funcionarioId);
-		gerente.setUsuario(usuario);
-		gerente.setSenha(senha);
 
 		return save(gerente);
 	}
