@@ -117,4 +117,9 @@ public class FilmeEntity {
         result = 31 * result + anoLancamento;
         return result;
     }
+
+    @Override
+    public String toString() {
+        return titulo + "-" + anoLancamento;
+    }
 }

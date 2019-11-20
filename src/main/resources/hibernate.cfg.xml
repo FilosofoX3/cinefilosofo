@@ -6,11 +6,11 @@
   <session-factory>
     <property name="mapping.precedence">class, hbm</property>
     <property name="connection.url">jdbc:mysql://localhost:3306/cinema</property>
-    <property name="connection.username">root</property>
-    <property name="connection.password">@mysql03OTM</property>
     <property name="dialect">org.hibernate.dialect.MySQL5Dialect</property>
     <property name="connection.driver_class">com.mysql.cj.jdbc.Driver</property>
     <property name="connection.pool_size">5</property>
+    <property name="connection.username">root</property>
+    <property name="connection.password">@mysql03OTM</property>
     <property name="show_sql">true</property>
     <property name="format_sql">false</property>
     <property name="hbm2ddl.auto">update</property>
@@ -21,10 +21,6 @@
       <mapping class="model.ClassificacaoEntity"/>
       <mapping resource="model/FilmeEntity.hbm.xml"/>
       <mapping class="model.FilmeEntity"/>
-      <mapping resource="model/FilmeQuatroDEntity.hbm.xml"/>
-      <mapping class="model.FilmeQuatroDEntity"/>
-      <mapping resource="model/FilmeTresDEntity.hbm.xml"/>
-      <mapping class="model.FilmeTresDEntity"/>
       <mapping resource="model/FuncionarioEntity.hbm.xml"/>
       <mapping class="model.FuncionarioEntity"/>
       <mapping resource="model/FuncionarioTelefoneEntity.hbm.xml"/>
@@ -37,10 +33,22 @@
       <mapping resource="model/SalaEntity.hbm.xml"/>
       <mapping resource="model/SessaoEntity.hbm.xml"/>
       <mapping class="model.SessaoEntity"/>
-      <mapping resource="model/SessaoDiaEntity.hbm.xml"/>
-      <mapping class="model.SessaoDiaEntity"/>
       <mapping class="model.VendedorEntity"/>
       <mapping resource="model/VendedorEntity.hbm.xml"/>
+      <mapping class="model.PessoaEntity"/>
+      <mapping resource="model/PessoaEntity.hbm.xml"/>
+      <mapping resource="model/ClienteEntity.hbm.xml"/>
+      <mapping class="model.ClienteEntity"/>
+      <mapping resource="model/ClienteInteresseEntity.hbm.xml"/>
+      <mapping class="model.ClienteInteresseEntity"/>
+      <mapping resource="model/BilheteExtraEntity.hbm.xml"/>
+      <mapping class="model.BilheteExtraEntity"/>
+      <mapping resource="model/BilhetePrecoEntity.hbm.xml"/>
+      <mapping class="model.BilhetePrecoEntity"/>
+      <mapping resource="model/ExtraEntity.hbm.xml"/>
+      <mapping class="model.ExtraEntity"/>
+      <mapping resource="model/TecnologiaEntity.hbm.xml"/>
+      <mapping class="model.TecnologiaEntity"/>
 
   </session-factory>
 </hibernate-configuration>

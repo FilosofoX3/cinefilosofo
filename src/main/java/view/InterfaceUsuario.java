@@ -265,8 +265,8 @@ public class InterfaceUsuario {
 		if (flags == 4) {
 			tipoVendaQuatroD = true;
 		}
-		String objSessao = objBiz.consultaSessao(dtInicio, tipoVendaQuatroD);
-		System.out.println(objSessao);
+		//String objSessao = objBiz.consultaSessao(dtInicio, tipoVendaQuatroD);
+		//System.out.println(objSessao);
 
 	}
 
@@ -316,7 +316,7 @@ public class InterfaceUsuario {
 					e.printStackTrace();
 				}
 
-				String objSessao = objBiz.consultaSessao(dtInicio, tipoVendaQuatroD);
+				/*String objSessao = objBiz.consultaSessao(dtInicio, tipoVendaQuatroD);
 				System.out.println("Jaeeeee");
 				System.out.println(objSessao);
 				if (objSessao != "Sala cheia." && objSessao != "Sessao não encontrada") {
@@ -354,6 +354,7 @@ public class InterfaceUsuario {
 				System.out.println("Impossivei venda. ");	
 				}
 
+				 */
 			} else {
 				System.out.println("Filme não encontrado. ");
 			}
@@ -427,13 +428,15 @@ public class InterfaceUsuario {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		Boolean cadastrou = objBiz.cadastrarSessao(horario, dtInicio, dtFim, tipoFilme, titulo, duracao, anoLancamento,
+		/*Boolean cadastrou = objBiz.cadastrarSessao(horario, dtInicio, dtFim, tipoFilme, titulo, duracao, anoLancamento,
 				clasIndicativa, genero, tipoOculos, tipoPoltrona);
 		if (cadastrou) {
 			System.out.println("\n\nSessão cadastrada com sucesso. :) \n\n");
 		} else {
 			System.out.println("Erro ao cadastrar Sessão. :( ");
 		}
+
+		 */
 
 	}
 }

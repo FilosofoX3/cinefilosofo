@@ -98,7 +98,7 @@ public class JTelaPrincipal extends JFrame {
 		txtCadastrarFuncionrio.setBackground(new Color(204, 255, 255));
 		txtCadastrarFuncionrio.setForeground(new Color(0, 0, 153));
 		txtCadastrarFuncionrio.setFont(new Font("Yu Gothic", Font.BOLD, 13));
-		txtCadastrarFuncionrio.setText("\t Cadastrar Funcion·rios");
+		txtCadastrarFuncionrio.setText("\t Cadastrar Funcion√°rios");
 		txtCadastrarFuncionrio.setBounds(50, 148, 154, 20);
 		panel.add(txtCadastrarFuncionrio);
 		txtCadastrarFuncionrio.setColumns(10);
@@ -106,16 +106,16 @@ public class JTelaPrincipal extends JFrame {
 		JButton btnCadSessao = new JButton("");
 		btnCadSessao.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				JCadastraSessao cadSes = new JCadastraSessao();
+				JCadastroSessao cadSes = new JCadastroSessao();
 				cadSes.setVisible(true);
-				}
+			}
 		});
 		btnCadSessao.setIcon(new ImageIcon(getClass().getResource("/imagens/videocamera.png")));
 		btnCadSessao.setBounds(250, 70, 81, 70);
 		panel.add(btnCadSessao);
 		
 		txtCadastrarSesses = new JTextField();
-		txtCadastrarSesses.setText("   Cadastrar Sessıes");
+		txtCadastrarSesses.setText("   Cadastrar Sess√µes");
 		txtCadastrarSesses.setForeground(new Color(0, 0, 153));
 		txtCadastrarSesses.setFont(new Font("Yu Gothic", Font.BOLD, 13));
 		txtCadastrarSesses.setColumns(10);

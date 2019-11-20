@@ -70,7 +70,7 @@ public class JCadastraSessao extends JFrame {
 		txtCadastroSesso.setBackground(new Color(0, 0, 0));
 		txtCadastroSesso.setSelectedTextColor(new Color(102, 51, 0));
 		txtCadastroSesso.setFont(new Font("Yu Gothic", Font.BOLD, 13));
-		txtCadastroSesso.setText("\t              \t  Cadastro Sess\u00E3o");
+		txtCadastroSesso.setText("\t              \t  Cadastro Sessão");
 		txtCadastroSesso.setBounds(0, 0, 508, 31);
 		getContentPane().add(txtCadastroSesso);
 		txtCadastroSesso.setColumns(10);
@@ -80,13 +80,13 @@ public class JCadastraSessao extends JFrame {
 		txtTtulo.setBackground(new Color(0, 51, 102));
 		txtTtulo.setForeground(new Color(255, 255, 255));
 		txtTtulo.setFont(new Font("Yu Gothic Light", Font.BOLD, 13));
-		txtTtulo.setText("T\u00EDtulo");
+		txtTtulo.setText("Título");
 		txtTtulo.setBounds(10, 42, 167, 20);
 		getContentPane().add(txtTtulo);
 		txtTtulo.setColumns(10);
 		
 		textField = new JTextField();
-		textField.setText("Dura��o");
+		textField.setText("Duração");
 		textField.setForeground(Color.WHITE);
 		textField.setFont(new Font("Yu Gothic Light", Font.BOLD, 13));
 		textField.setDisabledTextColor(new Color(255, 0, 51));
@@ -96,7 +96,7 @@ public class JCadastraSessao extends JFrame {
 		getContentPane().add(textField);
 		
 		textField_1 = new JTextField();
-		textField_1.setText("Ano lan�amento");
+		textField_1.setText("Ano lançamento");
 		textField_1.setForeground(Color.WHITE);
 		textField_1.setFont(new Font("Yu Gothic Light", Font.BOLD, 13));
 		textField_1.setDisabledTextColor(new Color(255, 0, 51));
@@ -106,7 +106,7 @@ public class JCadastraSessao extends JFrame {
 		getContentPane().add(textField_1);
 		
 		textField_2 = new JTextField();
-		textField_2.setText("Classifica��o Indicativa");
+		textField_2.setText("Classificação Indicativa");
 		textField_2.setForeground(Color.WHITE);
 		textField_2.setFont(new Font("Yu Gothic Light", Font.BOLD, 13));
 		textField_2.setDisabledTextColor(new Color(255, 0, 51));
@@ -116,7 +116,7 @@ public class JCadastraSessao extends JFrame {
 		getContentPane().add(textField_2);
 		
 		textField_3 = new JTextField();
-		textField_3.setText("G�nero");
+		textField_3.setText("Gênero");
 		textField_3.setForeground(Color.WHITE);
 		textField_3.setFont(new Font("Yu Gothic Light", Font.BOLD, 13));
 		textField_3.setDisabledTextColor(new Color(255, 0, 51));
@@ -126,7 +126,7 @@ public class JCadastraSessao extends JFrame {
 		getContentPane().add(textField_3);
 		
 		textField_4 = new JTextField();
-		textField_4.setText("Hor�rio");
+		textField_4.setText("Horário");
 		textField_4.setForeground(Color.WHITE);
 		textField_4.setFont(new Font("Yu Gothic Light", Font.BOLD, 13));
 		textField_4.setDisabledTextColor(new Color(255, 0, 51));
@@ -149,7 +149,7 @@ public class JCadastraSessao extends JFrame {
 		textLancamento.setColumns(10);
 		textLancamento.setBounds(196, 104, 154, 20);
 		getContentPane().add(textLancamento);
-		
+
 		textClasInd = new JTextField();
 		textClasInd.setColumns(10);
 		textClasInd.setBounds(196, 140, 154, 20);
@@ -275,7 +275,7 @@ public class JCadastraSessao extends JFrame {
 		getContentPane().add(btnSalvar);
 		
 		txtTipoculos = new JTextField();
-		txtTipoculos.setText("\t              \t  Tipo \u00F3culos");
+		txtTipoculos.setText("\t              \t  Tipo óculos");
 		txtTipoculos.setSelectedTextColor(new Color(102, 51, 0));
 		txtTipoculos.setForeground(Color.YELLOW);
 		txtTipoculos.setFont(new Font("Yu Gothic", Font.BOLD, 13));
@@ -295,11 +295,5 @@ public class JCadastraSessao extends JFrame {
 		rbO4d.setFont(new Font("Yu Gothic", Font.BOLD, 16));
 		rbO4d.setBounds(315, 498, 120, 23);
 		getContentPane().add(rbO4d);
-		
-
-
-		
-	
 	}
-
 }

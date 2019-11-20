@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="model.BilhetePrecoEntity" table="bilhetepreco" schema="cinema">
+        <id name="bilhetePrecoId">
+            <column name="bilhete_preco_id" sql-type="mediumint(9)"/>
+        </id>
+        <property name="preco">
+            <column name="preco" sql-type="decimal(10,2)" precision="10" scale="2" not-null="true"/>
+        </property>
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="model.ExtraEntity" table="extra" schema="cinema">
+        <id name="extraId">
+            <column name="extra_id" sql-type="mediumint(9)"/>
+        </id>
+        <property name="nome">
+            <column name="nome" sql-type="varchar(50)" length="50"/>
+        </property>
+        <property name="preco">
+            <column name="preco" sql-type="decimal(10,2)" precision="10" scale="2"/>
+        </property>
+        <property name="descricao">
+            <column name="descricao" sql-type="text" not-null="true"/>
+        </property>
+    </class>
+</hibernate-mapping>

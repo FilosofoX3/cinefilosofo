@@ -502,6 +502,61 @@ public class BilheteriaBiz {
 	}
 
 	/**
+	 * Busca filme, por titulo
+	 *
+	 * @param titulo
+	 * @return
+	 */
+	public List<FilmeEntity> procuraFilme(String titulo) {
+
+		Query query = session.createQuery("from FilmeEntity where titulo like :titulo");
+		List<FilmeEntity> filmes;
+		try {
+			filmes = query.setParameter("titulo", "%" + titulo + "%").list();
+		} catch( javax.persistence.NoResultException err) {
+			filmes = null;
+		}
+
+		return filmes;
+	}
+
+	/**
+	 * Lista salas de cinema
+	 *
+	 * @return
+	 */
+	public List<SalaEntity> listaSala() {
+
+		Query query = session.createQuery("from SalaEntity");
+		List<SalaEntity> salas;
+		try {
+			salas = query.list();
+		} catch( javax.persistence.NoResultException err) {
+			salas = null;
+		}
+
+		return salas;
+	}
+
+	/**
+	 * Lista tecnologias
+	 *
+	 * @return
+	 */
+	public List<TecnologiaEntity> listaTecnologia() {
+
+		Query query = session.createQuery("from TecnologiaEntity");
+		List<TecnologiaEntity> tecnologias;
+		try {
+			tecnologias = query.list();
+		} catch( javax.persistence.NoResultException err) {
+			tecnologias = null;
+		}
+
+		return tecnologias;
+	}
+
+	/**
 	 * Busca por funcionários, por nome
 	 *
 	 * @param nome

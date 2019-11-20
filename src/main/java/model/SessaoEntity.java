@@ -41,6 +41,10 @@ public class SessaoEntity {
     @Column(name = "legendado", nullable = true)
     private Boolean legendado;
 
+    @Basic
+    @Column(name = "tecnologia_id", nullable = true)
+    private Long tecnologiaId;
+
     public Long getSessaoId() {
         return sessaoId;
     }
@@ -105,6 +109,13 @@ public class SessaoEntity {
         this.filmeId = filmeId;
     }
 
+    public Long getTecnologia() {
+        return tecnologiaId;
+    }
+
+    public void setTecnologia(Long tecnologia) {
+        this.tecnologiaId = tecnologiaId;
+    }
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

@@ -1,5 +1,6 @@
 package model;
 
+import java.sql.Date;
 import javax.persistence.*;
 
 @Entity
@@ -24,7 +25,11 @@ public class BilheteEntity {
 
     @Basic
     @Column(name = "data", nullable = false)
-    private Long data;
+    private Date data;
+
+    @Basic
+    @Column(name = "meia_entrada", nullable = false)
+    private Date meiaEntrada;
 
     public Long getBilheteId() {
         return bilheteId;
@@ -58,12 +63,20 @@ public class BilheteEntity {
         this.vendedorId = vendedorId;
     }
 
-    public Long getData() {
+    public Date getData() {
         return data;
     }
 
-    public void setData(Long data) {
+    public void setData(Date data) {
         this.data = data;
+    }
+
+    public Date getMeiaEntrada() {
+        return meiaEntrada;
+    }
+
+    public void setMeiaEntrada(Date meiaEntrada) {
+        this.meiaEntrada = meiaEntrada;
     }
 
     @Override

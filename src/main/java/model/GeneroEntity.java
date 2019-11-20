@@ -3,18 +3,19 @@ package model;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "Genero", schema = "cinema", catalog = "")
+@Table(name = "Genero", schema = "cinema")
 public class GeneroEntity {
-    private String generoId;
+    @Id
+    @Column(name = "genero_id", updatable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long generoId;
     private String nome;
 
-    @Id
-    @Column(name = "genero_id", nullable = false)
-    public String getGeneroId() {
+    public Long getGeneroId() {
         return generoId;
     }
 
-    public void setGeneroId(String generoId) {
+    public void setGeneroId(Long generoId) {
         this.generoId = generoId;
     }
 
@@ -46,5 +47,10 @@ public class GeneroEntity {
         int result = generoId != null ? generoId.hashCode() : 0;
         result = 31 * result + (nome != null ? nome.hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return nome;
     }
 }

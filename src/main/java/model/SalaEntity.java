@@ -3,7 +3,7 @@ package model;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "Sala", schema = "cinema", catalog = "")
+@Table(name = "Sala", schema = "cinema")
 public class SalaEntity {
     private String salaId;
     private Byte capacidade;
@@ -59,5 +59,10 @@ public class SalaEntity {
         result = 31 * result + (capacidade != null ? capacidade.hashCode() : 0);
         result = 31 * result + (quatroD != null ? quatroD.hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return salaId.toString();
     }
 }
