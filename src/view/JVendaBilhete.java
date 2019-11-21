@@ -7,6 +7,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import java.awt.Font;
 import java.io.File;
+import java.util.ArrayList;
 import java.awt.Color;
 import javax.swing.JRadioButton;
 import javax.swing.JTable;
@@ -22,9 +23,13 @@ import java.awt.Container;
 import javax.swing.border.BevelBorder;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.SystemColor;
+import javax.swing.border.TitledBorder;
+import javax.swing.UIManager;
 
 public class JVendaBilhete extends JFrame{
 	private BilheteriaBiz objBilheteria = new BilheteriaBiz();
@@ -34,8 +39,8 @@ public class JVendaBilhete extends JFrame{
 	private JTextField cpTitulo;
 	private JTextField txtData;
 	private JTextField cpData;
-	private JTable table;
 	private JButton btnSalvar;
+	private JComboBox dropCliente;
 	private JTextField txtTecnlogia;
 	private JTextField txtDesejaFazerA;
 	private JRadioButton rdSim;
@@ -53,12 +58,16 @@ public class JVendaBilhete extends JFrame{
 	private JRadioButton rdPol;
 	private JRadioButton rdNormal;
 	private Container panel;
+	private JTextField textField;
+	private JButton btnBuscar;
+	private JComboBox comboBox;
+	private JTextField txtCliente;
 	
 	
 @SuppressWarnings({ "unchecked", "static-access" })
 	public JVendaBilhete() {
 		super("Venda Bilhete");
-		setBounds(100, 100, 456, 578);
+		setBounds(100, 100, 458, 722);
 
 		try {
 			if (new File("BilhetesVendidos.obj").exists()) {
@@ -89,22 +98,22 @@ public class JVendaBilhete extends JFrame{
 		txtTtulo.setColumns(10);
 		
 		cpTitulo = new JTextField();
-		cpTitulo.setBounds(86, 67, 142, 20);
+		cpTitulo.setBounds(119, 66, 142, 20);
 		getContentPane().add(cpTitulo);
 		cpTitulo.setColumns(10);
 		
 		txtData = new JTextField();
-		txtData.setText("Data");
+		txtData.setText("Data da Sess\u00E3o");
 		txtData.setForeground(new Color(255, 140, 0));
 		txtData.setFont(new Font("Yu Gothic", Font.BOLD, 13));
 		txtData.setColumns(10);
 		txtData.setBackground(Color.WHITE);
-		txtData.setBounds(10, 110, 53, 20);
+		txtData.setBounds(0, 110, 109, 20);
 		getContentPane().add(txtData);
 		
 		cpData = new JTextField();
 		cpData.setColumns(10);
-		cpData.setBounds(86, 111, 142, 20);
+		cpData.setBounds(119, 110, 142, 20);
 		getContentPane().add(cpData);
 		
 		JRadioButton rb4d = new JRadioButton("4D");
@@ -126,13 +135,13 @@ public class JVendaBilhete extends JFrame{
 		rdSim = new JRadioButton("Sim");
 		rdSim.setForeground(new Color(153, 0, 0));
 		rdSim.setFont(new Font("Yu Gothic", Font.BOLD, 16));
-		rdSim.setBounds(70, 229, 62, 23);
+		rdSim.setBounds(66, 265, 62, 23);
 		getContentPane().add(rdSim);
 		
 		rdNao = new JRadioButton("N\u00E3o");
 		rdNao.setForeground(new Color(0, 102, 0));
 		rdNao.setFont(new Font("Yu Gothic", Font.BOLD, 16));
-		rdNao.setBounds(315, 231, 68, 23);
+		rdNao.setBounds(311, 267, 68, 23);
 		getContentPane().add(rdNao);
 		
 		ButtonGroup buttonGroup1 = new javax.swing.ButtonGroup();
@@ -143,52 +152,28 @@ public class JVendaBilhete extends JFrame{
 		rdPol = new JRadioButton("Polarizado");
 		rdPol.setForeground(new Color(0, 102, 0));
 		rdPol.setFont(new Font("Yu Gothic", Font.BOLD, 16));
-		rdPol.setBounds(310, 476, 120, 23);
+		rdPol.setBounds(289, 618, 120, 23);
 		getContentPane().add(rdPol);
 		
 		rdNormal = new JRadioButton("Normal");
 		rdNormal.setForeground(new Color(153, 0, 0));
 		rdNormal.setFont(new Font("Yu Gothic", Font.BOLD, 16));
-		rdNormal.setBounds(65, 478, 83, 23);
+		rdNormal.setBounds(44, 620, 83, 23);
 		getContentPane().add(rdNormal);
 		
 		rbP4d = new JRadioButton("4D Max");
 		rbP4d.setForeground(new Color(0, 102, 0));
 		rbP4d.setFont(new Font("Yu Gothic", Font.BOLD, 16));
-		rbP4d.setBounds(315, 408, 105, 23);
+		rbP4d.setBounds(291, 557, 105, 23);
 		getContentPane().add(rbP4d);
 		
 		rbPNormal = new JRadioButton("Normal");
 		rbPNormal.setForeground(new Color(153, 0, 0));
 		rbPNormal.setFont(new Font("Yu Gothic", Font.BOLD, 16));
-		rbPNormal.setBounds(70, 408, 83, 23);
+		rbPNormal.setBounds(49, 557, 83, 23);
 		getContentPane().add(rbPNormal);
 		
-		
-		
-		table = new JTable();
-		table.setBorder(new BevelBorder(BevelBorder.RAISED, null, null, null, null));
-		table.setModel(new DefaultTableModel(
-			new Object[][] {
-				{"Nome Filme", "Sala", "Ocupação"},
-			},
-			new String[] {
-				"Nome Filme", "Sala", "Ocupação"
-			}
-		) {
-			Class[] columnTypes = new Class[] {
-				String.class, String.class, Integer.class
-			};
-			public Class getColumnClass(int columnIndex) {
-				return columnTypes[columnIndex];
-			}
-		});
-		table.setBounds(0, 141, 434, 56);
-		getContentPane().add(table);
-		
-		JLabel lblNomeFuncionario = new JLabel("");
-		lblNomeFuncionario.setBounds(29, 96, 360, 144);
-		panel.add(lblNomeFuncionario);
+
 		
 		btnSalvar = new JButton("Salvar");
 		btnSalvar.addActionListener(new ActionListener() {
@@ -204,10 +189,7 @@ public class JVendaBilhete extends JFrame{
 				else if(rb3d.isSelected()) {
 					tec = false;
 				}
-				else {
-					lblNomeFuncionario.setText("Selecione pelo menos um sexo");
-				}
-				
+	
 				boolean meia  = false;
 				if(rdSim.isSelected()) {
 					meia = true;
@@ -215,9 +197,7 @@ public class JVendaBilhete extends JFrame{
 				else if(rdNao.isSelected()) {
 					meia = false;
 				}
-				else {
-					lblNomeFuncionario.setText("Selecione se o cliente encaixa ou não em meia entrada. ");
-				}
+		
 				
 				boolean poltrona  = false;
 				if(rbP4d.isSelected()) {
@@ -226,9 +206,7 @@ public class JVendaBilhete extends JFrame{
 				else if(rbPNormal.isSelected()) {
 					poltrona = false;
 				}
-				else {
-					lblNomeFuncionario.setText("Selecione pelo menos um tipo de poltrona");
-				}
+
 				
 				boolean oculos  = false;
 				if(rdPol.isSelected()) {
@@ -237,9 +215,7 @@ public class JVendaBilhete extends JFrame{
 				else if(rbONormal.isSelected()) {
 					poltrona = false;
 				}
-				else {
-					lblNomeFuncionario.setText("Selecione pelo menos um tipo de óculos");
-				}
+	
 				
 			//	objBilheteria.vendaBilhete(horaDesejada, meiaEntrada, poltronaInteligente, oculosAtivo, data, nome, cpf)
 				
@@ -254,7 +230,7 @@ public class JVendaBilhete extends JFrame{
 		});
 		btnSalvar.setFont(new Font("Yu Gothic", Font.BOLD, 16));
 		btnSalvar.setForeground(new Color(210, 105, 30));
-		btnSalvar.setBounds(176, 507, 89, 23);
+		btnSalvar.setBounds(155, 649, 89, 23);
 		getContentPane().add(btnSalvar);
 		
 		txtTecnlogia = new JTextField();
@@ -274,7 +250,7 @@ public class JVendaBilhete extends JFrame{
 		txtDesejaFazerA.setFont(new Font("Yu Gothic", Font.BOLD, 16));
 		txtDesejaFazerA.setColumns(10);
 		txtDesejaFazerA.setBackground(SystemColor.controlDkShadow);
-		txtDesejaFazerA.setBounds(0, 204, 434, 20);
+		txtDesejaFazerA.setBounds(0, 231, 434, 20);
 		getContentPane().add(txtDesejaFazerA);
 
 		txtDadosCliente = new JTextField();
@@ -284,7 +260,7 @@ public class JVendaBilhete extends JFrame{
 		txtDadosCliente.setFont(new Font("Yu Gothic", Font.BOLD, 16));
 		txtDadosCliente.setColumns(10);
 		txtDadosCliente.setBackground(SystemColor.controlDkShadow);
-		txtDadosCliente.setBounds(0, 270, 434, 20);
+		txtDadosCliente.setBounds(0, 295, 434, 20);
 		getContentPane().add(txtDadosCliente);
 		
 		txtNome = new JTextField();
@@ -293,17 +269,17 @@ public class JVendaBilhete extends JFrame{
 		txtNome.setFont(new Font("Yu Gothic", Font.BOLD, 13));
 		txtNome.setColumns(10);
 		txtNome.setBackground(Color.WHITE);
-		txtNome.setBounds(10, 301, 53, 20);
+		txtNome.setBounds(22, 326, 53, 20);
 		getContentPane().add(txtNome);
 		
 		cpNome = new JTextField();
 		cpNome.setColumns(10);
-		cpNome.setBounds(140, 301, 142, 20);
+		cpNome.setBounds(95, 326, 284, 20);
 		getContentPane().add(cpNome);
 		
 		cpCpf = new JTextField();
 		cpCpf.setColumns(10);
-		cpCpf.setBounds(140, 341, 142, 20);
+		cpCpf.setBounds(95, 366, 284, 20);
 		getContentPane().add(cpCpf);
 		
 		txtCpf = new JTextField();
@@ -312,7 +288,7 @@ public class JVendaBilhete extends JFrame{
 		txtCpf.setFont(new Font("Yu Gothic", Font.BOLD, 13));
 		txtCpf.setColumns(10);
 		txtCpf.setBackground(Color.WHITE);
-		txtCpf.setBounds(10, 341, 53, 20);
+		txtCpf.setBounds(22, 366, 53, 20);
 		getContentPane().add(txtCpf);
 		
 
@@ -336,7 +312,7 @@ public class JVendaBilhete extends JFrame{
 		txtPoltrona.setFont(new Font("Yu Gothic", Font.BOLD, 16));
 		txtPoltrona.setColumns(10);
 		txtPoltrona.setBackground(SystemColor.controlDkShadow);
-		txtPoltrona.setBounds(0, 381, 434, 20);
+		txtPoltrona.setBounds(0, 530, 434, 20);
 		getContentPane().add(txtPoltrona);
 		
 		txtculos = new JTextField();
@@ -346,12 +322,64 @@ public class JVendaBilhete extends JFrame{
 		txtculos.setFont(new Font("Yu Gothic", Font.BOLD, 16));
 		txtculos.setColumns(10);
 		txtculos.setBackground(SystemColor.controlDkShadow);
-		txtculos.setBounds(0, 449, 434, 20);
+		txtculos.setBounds(0, 591, 434, 20);
 		getContentPane().add(txtculos);
 	
 		ButtonGroup buttonGroup4 = new javax.swing.ButtonGroup();
 		buttonGroup3.add(rdNormal);
 		buttonGroup3.add(rdPol);
+		
+		//ComboBox de sessao
+		ArrayList sessao = null; // somente para nao da erro, aqui vem a tabela cliente do banco de dados
+		JComboBox dropSessao = new JComboBox(sessao.toArray());
+		dropSessao.setBounds(10, 164, 420, 56);
+		getContentPane().add(dropSessao);
+		
+		textField = new JTextField();
+		textField.setBorder(new TitledBorder(null, "Sess\u00F5es Dispon\u00EDveis", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		textField.setText("Data da Sess\u00E3o");
+		textField.setForeground(new Color(255, 140, 0));
+		textField.setFont(new Font("Yu Gothic", Font.BOLD, 13));
+		textField.setColumns(10);
+		textField.setBackground(Color.WHITE);
+		textField.setBounds(0, 145, 122, 20);
+		getContentPane().add(textField);
+		
+		JButton btnInserirNovoCliente = new JButton("Inserir novo cliente");
+		btnInserirNovoCliente.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				JCadastroCliente cadCliente = new JCadastroCliente();
+				cadCliente.setVisible(true);
+		
+			}
+		});
+		btnInserirNovoCliente.setForeground(new Color(210, 105, 30));
+		btnInserirNovoCliente.setFont(new Font("Yu Gothic", Font.BOLD, 16));
+		btnInserirNovoCliente.setBounds(77, 506, 284, 23);
+		getContentPane().add(btnInserirNovoCliente);
+		
+		btnBuscar = new JButton("Buscar");
+		btnBuscar.setForeground(new Color(210, 105, 30));
+		btnBuscar.setFont(new Font("Yu Gothic", Font.BOLD, 16));
+		btnBuscar.setBounds(155, 472, 89, 23);
+		getContentPane().add(btnBuscar);
+		
+		comboBox = new JComboBox(new Object[]{});
+		comboBox.setBounds(14, 405, 420, 56);
+		getContentPane().add(comboBox);
+		
+		txtCliente = new JTextField();
+		txtCliente.setText("Cliente");
+		txtCliente.setForeground(new Color(255, 140, 0));
+		txtCliente.setFont(new Font("Yu Gothic", Font.BOLD, 13));
+		txtCliente.setColumns(10);
+		txtCliente.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Cliente", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
+		txtCliente.setBackground(Color.WHITE);
+		txtCliente.setBounds(6, 388, 122, 20);
+		getContentPane().add(txtCliente);
+
+
+		
 	}
 
 	public void LoadTable() {
@@ -360,6 +388,5 @@ public class JVendaBilhete extends JFrame{
 			modelo.addRow(new Object[] {});// não terminado, não sei como acessa os dados do obj
 		}
 
-		table.setModel(modelo);	
 	}
 }
