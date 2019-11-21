@@ -13,7 +13,7 @@ public class BilhetePrecoEntity {
 
     @Basic
     @Column(name = "bilhete_id", nullable = false)
-    private BigDecimal bilheteId;
+    private Long bilheteId;
 
     @Basic
     @Column(name = "preco", nullable = false)
@@ -27,11 +27,11 @@ public class BilhetePrecoEntity {
         this.bilhetePrecoId = bilhetePrecoId;
     }
 
-    public BigDecimal getBilheteId() {
+    public Long getBilheteId() {
         return bilheteId;
     }
 
-    public void setBilheteId(BigDecimal bilheteId) {
+    public void setBilheteId(Long bilheteId) {
         this.bilheteId = bilheteId;
     }
 

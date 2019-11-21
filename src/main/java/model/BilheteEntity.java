@@ -29,7 +29,7 @@ public class BilheteEntity {
 
     @Basic
     @Column(name = "meia_entrada", nullable = false)
-    private Date meiaEntrada;
+    private Boolean meiaEntrada;
 
     public Long getBilheteId() {
         return bilheteId;
@@ -71,11 +71,11 @@ public class BilheteEntity {
         this.data = data;
     }
 
-    public Date getMeiaEntrada() {
+    public Boolean getMeiaEntrada() {
         return meiaEntrada;
     }
 
-    public void setMeiaEntrada(Date meiaEntrada) {
+    public void setMeiaEntrada(Boolean meiaEntrada) {
         this.meiaEntrada = meiaEntrada;
     }
 
