@@ -1,6 +1,7 @@
 package view;
 
 import controller.BilheteriaBiz;
+import model.FilmeEntity;
 import model.GerenteEntity;
 import model.SalaEntity;
 import model.TecnologiaEntity;
@@ -18,11 +19,13 @@ import java.text.ParseException;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Random;
+import java.util.Vector;
 
 public class JCadastroSessao extends JFrame {
 
 	private JPanel contentPane;
 	private JButton btnTitulo;
+	private JTextField txtTitulo;
 	private JComboBox dropSalas;
 	private JComboBox dropTecnologias;
 	private JTextField txtEmail;
@@ -32,6 +35,7 @@ public class JCadastroSessao extends JFrame {
 	private JFormattedTextField txtDataNascimento;
 	private JPasswordField txtSenha;
 	private JComboBox dropGerentes;
+	private JList listaFilmes = new JList();
 	private Random numeroRandomico = new Random();
 	private BilheteriaBiz objBilheteria = new BilheteriaBiz();
 	private LtpLib objLib = new LtpLib();
@@ -44,22 +48,53 @@ public class JCadastroSessao extends JFrame {
 		super("Cadastro Vendedor");
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 281, 368);
+		setBounds(100, 100, 581, 368);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
 
-		JPanel panel = new JPanel();
+		final JPanel panel = new JPanel();
 		contentPane.add(panel, BorderLayout.CENTER);
 		panel.setLayout(null);
 
 		JLabel lblNome = new JLabel("Filme");
-		lblNome.setBounds(10, 11, 46, 14);
+		lblNome.setBounds(10, 11, 146, 14);
 		panel.add(lblNome);
 
+		txtTitulo = new JTextField();
+		txtTitulo.setBounds(166, 8, 213, 20);
+		panel.add(txtTitulo);
+		txtTitulo.setColumns(10);
+
+		listaFilmes.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(166, 36, 310, 90);
+		scrollPane.setViewportView(listaFilmes);
+		panel.add(scrollPane);
+
+		JButton btnPesquisa = new JButton("Pesquisa");
+		btnPesquisa.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+
+				List<FilmeEntity> filmes =  objBilheteria.procuraFilme(txtTitulo.getText());
+
+				System.out.println(filmes.toString());
+
+				if(!filmes.isEmpty()) {
+					// TODO: listar filmes com botão para escolha do buscado (que leva para tela anterior)
+					listaFilmes.setListData(filmes.toArray());
+				}
+				else {
+					listaFilmes.setListData(new Vector());
+				}
+			}
+		});
+		btnPesquisa.setBounds(386, 8, 89, 23);
+		panel.add(btnPesquisa);
+
 		btnTitulo = new JButton();
-		btnTitulo.setBounds(66, 8, 86, 20);
+		btnTitulo.setBounds(166, 8, 86, 20);
 		panel.add(btnTitulo);
 
 		btnTitulo.addActionListener (new ActionListener () {
@@ -69,12 +104,12 @@ public class JCadastroSessao extends JFrame {
 		});
 
 		JLabel lblEmail = new JLabel("Tecnologias");
-		lblEmail.setBounds(10, 36, 46, 14);
+		lblEmail.setBounds(10, 136, 146, 14);
 		panel.add(lblEmail);
 
 		List<TecnologiaEntity> tecnologias = objBilheteria.listaTecnologia();
 		dropTecnologias = new JComboBox(tecnologias.toArray());
-		dropTecnologias.setBounds(66, 33, 86, 20);
+		dropTecnologias.setBounds(166, 133, 86, 20);
 		panel.add(dropTecnologias);
 
 		dropTecnologias.addActionListener (new ActionListener () {
@@ -86,70 +121,70 @@ public class JCadastroSessao extends JFrame {
 		});
 
 		JLabel lblCpf = new JLabel("Sala");
-		lblCpf.setBounds(10, 66, 46, 14);
+		lblCpf.setBounds(10, 166, 146, 14);
 		panel.add(lblCpf);
 
 		List<SalaEntity> salas = objBilheteria.listaSala();
 		dropSalas = new JComboBox(salas.toArray());
-		dropSalas.setBounds(66, 63, 86, 20);
+		dropSalas.setBounds(166, 163, 86, 20);
 		panel.add(dropSalas);
 
 		JLabel lblTelefones = new JLabel("Telefones");
-		lblTelefones.setBounds(10, 105, 65, 14);
+		lblTelefones.setBounds(10, 205, 146, 14);
 		panel.add(lblTelefones);
 
 		txtTelefones = new JTextField();
-		txtTelefones.setBounds(66, 102, 86, 20);
+		txtTelefones.setBounds(166, 202, 86, 20);
 		panel.add(txtTelefones);
 		txtTelefones.setColumns(10);
 
 		JLabel lblUsuario = new JLabel("ID Usuário");
-		lblUsuario.setBounds(10, 139, 56, 14);
+		lblUsuario.setBounds(10, 239, 146, 14);
 		panel.add(lblUsuario);
 
 		txtUsuario = new JTextField();
-		txtUsuario.setBounds(66, 136, 86, 20);
+		txtUsuario.setBounds(166, 236, 86, 20);
 		panel.add(txtUsuario);
 		txtUsuario.setColumns(10);
 
 		JLabel lblSenha = new JLabel("Senha");
-		lblSenha.setBounds(10, 175, 56, 14);
+		lblSenha.setBounds(10, 275, 146, 14);
 		panel.add(lblSenha);
 
 		txtSenha = new JPasswordField();
-		txtSenha.setBounds(66, 170, 86, 20);
+		txtSenha.setBounds(166, 270, 86, 20);
 		panel.add(txtSenha);
 		txtSenha.setColumns(30);
 
 		JLabel lblClassificacao = new JLabel("Gerente");
-		lblClassificacao.setBounds(10, 200, 46, 14);
+		lblClassificacao.setBounds(10, 300, 146, 14);
 		panel.add(lblClassificacao);
 
 		List<GerenteEntity> gerentes = objBilheteria.listaGerente();
 		dropGerentes = new JComboBox(gerentes.toArray());
-		dropGerentes.setBounds(66, 200, 86, 20);
+		dropGerentes.setBounds(166, 300, 86, 20);
 		panel.add(dropGerentes);
 
 		JLabel lblMetaVendas = new JLabel("Meta de Vendas");
-		lblMetaVendas.setBounds(10, 230, 46, 14);
+		lblMetaVendas.setBounds(10, 330, 146, 14);
 		panel.add(lblMetaVendas);
 
 		txtMetaVendas = new JTextField("10");
-		txtMetaVendas.setBounds(66, 230, 86, 20);
+		txtMetaVendas.setBounds(166, 330, 86, 20);
 		panel.add(txtMetaVendas);
 		txtMetaVendas.setColumns(10);
 
 		JLabel lblDataNascimento = new JLabel("Data de nascimento");
-		lblDataNascimento.setBounds(10, 260, 120, 14);
+		lblDataNascimento.setBounds(10, 360, 146, 14);
 		panel.add(lblDataNascimento);
 
 		JLabel lblDataNascimentoFormat = new JLabel("   (yyyy-mm-dd)");
-		lblDataNascimentoFormat.setBounds(10, 274, 120, 14);
+		lblDataNascimentoFormat.setBounds(10, 374, 146, 14);
 		panel.add(lblDataNascimentoFormat);
 
 
 		txtDataNascimento = new JFormattedTextField();
-		txtDataNascimento.setBounds(136, 260, 76, 20);
+		txtDataNascimento.setBounds(166, 360, 76, 20);
 		txtDataNascimento.setInputVerifier(new RegExFieldVerifier("\\d{4}-\\d{2}-\\d{2}"));
 		panel.add(txtDataNascimento);
 		txtDataNascimento.setColumns(10);
@@ -191,7 +226,7 @@ public class JCadastroSessao extends JFrame {
 				JOptionPane.showMessageDialog(null, "Cadastrado com sucesso!");
 			}
 		});
-		btnSalvar.setBounds(63, 290, 89, 23);
+		btnSalvar.setBounds(63, 390, 89, 23);
 		panel.add(btnSalvar);
 	}
 }
