@@ -525,9 +525,13 @@ public class BilheteriaBiz {
 	 *
 	 * @return
 	 */
-	public List<SalaEntity> listaSala() {
-
-		Query query = session.createQuery("from SalaEntity");
+	public List<SalaEntity> listaSala(Boolean apenas4D) {
+		Query query;
+		if (apenas4D) {
+			query = session.createQuery("from SalaEntity where quatroD = 1");
+		}
+		else
+			query = session.createQuery("from SalaEntity");
 		List<SalaEntity> salas;
 		try {
 			salas = query.list();

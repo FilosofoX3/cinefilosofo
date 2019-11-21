@@ -39,13 +39,15 @@ public class JCadastroSessao extends JFrame {
 	private Random numeroRandomico = new Random();
 	private BilheteriaBiz objBilheteria = new BilheteriaBiz();
 	private LtpLib objLib = new LtpLib();
+	private List<SalaEntity> salas;
+	private List<TecnologiaEntity> tecnologias;
 
 	/**
 	 * Create the frame.
 	 */
 	@SuppressWarnings({ "unchecked", "static-access" })
 	public JCadastroSessao(){
-		super("Cadastro Vendedor");
+		super("Cadastro Sessão");
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 581, 368);
@@ -82,7 +84,6 @@ public class JCadastroSessao extends JFrame {
 				System.out.println(filmes.toString());
 
 				if(!filmes.isEmpty()) {
-					// TODO: listar filmes com botão para escolha do buscado (que leva para tela anterior)
 					listaFilmes.setListData(filmes.toArray());
 				}
 				else {
@@ -93,43 +94,41 @@ public class JCadastroSessao extends JFrame {
 		btnPesquisa.setBounds(386, 8, 89, 23);
 		panel.add(btnPesquisa);
 
-		btnTitulo = new JButton();
-		btnTitulo.setBounds(166, 8, 86, 20);
-		panel.add(btnTitulo);
-
-		btnTitulo.addActionListener (new ActionListener () {
-			public void actionPerformed(ActionEvent e) {
-			    // TODO: Abre tela de busca por filme
-			}
-		});
-
 		JLabel lblEmail = new JLabel("Tecnologias");
 		lblEmail.setBounds(10, 136, 146, 14);
 		panel.add(lblEmail);
 
-		List<TecnologiaEntity> tecnologias = objBilheteria.listaTecnologia();
+		tecnologias = objBilheteria.listaTecnologia();
+		salas = objBilheteria.listaSala(false);
+
 		dropTecnologias = new JComboBox(tecnologias.toArray());
 		dropTecnologias.setBounds(166, 133, 86, 20);
 		panel.add(dropTecnologias);
 
+		// Filtra as salas de acordo com a tecnologia selecionada
 		dropTecnologias.addActionListener (new ActionListener () {
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("tecnologia selecionada" + e);
-				// TODO: filtrar as salas ao selecionar uma tecnologia (só mostrar salas
-				//  com suporte à tecnologia selecionada)
+				if (((TecnologiaEntity) dropTecnologias.getSelectedItem()).getNome().equals("4D")) {
+					salas = objBilheteria.listaSala(true);
+					dropSalas.setModel(new DefaultComboBoxModel(salas.toArray()));
+				}
+				else {
+					salas = objBilheteria.listaSala(false);
+					dropSalas.setModel(new DefaultComboBoxModel(salas.toArray()));
+				}
 			}
 		});
+
 
 		JLabel lblCpf = new JLabel("Sala");
 		lblCpf.setBounds(10, 166, 146, 14);
 		panel.add(lblCpf);
 
-		List<SalaEntity> salas = objBilheteria.listaSala();
 		dropSalas = new JComboBox(salas.toArray());
 		dropSalas.setBounds(166, 163, 86, 20);
 		panel.add(dropSalas);
 
-		JLabel lblTelefones = new JLabel("Telefones");
+		JLabel lblTelefones = new JLabel("Data início");
 		lblTelefones.setBounds(10, 205, 146, 14);
 		panel.add(lblTelefones);
 
@@ -138,7 +137,7 @@ public class JCadastroSessao extends JFrame {
 		panel.add(txtTelefones);
 		txtTelefones.setColumns(10);
 
-		JLabel lblUsuario = new JLabel("ID Usuário");
+		JLabel lblUsuario = new JLabel("Data fim");
 		lblUsuario.setBounds(10, 239, 146, 14);
 		panel.add(lblUsuario);
 
@@ -147,7 +146,7 @@ public class JCadastroSessao extends JFrame {
 		panel.add(txtUsuario);
 		txtUsuario.setColumns(10);
 
-		JLabel lblSenha = new JLabel("Senha");
+		JLabel lblSenha = new JLabel("Horário");
 		lblSenha.setBounds(10, 275, 146, 14);
 		panel.add(lblSenha);
 
@@ -156,7 +155,7 @@ public class JCadastroSessao extends JFrame {
 		panel.add(txtSenha);
 		txtSenha.setColumns(30);
 
-		JLabel lblClassificacao = new JLabel("Gerente");
+		JLabel lblClassificacao = new JLabel("Valor (R$)");
 		lblClassificacao.setBounds(10, 300, 146, 14);
 		panel.add(lblClassificacao);
 
@@ -165,7 +164,7 @@ public class JCadastroSessao extends JFrame {
 		dropGerentes.setBounds(166, 300, 86, 20);
 		panel.add(dropGerentes);
 
-		JLabel lblMetaVendas = new JLabel("Meta de Vendas");
+		JLabel lblMetaVendas = new JLabel("Checkbox");
 		lblMetaVendas.setBounds(10, 330, 146, 14);
 		panel.add(lblMetaVendas);
 
