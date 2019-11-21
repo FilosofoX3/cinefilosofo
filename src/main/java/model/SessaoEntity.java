@@ -109,13 +109,14 @@ public class SessaoEntity {
         this.filmeId = filmeId;
     }
 
-    public Long getTecnologia() {
+    public Long getTecnologiaId() {
         return tecnologiaId;
     }
 
-    public void setTecnologia(Long tecnologia) {
+    public void setTecnologiaId(Long tecnologiaId) {
         this.tecnologiaId = tecnologiaId;
     }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

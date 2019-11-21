@@ -5,22 +5,27 @@ import javax.persistence.*;
 @Entity
 @Table(name = "Sala", schema = "cinema")
 public class SalaEntity {
-    private String salaId;
+    @Id
+    @Column(name = "sala_id", updatable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long salaId;
+
+    @Basic
+    @Column(name = "capacidade", nullable = false)
     private Byte capacidade;
+
+    @Basic
+    @Column(name = "quatro_d", nullable = false)
     private Byte quatroD;
 
-    @Id
-    @Column(name = "sala_id", nullable = false)
-    public String getSalaId() {
+    public Long getSalaId() {
         return salaId;
     }
 
-    public void setSalaId(String salaId) {
+    public void setSalaId(Long salaId) {
         this.salaId = salaId;
     }
 
-    @Basic
-    @Column(name = "capacidade", nullable = true)
     public Byte getCapacidade() {
         return capacidade;
     }
@@ -29,8 +34,6 @@ public class SalaEntity {
         this.capacidade = capacidade;
     }
 
-    @Basic
-    @Column(name = "quatro_d", nullable = true)
     public Byte getQuatroD() {
         return quatroD;
     }

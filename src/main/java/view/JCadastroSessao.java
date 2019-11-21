@@ -2,10 +2,8 @@ package view;
 
 import controller.BilheteriaBiz;
 import model.FilmeEntity;
-import model.GerenteEntity;
 import model.SalaEntity;
 import model.TecnologiaEntity;
-import utils.LtpLib;
 import utils.RegExFieldVerifier;
 
 import javax.swing.*;
@@ -14,31 +12,29 @@ import javax.swing.text.MaskFormatter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.math.BigDecimal;
 import java.sql.Date;
+import java.sql.Time;
 import java.text.ParseException;
-import java.util.Calendar;
+import java.util.*;
 import java.util.List;
-import java.util.Random;
-import java.util.Vector;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class JCadastroSessao extends JFrame {
 
 	private JPanel contentPane;
-	private JButton btnTitulo;
 	private JTextField txtTitulo;
 	private JComboBox dropSalas;
 	private JComboBox dropTecnologias;
-	private JTextField txtEmail;
-	private JTextField txtTelefones;
-	private JTextField txtUsuario;
-	private JTextField txtMetaVendas;
-	private JFormattedTextField txtDataNascimento;
-	private JPasswordField txtSenha;
-	private JComboBox dropGerentes;
+	private JFormattedTextField txtDataInicio;
+	private JFormattedTextField txtDataFim;
+	private JFormattedTextField txtHorario;
+	private JTextField txtValor;
 	private JList listaFilmes = new JList();
-	private Random numeroRandomico = new Random();
+	private JRadioButton radioDublado;
+	private JRadioButton radioLegendado;
 	private BilheteriaBiz objBilheteria = new BilheteriaBiz();
-	private LtpLib objLib = new LtpLib();
 	private List<SalaEntity> salas;
 	private List<TecnologiaEntity> tecnologias;
 
@@ -50,7 +46,7 @@ public class JCadastroSessao extends JFrame {
 		super("Cadastro Sessão");
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 581, 368);
+		setBounds(100, 100, 581, 488);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
@@ -119,108 +115,108 @@ public class JCadastroSessao extends JFrame {
 			}
 		});
 
-
-		JLabel lblCpf = new JLabel("Sala");
-		lblCpf.setBounds(10, 166, 146, 14);
-		panel.add(lblCpf);
+		JLabel lblSala = new JLabel("Sala");
+		lblSala.setBounds(10, 166, 146, 14);
+		panel.add(lblSala);
 
 		dropSalas = new JComboBox(salas.toArray());
 		dropSalas.setBounds(166, 163, 86, 20);
 		panel.add(dropSalas);
 
-		JLabel lblTelefones = new JLabel("Data início");
-		lblTelefones.setBounds(10, 205, 146, 14);
-		panel.add(lblTelefones);
+		JLabel lblDataInicio = new JLabel("Data início");
+		lblDataInicio.setBounds(10, 205, 146, 14);
+		panel.add(lblDataInicio);
 
-		txtTelefones = new JTextField();
-		txtTelefones.setBounds(166, 202, 86, 20);
-		panel.add(txtTelefones);
-		txtTelefones.setColumns(10);
-
-		JLabel lblUsuario = new JLabel("Data fim");
-		lblUsuario.setBounds(10, 239, 146, 14);
-		panel.add(lblUsuario);
-
-		txtUsuario = new JTextField();
-		txtUsuario.setBounds(166, 236, 86, 20);
-		panel.add(txtUsuario);
-		txtUsuario.setColumns(10);
-
-		JLabel lblSenha = new JLabel("Horário");
-		lblSenha.setBounds(10, 275, 146, 14);
-		panel.add(lblSenha);
-
-		txtSenha = new JPasswordField();
-		txtSenha.setBounds(166, 270, 86, 20);
-		panel.add(txtSenha);
-		txtSenha.setColumns(30);
-
-		JLabel lblClassificacao = new JLabel("Valor (R$)");
-		lblClassificacao.setBounds(10, 300, 146, 14);
-		panel.add(lblClassificacao);
-
-		List<GerenteEntity> gerentes = objBilheteria.listaGerente();
-		dropGerentes = new JComboBox(gerentes.toArray());
-		dropGerentes.setBounds(166, 300, 86, 20);
-		panel.add(dropGerentes);
-
-		JLabel lblMetaVendas = new JLabel("Checkbox");
-		lblMetaVendas.setBounds(10, 330, 146, 14);
-		panel.add(lblMetaVendas);
-
-		txtMetaVendas = new JTextField("10");
-		txtMetaVendas.setBounds(166, 330, 86, 20);
-		panel.add(txtMetaVendas);
-		txtMetaVendas.setColumns(10);
-
-		JLabel lblDataNascimento = new JLabel("Data de nascimento");
-		lblDataNascimento.setBounds(10, 360, 146, 14);
-		panel.add(lblDataNascimento);
-
-		JLabel lblDataNascimentoFormat = new JLabel("   (yyyy-mm-dd)");
-		lblDataNascimentoFormat.setBounds(10, 374, 146, 14);
-		panel.add(lblDataNascimentoFormat);
-
-
-		txtDataNascimento = new JFormattedTextField();
-		txtDataNascimento.setBounds(166, 360, 76, 20);
-		txtDataNascimento.setInputVerifier(new RegExFieldVerifier("\\d{4}-\\d{2}-\\d{2}"));
-		panel.add(txtDataNascimento);
-		txtDataNascimento.setColumns(10);
+		txtDataInicio = new JFormattedTextField();
+		txtDataInicio.setBounds(166, 205, 146, 20);
+		txtDataInicio.setInputVerifier(new RegExFieldVerifier("\\d{2}/\\d{2}/\\d{4}"));
+		panel.add(txtDataInicio);
+		txtDataInicio.setColumns(10);
 
 		try {
-			MaskFormatter dataMask = new MaskFormatter("####-##-##");
-			dataMask.install(txtDataNascimento);
+			MaskFormatter dataMask = new MaskFormatter("##/##/####");
+			dataMask.install(txtDataInicio);
 		} catch (ParseException err) {}
+
+
+		JLabel lblDataFim = new JLabel("Data fim");
+		lblDataFim.setBounds(10, 239, 146, 14);
+		panel.add(lblDataFim);
+
+		txtDataFim = new JFormattedTextField();
+		txtDataFim.setBounds(166, 239, 146, 20);
+		txtDataFim.setInputVerifier(new RegExFieldVerifier("\\d{2}/\\d{2}/\\d{4}"));
+		panel.add(txtDataFim);
+		txtDataFim.setColumns(10);
+
+		try {
+			MaskFormatter dataMask = new MaskFormatter("##/##/####");
+			dataMask.install(txtDataFim);
+		} catch (ParseException err) {}
+
+		JLabel lblHorario = new JLabel("Horário");
+		lblHorario.setBounds(10, 275, 146, 14);
+		panel.add(lblHorario);
+
+		txtHorario = new JFormattedTextField();
+		txtHorario.setBounds(166, 270, 146, 20);
+		txtHorario.setInputVerifier(new RegExFieldVerifier("\\d{2}:\\d{2}"));
+		panel.add(txtHorario);
+		txtHorario.setColumns(10);
+
+		try {
+			MaskFormatter dataMask = new MaskFormatter("##:##");
+			dataMask.install(txtHorario);
+		} catch (ParseException err) {}
+
+
+		JLabel lblValor = new JLabel("Valor (R$)");
+		lblValor.setBounds(10, 300, 146, 14);
+		panel.add(lblValor);
+
+		txtValor = new JTextField();
+		txtValor.setBounds(166, 300, 146, 20);
+		panel.add(txtValor);
+		txtValor.setColumns(10);
+
+		radioDublado = new JRadioButton("Dublado", true);
+		radioDublado.setBounds(10, 330, 83, 23);
+		panel.add(radioDublado);
+
+		radioLegendado = new JRadioButton("Legendado");
+		radioLegendado.setBounds(110, 330, 83, 23);
+		panel.add(radioLegendado);
+
+		final ButtonGroup radioGroup = new ButtonGroup();
+		radioGroup.add(radioDublado);
+		radioGroup.add(radioLegendado);
 
 		JButton btnSalvar = new JButton("Salvar");
 		btnSalvar.addActionListener(new ActionListener() {
 			@SuppressWarnings("static-access")
 			public void actionPerformed(ActionEvent arg0) {
-				Long pessoaId = objBilheteria.cadastrarPessoa(
-						txtEmail.getText(),
-						txtEmail.getText(),
-						txtEmail.getText(),
-						new Date(Calendar.getInstance().getTime().getTime()),
-						Date.valueOf(txtDataNascimento.getText())
-				);
+				Pattern patternData = Pattern.compile("(\\d{2})/(\\d{2})/(\\d{4})");
 
-				Long funcionarioId = objBilheteria.cadastrarFuncionario(
-						pessoaId,
-						txtUsuario.getText(),
-						txtSenha.getPassword().toString()
-				);
+				Matcher matchDataInicio = patternData.matcher(txtDataInicio.getText());
+				matchDataInicio.find();
+				Date dataInicio = Date.valueOf(matchDataInicio.group(3) + "-" + matchDataInicio.group(2) + "-" + matchDataInicio.group(1));
 
-				objBilheteria.cadastrarFuncionarioTelefone(
-						funcionarioId,
-						txtTelefones.getText()
-				);
+				Matcher matchDataFim = patternData.matcher(txtDataFim.getText());
+				matchDataFim.find();
+				Date dataFim = Date.valueOf(matchDataFim.group(3) + "-" + matchDataFim.group(2) + "-" + matchDataFim.group(1));
 
-                objBilheteria.cadastrarVendedor(
-                        funcionarioId,
-						((GerenteEntity) dropGerentes.getSelectedItem()).getGerenteId(),
-                        Integer.parseInt(txtMetaVendas.getText())
-                );
+				Time hora = Time.valueOf(txtHorario.getText() + ":00");
+
+				objBilheteria.cadastrarSessao(
+						((SalaEntity) dropSalas.getSelectedItem()).getSalaId(),
+						((FilmeEntity) listaFilmes.getSelectedValue()).getFilmeId(),
+						((TecnologiaEntity) dropTecnologias.getSelectedItem()).getTecnologiaId(),
+						dataInicio,
+						dataFim,
+						hora,
+						new BigDecimal(txtValor.getText()),
+						radioLegendado.isSelected()
+				);
 
 				JOptionPane.showMessageDialog(null, "Cadastrado com sucesso!");
 			}

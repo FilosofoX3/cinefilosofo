@@ -1,5 +1,7 @@
 package controller;
 
+import java.math.BigDecimal;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.sql.Date;
 import java.util.List;
@@ -518,6 +520,33 @@ public class BilheteriaBiz {
 		}
 
 		return filmes;
+	}
+
+	/**
+	 * método que cadastra sessao
+	 *
+	 * @param salaId
+	 * @param filmeId
+	 * @param tecnologiaId
+	 * @param dataInicio
+	 * @param dataFim
+	 * @param hora
+	 * @param valor
+	 * @param legendado
+	 * @return
+	 */
+	public Long cadastrarSessao(Long salaId, Long filmeId, Long tecnologiaId, Date dataInicio, Date dataFim, Time hora, BigDecimal valor, Boolean legendado) {
+		SessaoEntity sessao = new SessaoEntity();
+		sessao.setSalaId(salaId);
+		sessao.setFilmeId(filmeId);
+		sessao.setTecnologiaId(tecnologiaId);
+		sessao.setDataInicio(dataInicio);
+		sessao.setDataFim(dataFim);
+		sessao.setHora(hora);
+		sessao.setValor(valor);
+		sessao.setLegendado(legendado);
+
+		return save(sessao);
 	}
 
 	/**

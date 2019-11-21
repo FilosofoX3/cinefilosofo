@@ -10,13 +10,16 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
+import java.util.Vector;
 
 public class JConsultaFilme extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField txtTitulo;
+	private JList listaFilmes = new JList();
 
 	private BilheteriaBiz objBilheteria = new BilheteriaBiz();
 
@@ -51,7 +54,7 @@ public class JConsultaFilme extends JFrame {
 		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
 		
-		JPanel panel = new JPanel();
+		final JPanel panel = new JPanel();
 		contentPane.add(panel, BorderLayout.CENTER);
 		panel.setLayout(null);
 		
@@ -64,29 +67,27 @@ public class JConsultaFilme extends JFrame {
 		panel.add(txtTitulo);
 		txtTitulo.setColumns(10);
 		
-		lblNomeFuncionario = new JLabel("");
-		lblNomeFuncionario.setBounds(29, 96, 360, 144);
-		panel.add(lblNomeFuncionario);
-		
 		JButton btnPesquisa = new JButton("Pesquisa");
 		btnPesquisa.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				
 				List<FilmeEntity> filmes =  objBilheteria.procuraFilme(txtTitulo.getText());
 
+				System.out.println(filmes.toString());
+
 				if(!filmes.isEmpty()) {
-				    for (FilmeEntity filme: filmes) {
-				    	// TODO: listar filmes com botão para escolha do buscado (que leva para tela anterior)
-					}
-					lblNomeFuncionario.setText(filmes.toString());
+				    // TODO: listar filmes com botão para escolha do buscado (que leva para tela anterior)
+                    listaFilmes.setListData(filmes.toArray());
+                    listaFilmes.setBounds(29, 106, 260, 100);
+                    panel.add(listaFilmes);
 				}
 				else {
-					lblNomeFuncionario.setText("Nenhum resultado encontrado!");
+					listaFilmes.setListData(new Vector());
+					panel.add(listaFilmes);
 				}
 			}
 		});
 		btnPesquisa.setBounds(126, 52, 89, 23);
 		panel.add(btnPesquisa);
 	}
-
 }
