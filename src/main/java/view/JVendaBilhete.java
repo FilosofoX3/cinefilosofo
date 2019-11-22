@@ -1,50 +1,50 @@
 package view;
 
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-import java.awt.Font;
-import java.io.File;
-import java.awt.Color;
-import javax.swing.JRadioButton;
-import javax.swing.JTable;
-import javax.swing.table.DefaultTableModel;
+		import javax.swing.*;
+		import java.awt.*;
+		import java.io.File;
+		import java.sql.Date;
+		import java.text.ParseException;
+		import java.util.ArrayList;
+		import javax.swing.table.DefaultTableModel;
 
-import controller.BilheteriaBiz;
-import utils.LtpLib;
+		import controller.BilheteriaBiz;
+		import model.ClienteEntity;
+		import model.FilmeEntity;
+		import model.SessaoEntity;
+		import model.TecnologiaEntity;
+		import utils.DateUtils;
+		import utils.LtpLib;
+		import utils.RegExFieldVerifier;
 
-import javax.swing.ListSelectionModel;
-import java.awt.ComponentOrientation;
-import java.awt.Container;
+		import javax.swing.border.BevelBorder;
 
-import javax.swing.border.BevelBorder;
-import javax.swing.ButtonGroup;
-import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import java.awt.SystemColor;
+		import java.awt.event.ActionListener;
+		import java.awt.event.ActionEvent;
+		import java.util.Calendar;
+		import java.util.List;
+		import java.util.regex.Matcher;
+		import java.util.regex.Pattern;
+		import javax.swing.border.TitledBorder;
+		import javax.swing.text.MaskFormatter;
 
 public class JVendaBilhete extends JFrame{
 	private BilheteriaBiz objBilheteria = new BilheteriaBiz();
 	private LtpLib objLib = new LtpLib();
 	private JTextField txtVendaBilhete;
-	private JTextField txtTtulo;
+	private JTextField txtTitulo;
 	private JTextField cpTitulo;
 	private JTextField txtData;
-	private JTextField cpData;
-	private JTable table;
+	private JFormattedTextField cpData;
 	private JButton btnSalvar;
-	private JTextField txtTecnlogia;
-	private JTextField txtDesejaFazerA;
-	private JRadioButton rdSim;
-	private JRadioButton rdNao;
+	private JButton btnPesquisaSessao;
+	private JButton btnPesquisaCliente;
+	private JButton btnAtualizaCliente;
+	private JComboBox dropCliente;
+	private JTextField txtTecnologia;
 	private JTextField txtDadosCliente;
-	private JTextField txtNome;
-	private JTextField cpNome;
-	private JTextField cpCpf;
-	private JTextField txtCpf;
+	private JTextField txtNomeCpf;
+	private JTextField cpNomeCpf;
 	private JRadioButton rbP4d;
 	private JRadioButton rbPNormal;
 	private JRadioButton rbONormal;
@@ -53,316 +53,292 @@ public class JVendaBilhete extends JFrame{
 	private JRadioButton rdPol;
 	private JRadioButton rdNormal;
 	private Container panel;
-	private JLabel lblNomeFuncionario;
-	private JRadioButton rb4d;
-	private JRadioButton rb3d;
-	
-	
-@SuppressWarnings({ "unchecked", "static-access" })
+	private JTextField textField;
+	private JButton btnBuscar;
+	private JComboBox comboBox;
+	private JComboBox dropTecnologias;
+	private JTextField txtCliente;
+	private Font tituloFonte = new Font("Yu Gothic", Font.BOLD, 16);
+	private Font regularFonte = new Font("Yu Gothic", Font.BOLD, 13);
+	private List<TecnologiaEntity> tecnologias;
+	private JList listaSessoes = new JList();
+	private JList listaClientes = new JList();
+
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					JVendaBilhete frame = new JVendaBilhete();
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	@SuppressWarnings({ "unchecked", "static-access" })
 	public JVendaBilhete() {
 		super("Venda Bilhete");
-		setBounds(100, 100, 456, 578);
+		setBounds(100, 0, 458, 722);
 
-		try {
-			if (new File("BilhetesVendidos.obj").exists()) {
-				objBilheteria.setListaFuncionario(objLib.lerArquivoObjetos("BilhetesVendidos.obj"));
-			}
-
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-		}
 		getContentPane().setLayout(null);
-		
+
 		txtVendaBilhete = new JTextField();
 		txtVendaBilhete.setForeground(new Color(244, 164, 96));
 		txtVendaBilhete.setBackground(new Color(70, 130, 180));
-		txtVendaBilhete.setFont(new Font("Yu Gothic", Font.BOLD, 16));
+		txtVendaBilhete.setFont(tituloFonte);
 		txtVendaBilhete.setText("\t       Venda Bilhete");
 		txtVendaBilhete.setBounds(0, 0, 434, 56);
 		getContentPane().add(txtVendaBilhete);
 		txtVendaBilhete.setColumns(10);
-		
-		txtTtulo = new JTextField();
-		txtTtulo.setForeground(new Color(255, 140, 0));
-		txtTtulo.setBackground(new Color(255, 255, 255));
-		txtTtulo.setFont(new Font("Yu Gothic", Font.BOLD, 13));
-		txtTtulo.setText("T\u00EDtulo");
-		txtTtulo.setBounds(10, 66, 53, 20);
-		getContentPane().add(txtTtulo);
-		txtTtulo.setColumns(10);
-		
+
+		txtTitulo = new JTextField();
+		txtTitulo.setForeground(new Color(255, 140, 0));
+		txtTitulo.setBackground(new Color(255, 255, 255));
+		txtTitulo.setFont(regularFonte);
+		txtTitulo.setText("T\u00EDtulo");
+		txtTitulo.setBounds(10, 66, 53, 20);
+		getContentPane().add(txtTitulo);
+		txtTitulo.setColumns(10);
+
 		cpTitulo = new JTextField();
-		cpTitulo.setBounds(86, 67, 142, 20);
+		cpTitulo.setBounds(119, 66, 142, 20);
 		getContentPane().add(cpTitulo);
 		cpTitulo.setColumns(10);
-		
+
 		txtData = new JTextField();
-		txtData.setText("Data");
+		txtData.setText("Data da Sess\u00E3o");
 		txtData.setForeground(new Color(255, 140, 0));
-		txtData.setFont(new Font("Yu Gothic", Font.BOLD, 13));
+		txtData.setFont(regularFonte);
 		txtData.setColumns(10);
 		txtData.setBackground(Color.WHITE);
-		txtData.setBounds(10, 110, 53, 20);
+		txtData.setBounds(0, 110, 109, 20);
 		getContentPane().add(txtData);
-		
-		cpData = new JTextField();
-		cpData.setColumns(10);
-		cpData.setBounds(86, 111, 142, 20);
-		getContentPane().add(cpData);
-		
-		rb4d = new JRadioButton("4D");
-		rb4d.setForeground(new Color(0, 102, 0));
-		rb4d.setFont(new Font("Yu Gothic", Font.BOLD, 16));
-		rb4d.setBounds(384, 92, 46, 23);
-		getContentPane().add(rb4d);
-		
-		rb3d = new JRadioButton("3D");
-		rb3d.setForeground(new Color(153, 0, 0));
-		rb3d.setFont(new Font("Yu Gothic", Font.BOLD, 16));
-		rb3d.setBounds(278, 92, 46, 23);
-		getContentPane().add(rb3d);
-		
-		ButtonGroup buttonGroup2 = new javax.swing.ButtonGroup();
-		buttonGroup2.add(rb3d);
-		buttonGroup2.add(rb4d); 
-		
-		rdSim = new JRadioButton("Sim");
-		rdSim.setForeground(new Color(153, 0, 0));
-		rdSim.setFont(new Font("Yu Gothic", Font.BOLD, 16));
-		rdSim.setBounds(70, 229, 62, 23);
-		getContentPane().add(rdSim);
-		
-		rdNao = new JRadioButton("N\u00E3o");
-		rdNao.setForeground(new Color(0, 102, 0));
-		rdNao.setFont(new Font("Yu Gothic", Font.BOLD, 16));
-		rdNao.setBounds(315, 231, 68, 23);
-		getContentPane().add(rdNao);
-		
-		ButtonGroup buttonGroup1 = new javax.swing.ButtonGroup();
-		buttonGroup1.add(rdSim);
-		buttonGroup1.add(rdNao);
 
-		
+		cpData = new JFormattedTextField(new DateUtils().getToday());
+		cpData.setColumns(10);
+		cpData.setInputVerifier(new RegExFieldVerifier("\\d{2}/\\d{2}/\\d{4}"));
+		cpData.setBounds(119, 110, 142, 20);
+		getContentPane().add(cpData);
+
+		try {
+			MaskFormatter dataMask = new MaskFormatter("##/##/####");
+			dataMask.install(cpData);
+		} catch (ParseException err) {}
+
+		// Tecnologia fake que representa todas as tecnologias
+		TecnologiaEntity fakeTecnologia = new TecnologiaEntity();
+		fakeTecnologia.setTecnologiaId(Long.valueOf(-1));
+		fakeTecnologia.setNome("Todas");
+		tecnologias = objBilheteria.listaTecnologia();
+		tecnologias.add(fakeTecnologia);
+		dropTecnologias = new JComboBox(tecnologias.toArray());
+		// seleciona "Todas" por padrão
+		dropTecnologias.setSelectedItem(tecnologias.get(3));
+		dropTecnologias.setBounds(278, 92, 86, 20);
+		getContentPane().add(dropTecnologias);
+
 		rdPol = new JRadioButton("Polarizado");
 		rdPol.setForeground(new Color(0, 102, 0));
-		rdPol.setFont(new Font("Yu Gothic", Font.BOLD, 16));
-		rdPol.setBounds(310, 476, 120, 23);
+		rdPol.setFont(tituloFonte);
+		rdPol.setBounds(289, 618, 120, 23);
 		getContentPane().add(rdPol);
-		
+
 		rdNormal = new JRadioButton("Normal");
 		rdNormal.setForeground(new Color(153, 0, 0));
-		rdNormal.setFont(new Font("Yu Gothic", Font.BOLD, 16));
-		rdNormal.setBounds(65, 478, 83, 23);
+		rdNormal.setFont(tituloFonte);
+		rdNormal.setBounds(44, 620, 83, 23);
 		getContentPane().add(rdNormal);
-		
+
 		rbP4d = new JRadioButton("4D Max");
 		rbP4d.setForeground(new Color(0, 102, 0));
-		rbP4d.setFont(new Font("Yu Gothic", Font.BOLD, 16));
-		rbP4d.setBounds(315, 408, 105, 23);
+		rbP4d.setFont(tituloFonte);
+		rbP4d.setBounds(291, 557, 105, 23);
 		getContentPane().add(rbP4d);
-		
+
 		rbPNormal = new JRadioButton("Normal");
 		rbPNormal.setForeground(new Color(153, 0, 0));
-		rbPNormal.setFont(new Font("Yu Gothic", Font.BOLD, 16));
-		rbPNormal.setBounds(70, 408, 83, 23);
+		rbPNormal.setFont(tituloFonte);
+		rbPNormal.setBounds(49, 557, 83, 23);
 		getContentPane().add(rbPNormal);
-		
-		
-		
-		table = new JTable();
-		table.setBorder(new BevelBorder(BevelBorder.RAISED, null, null, null, null));
-		table.setModel(new DefaultTableModel(
-			new Object[][] {
-				{"Nome Filme", "Sala", "Ocupa��o"},
-			},
-			new String[] {
-				"Nome Filme", "Sala", "Ocupa��o"
-			}
-		) {
-			Class[] columnTypes = new Class[] {
-				String.class, String.class, Integer.class
-			};
-			public Class getColumnClass(int columnIndex) {
-				return columnTypes[columnIndex];
+
+		btnPesquisaSessao = new JButton("Pesquisar");
+		btnPesquisaSessao.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				Pattern patternData = Pattern.compile("(\\d{2})/(\\d{2})/(\\d{4})");
+
+				Matcher matchDataInicio = patternData.matcher(cpData.getText());
+				matchDataInicio.find();
+				Date data= Date.valueOf(matchDataInicio.group(3) + "-" + matchDataInicio.group(2) + "-" + matchDataInicio.group(1));
+
+				List<SessaoEntity> sessoes = objBilheteria.procuraSessao(
+						cpTitulo.getText(),
+						data,
+						((TecnologiaEntity) dropTecnologias.getSelectedItem()).getTecnologiaId());
+
+				listaSessoes.setListData(sessoes.toArray());
 			}
 		});
-		table.setBounds(0, 141, 434, 56);
-		getContentPane().add(table);
-		
-		lblNomeFuncionario = new JLabel("");
-		lblNomeFuncionario.setBounds(29, 96, 360, 144);
-		panel.add(lblNomeFuncionario);
-		
+		btnPesquisaSessao.setFont(tituloFonte);
+		btnPesquisaSessao.setForeground(new Color(210, 105, 30));
+		btnPesquisaSessao.setBounds(115, 250, 189, 23);
+		getContentPane().add(btnPesquisaSessao);
+
 		btnSalvar = new JButton("Salvar");
 		btnSalvar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				
-				String titulo = cpTitulo.getText();
-				String nome = cpNome.getText();
-				String cpf = cpCpf.getText();
-				boolean tec = false;
-				if(rb4d.isSelected()) {
-					tec = true;
-				}
-				else if(rb3d.isSelected()) {
-					tec = false;
-				}
-				else {
-					lblNomeFuncionario.setText("Selecione pelo menos um sexo");
-				}
-				
-				boolean meia  = false;
-				if(rdSim.isSelected()) {
-					meia = true;
-				}
-				else if(rdNao.isSelected()) {
-					meia = false;
-				}
-				else {
-					lblNomeFuncionario.setText("Selecione se o cliente encaixa ou n�o em meia entrada. ");
-				}
-				
-				boolean poltrona  = false;
-				if(rbP4d.isSelected()) {
-					poltrona = true;
-				}
-				else if(rbPNormal.isSelected()) {
-					poltrona = false;
-				}
-				else {
-					lblNomeFuncionario.setText("Selecione pelo menos um tipo de poltrona");
-				}
-				
-				boolean oculos  = false;
-				if(rdPol.isSelected()) {
-					poltrona = true;
-				}
-				else if(rbONormal.isSelected()) {
-					poltrona = false;
-				}
-				else {
-					lblNomeFuncionario.setText("Selecione pelo menos um tipo de �culos");
-				}
-				
-			//	objBilheteria.vendaBilhete(horaDesejada, meiaEntrada, poltronaInteligente, oculosAtivo, data, nome, cpf)
-				
-				try {
-					objLib.gravarArquivoObjetos("BilhetesVendidos.obj", objBilheteria.getBilhetesVendidos());
-					JOptionPane.showMessageDialog(null, "Venda Realizada!!");
-				} catch (Exception e) {
-					JOptionPane.showMessageDialog(null, "Erro ao vender!");
-				}
-				
+				Pattern patternData = Pattern.compile("(\\d{2})/(\\d{2})/(\\d{4})");
+
+				Matcher matchDataInicio = patternData.matcher(cpData.getText());
+				matchDataInicio.find();
+				Date data= Date.valueOf(matchDataInicio.group(3) + "-" + matchDataInicio.group(2) + "-" + matchDataInicio.group(1));
+
+				List<SessaoEntity> sessoes = objBilheteria.procuraSessao(
+					  cpTitulo.getText(),
+					  data,
+					  ((TecnologiaEntity) dropTecnologias.getSelectedItem()).getTecnologiaId());
+
+
+				listaSessoes.setListData(sessoes.toArray());
 			}
 		});
-		btnSalvar.setFont(new Font("Yu Gothic", Font.BOLD, 16));
+		btnSalvar.setFont(tituloFonte);
 		btnSalvar.setForeground(new Color(210, 105, 30));
-		btnSalvar.setBounds(176, 507, 89, 23);
+		btnSalvar.setBounds(155, 649, 89, 23);
 		getContentPane().add(btnSalvar);
-		
-		txtTecnlogia = new JTextField();
-		txtTecnlogia.setSelectionColor(new Color(32, 178, 170));
-		txtTecnlogia.setText("Tecnologia");
-		txtTecnlogia.setForeground(new Color(244, 164, 96));
-		txtTecnlogia.setFont(new Font("Yu Gothic", Font.BOLD, 16));
-		txtTecnlogia.setColumns(10);
-		txtTecnlogia.setBackground(new Color(105, 105, 105));
-		txtTecnlogia.setBounds(268, 67, 166, 20);
-		getContentPane().add(txtTecnlogia);
-		
-		txtDesejaFazerA = new JTextField();
-		txtDesejaFazerA.setText("\tDeseja fazer a venda?");
-		txtDesejaFazerA.setSelectionColor(new Color(32, 178, 170));
-		txtDesejaFazerA.setForeground(new Color(244, 164, 96));
-		txtDesejaFazerA.setFont(new Font("Yu Gothic", Font.BOLD, 16));
-		txtDesejaFazerA.setColumns(10);
-		txtDesejaFazerA.setBackground(SystemColor.controlDkShadow);
-		txtDesejaFazerA.setBounds(0, 204, 434, 20);
-		getContentPane().add(txtDesejaFazerA);
+
+		txtTecnologia = new JTextField();
+		txtTecnologia.setSelectionColor(new Color(32, 178, 170));
+		txtTecnologia.setText("Tecnologia");
+		txtTecnologia.setForeground(new Color(244, 164, 96));
+		txtTecnologia.setFont(tituloFonte);
+		txtTecnologia.setColumns(10);
+		txtTecnologia.setBackground(new Color(105, 105, 105));
+		txtTecnologia.setBounds(268, 67, 166, 20);
+		getContentPane().add(txtTecnologia);
 
 		txtDadosCliente = new JTextField();
 		txtDadosCliente.setText("\t        Dados Cliente");
 		txtDadosCliente.setSelectionColor(new Color(32, 178, 170));
 		txtDadosCliente.setForeground(new Color(244, 164, 96));
-		txtDadosCliente.setFont(new Font("Yu Gothic", Font.BOLD, 16));
+		txtDadosCliente.setFont(tituloFonte);
 		txtDadosCliente.setColumns(10);
 		txtDadosCliente.setBackground(SystemColor.controlDkShadow);
-		txtDadosCliente.setBounds(0, 270, 434, 20);
+		txtDadosCliente.setBounds(0, 295, 434, 20);
 		getContentPane().add(txtDadosCliente);
-		
-		txtNome = new JTextField();
-		txtNome.setText("Nome");
-		txtNome.setForeground(new Color(255, 140, 0));
-		txtNome.setFont(new Font("Yu Gothic", Font.BOLD, 13));
-		txtNome.setColumns(10);
-		txtNome.setBackground(Color.WHITE);
-		txtNome.setBounds(10, 301, 53, 20);
-		getContentPane().add(txtNome);
-		
-		cpNome = new JTextField();
-		cpNome.setColumns(10);
-		cpNome.setBounds(140, 301, 142, 20);
-		getContentPane().add(cpNome);
-		
-		cpCpf = new JTextField();
-		cpCpf.setColumns(10);
-		cpCpf.setBounds(140, 341, 142, 20);
-		getContentPane().add(cpCpf);
-		
-		txtCpf = new JTextField();
-		txtCpf.setText("Cpf");
-		txtCpf.setForeground(new Color(255, 140, 0));
-		txtCpf.setFont(new Font("Yu Gothic", Font.BOLD, 13));
-		txtCpf.setColumns(10);
-		txtCpf.setBackground(Color.WHITE);
-		txtCpf.setBounds(10, 341, 53, 20);
-		getContentPane().add(txtCpf);
-		
 
-		
+		txtNomeCpf = new JTextField();
+		txtNomeCpf.setText("Nome/CPF");
+		txtNomeCpf.setForeground(new Color(255, 140, 0));
+		txtNomeCpf.setFont(regularFonte);
+		txtNomeCpf.setColumns(10);
+		txtNomeCpf.setBackground(Color.WHITE);
+		txtNomeCpf.setBounds(22, 326, 73, 20);
+		getContentPane().add(txtNomeCpf);
+
+		cpNomeCpf = new JTextField();
+		cpNomeCpf.setColumns(10);
+		cpNomeCpf.setBounds(95, 326, 284, 20);
+		getContentPane().add(cpNomeCpf);
+
 		ButtonGroup buttonGroup3 = new javax.swing.ButtonGroup();
 		buttonGroup3.add(rbP4d);
 		buttonGroup3.add(rbPNormal);
-		
+
 		rbONormal = new JRadioButton("Normal");
 		rbONormal.setForeground(new Color(153, 0, 0));
-		rbONormal.setFont(new Font("Yu Gothic", Font.BOLD, 16));
+		rbONormal.setFont(tituloFonte);
 		rbONormal.setBounds(70, 482, 83, 23);
-		
-		
 
-		
 		txtPoltrona = new JTextField();
 		txtPoltrona.setText("\t               Poltrona");
 		txtPoltrona.setSelectionColor(new Color(32, 178, 170));
 		txtPoltrona.setForeground(new Color(244, 164, 96));
-		txtPoltrona.setFont(new Font("Yu Gothic", Font.BOLD, 16));
+		txtPoltrona.setFont(tituloFonte);
 		txtPoltrona.setColumns(10);
 		txtPoltrona.setBackground(SystemColor.controlDkShadow);
-		txtPoltrona.setBounds(0, 381, 434, 20);
+		txtPoltrona.setBounds(0, 530, 434, 20);
 		getContentPane().add(txtPoltrona);
-		
+
 		txtculos = new JTextField();
-		txtculos.setText("\t             \u00D3culos");
+		txtculos.setText("\t             Óculos");
 		txtculos.setSelectionColor(new Color(32, 178, 170));
 		txtculos.setForeground(new Color(244, 164, 96));
-		txtculos.setFont(new Font("Yu Gothic", Font.BOLD, 16));
+		txtculos.setFont(tituloFonte);
 		txtculos.setColumns(10);
 		txtculos.setBackground(SystemColor.controlDkShadow);
-		txtculos.setBounds(0, 449, 434, 20);
+		txtculos.setBounds(0, 591, 434, 20);
 		getContentPane().add(txtculos);
-	
+
 		ButtonGroup buttonGroup4 = new javax.swing.ButtonGroup();
 		buttonGroup3.add(rdNormal);
 		buttonGroup3.add(rdPol);
-	}
 
-	public void LoadTable() {
-		DefaultTableModel modelo = new DefaultTableModel(new Object[] {"Nome Filme", "Sala", "Ocupa��o"},0);
-		for (int i=0;i<objBilheteria.getBilhetesVendidos().size();i++) {
-			modelo.addRow(new Object[] {});// n�o terminado, n�o sei como acessa os dados do obj
-		}
+		listaSessoes.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(10, 164, 420, 56);
+		scrollPane.setViewportView(listaSessoes);
+		getContentPane().add(scrollPane);
 
-		table.setModel(modelo);	
+		textField = new JTextField();
+		textField.setBorder(new TitledBorder(null, "Sess\u00F5es Dispon\u00EDveis", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		textField.setText("Data da Sess\u00E3o");
+		textField.setForeground(new Color(255, 140, 0));
+		textField.setFont(regularFonte);
+		textField.setColumns(10);
+		textField.setBackground(Color.WHITE);
+		textField.setBounds(0, 145, 122, 20);
+		getContentPane().add(textField);
+
+		JButton btnInserirNovoCliente = new JButton("Inserir novo cliente");
+		btnInserirNovoCliente.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				//JCadastroCliente cadCliente = new JCadastroCliente();
+				//cadCliente.setVisible(true);
+
+			}
+		});
+		btnInserirNovoCliente.setForeground(new Color(210, 105, 30));
+		btnInserirNovoCliente.setFont(new Font("Yu Gothic", Font.BOLD, 16));
+		btnInserirNovoCliente.setBounds(77, 506, 284, 23);
+		getContentPane().add(btnInserirNovoCliente);
+
+		listaClientes.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		JScrollPane scrollPaneCliente = new JScrollPane();
+		scrollPaneCliente.setBounds(10, 394, 420, 56);
+		scrollPaneCliente.setViewportView(listaClientes);
+		getContentPane().add(scrollPaneCliente);
+
+		btnPesquisaCliente = new JButton("Pesquisar");
+		btnPesquisaCliente.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				List<ClienteEntity> clientes = objBilheteria.procuraCliente(
+						cpNomeCpf.getText()
+				);
+
+				listaClientes.setListData(clientes.toArray());
+			}
+		});
+		btnPesquisaCliente.setForeground(new Color(210, 105, 30));
+		btnPesquisaCliente.setFont(tituloFonte);
+		btnPesquisaCliente.setBounds(115, 472, 189, 23);
+		getContentPane().add(btnPesquisaCliente);
+
+		txtCliente = new JTextField();
+		txtCliente.setForeground(new Color(255, 140, 0));
+		txtCliente.setFont(regularFonte);
+		txtCliente.setColumns(10);
+		txtCliente.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Clientes", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
+		txtCliente.setBackground(Color.WHITE);
+		txtCliente.setBounds(6, 364, 122, 20);
+		getContentPane().add(txtCliente);
+
+
+
 	}
 }
+

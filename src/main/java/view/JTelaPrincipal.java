@@ -49,6 +49,7 @@ public class JTelaPrincipal extends JFrame {
 	
 	public JTelaPrincipal() {
 		super("CINEMA");
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBackground(new Color(102, 51, 0));
 		setLocationRelativeTo(null);
 		setResizable(false);

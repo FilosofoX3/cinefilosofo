@@ -504,6 +504,219 @@ public class BilheteriaBiz {
 	}
 
 	/**
+	 * método que cadastra bilhete (venda)
+	 *
+	 * @param sessaoId
+	 * @param vendedorId
+	 * @param clienteId
+	 * @param data
+	 * @param meiaEntrada
+	 * @return
+	 */
+	public Long cadastrarBilhete(Long sessaoId, Long vendedorId, Long clienteId, Date data, Boolean meiaEntrada) {
+		BilheteEntity bilhete = new BilheteEntity();
+		bilhete.setSessaoId(sessaoId);
+		bilhete.setVendedorId(vendedorId);
+		bilhete.setClienteId(clienteId);
+		bilhete.setData(data);
+		bilhete.setMeiaEntrada(meiaEntrada);
+
+		return save(bilhete);
+	}
+
+	/**
+	 * método que cadastra um extra em um bilhete
+	 *
+	 * @param extraId
+	 * @param bilheteId
+	 * @return
+	 */
+	public Long cadastrarBilheteExtra(Long extraId, Long bilheteId) {
+		BilheteExtraEntity bilheteExtra = new BilheteExtraEntity();
+		bilheteExtra.setExtraId(extraId);
+		bilheteExtra.setBilheteId(bilheteId);
+
+		return save(bilheteExtra);
+	}
+
+	/**
+	 * método que cadastra um extra em um bilhete
+	 *
+	 * @param bilheteId
+	 * @param preco
+	 * @return
+	 */
+	public Long cadastrarBilhetePreco(Long bilheteId, BigDecimal preco) {
+		BilhetePrecoEntity bilhetePreco = new BilhetePrecoEntity();
+		bilhetePreco.setBilheteId(bilheteId);
+		bilhetePreco.setPreco(preco);
+
+		return save(bilhetePreco);
+	}
+
+	/**
+	 * Lista vendedores
+	 *
+	 * @return
+	 */
+	public List<VendedorEntity> listaVendedor() {
+		Query query = session.createQuery("FROM VendedorEntity V " +
+				"INNER JOIN FuncionarioEntity F " +
+				"ON V.funcionarioId = F.funcionarioId " +
+				"INNER JOIN PessoaEntity P " +
+				"ON F.pessoaId = P.pessoaId");
+
+		List<VendedorEntity> vendedores;
+		try {
+			vendedores = query.list();
+		} catch( javax.persistence.NoResultException err) {
+			vendedores = null;
+		}
+
+		return vendedores;
+	}
+
+	/**
+	 * Busca sessao, por titulo, data e/ou tecnologia
+	 *
+	 * @param titulo
+	 * @param data
+	 * @param tecnologiaId
+	 * @return
+	 */
+	public List<SessaoEntity> procuraSessao(String titulo, java.sql.Date data, Long tecnologiaId) {
+
+		String queryString = "SELECT S FROM SessaoEntity S, FilmeEntity F" +
+			 " WHERE S.filmeId = F.filmeId" +
+			 " AND F.titulo LIKE :titulo" +
+			 " AND S.dataInicio <= :data" +
+			 " AND S.dataFim >= :data" +
+			 "";
+
+		if (tecnologiaId != -1)  // opção "Todas" selecionada
+			 queryString += " AND S.tecnologiaId = :tecnologiaId";
+
+		Query query = session.createQuery(queryString);
+
+		List<SessaoEntity> sessoes;
+
+		try {
+			query.setParameter("titulo", "%" + titulo + "%")
+					.setParameter("data", data);
+			if (tecnologiaId != -1)
+				query.setParameter("tecnologiaId", tecnologiaId);
+			sessoes = query.getResultList();
+		} catch( javax.persistence.NoResultException err) {
+			sessoes = null;
+		}
+
+		return sessoes;
+	}
+
+	/**
+	 * Busca cliente, por Nome ou CPF
+	 *
+	 * @param nomeCpf
+	 * @return
+	 */
+	public List<ClienteEntity> procuraCliente(String nomeCpf) {
+		Query query = session.createQuery(" SELECT C FROM ClienteEntity C, PessoaEntity P" +
+				" WHERE C.pessoaId = P.pessoaId" +
+				" AND (P.nome LIKE :nomeCpf " +
+				"OR P.cpf Like :nomeCpf) ");
+
+		List<ClienteEntity> clientes;
+		try {
+			clientes = query.setParameter("nomeCpf", "%" + nomeCpf + "%").list();
+		} catch( javax.persistence.NoResultException err) {
+			clientes = null;
+		}
+
+		return clientes;
+	}
+
+	/**
+	 * Retorna tecnologia, por tecnologiaId
+	 *
+	 * @param tecnologiaId
+	 * @return
+	 */
+	public TecnologiaEntity getTecnologia(Long tecnologiaId) {
+
+		Query query = session.createQuery("from TecnologiaEntity where tecnologiaId = :tecnologiaId");
+		TecnologiaEntity tecnologia;
+		try {
+			tecnologia = (TecnologiaEntity) query.setParameter("tecnologiaId", tecnologiaId).getSingleResult();
+		} catch( javax.persistence.NoResultException err) {
+			tecnologia = null;
+		}
+
+		return tecnologia;
+	}
+
+	/**
+	 * Retorna filme, por filmeId
+	 *
+	 * @param pessoaId
+	 * @return
+	 */
+	public PessoaEntity getPessoa(Long pessoaId) {
+
+		Query query = session.createQuery("from PessoaEntity where pessoaId = :pessoaId");
+		PessoaEntity pessoa;
+		try {
+			pessoa = (PessoaEntity) query.setParameter("pessoaId", pessoaId).getSingleResult();
+		} catch( javax.persistence.NoResultException err) {
+			pessoa = null;
+		}
+
+		return pessoa;
+	}
+
+	/**
+	 * Retorna quantidade de poltronas vagas em uma sessão
+	 *
+	 * @param sessaoId
+	 * @return
+	 */
+	public int getVagas(Long sessaoId) {
+
+		Query queryOcupacoes = session.createQuery("SELECT COUNT(*) FROM BilheteEntity WHERE sessaoId = :sessaoId");
+		Query queryCapacidade = session.createQuery("SELECT SUM(S.capacidade) FROM SalaEntity S, SessaoEntity SS" +
+				"  WHERE SS.sessaoId = :sessaoId" +
+				" AND SS.salaId = S.salaId");
+		int ocupacoes, capacidade;
+		try {
+			ocupacoes = ((Long) queryOcupacoes.setParameter("sessaoId", sessaoId).uniqueResult()).intValue();
+			capacidade = ((Long) queryCapacidade.setParameter("sessaoId", sessaoId).uniqueResult()).intValue();
+		} catch( javax.persistence.NoResultException err) {
+			ocupacoes = 0;
+			capacidade = 0;
+		}
+
+		return capacidade - ocupacoes;
+	}
+
+	/**
+	 * Retorna filme, por filmeId
+	 *
+	 * @param filmeId
+	 * @return
+	 */
+	public FilmeEntity getFilme(Long filmeId) {
+
+		Query query = session.createQuery("from FilmeEntity where filmeId = :filmeId");
+		FilmeEntity filme;
+		try {
+			filme = (FilmeEntity) query.setParameter("filmeId", filmeId).getSingleResult();
+		} catch( javax.persistence.NoResultException err) {
+			filme = null;
+		}
+
+		return filme;
+	}
+
+	/**
 	 * Busca filme, por titulo
 	 *
 	 * @param titulo

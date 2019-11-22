@@ -1,5 +1,7 @@
 package model;
 
+import controller.BilheteriaBiz;
+
 import javax.persistence.*;
 
 @Entity
@@ -45,5 +47,11 @@ public class ClienteEntity {
     @Override
     public int hashCode() {
         return clienteId != null ? clienteId.hashCode() : 0;
+    }
+
+    @Override
+    public String toString() {
+        PessoaEntity pessoa = new BilheteriaBiz().getPessoa(pessoaId);
+        return pessoa.getNome() + " " + pessoa.getCpf();
     }
 }

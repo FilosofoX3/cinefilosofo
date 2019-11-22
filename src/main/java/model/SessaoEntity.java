@@ -1,5 +1,7 @@
 package model;
 
+import controller.BilheteriaBiz;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.sql.Date;
@@ -141,5 +143,15 @@ public class SessaoEntity {
         result = 31 * result + (hora != null ? hora.hashCode() : 0);
         result = 31 * result + (valor != null ? valor.hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public String toString() {
+        BilheteriaBiz bilheteria = new BilheteriaBiz();
+        FilmeEntity filme = bilheteria.getFilme(filmeId);
+        TecnologiaEntity tecnologia = bilheteria.getTecnologia(tecnologiaId);
+        int vagas = bilheteria.getVagas(sessaoId);
+
+        return filme.getTitulo() + " | " + tecnologia.getNome() + " | " + hora + " (" + vagas + " disponiveis)";
     }
 }
