@@ -7,7 +7,6 @@ import java.sql.Date;
 import java.util.List;
 
 import model.*;
-import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 import org.hibernate.Session;
 import utils.SessionFactoryHelper;
@@ -63,16 +62,31 @@ public class BilheteriaBiz {
 		}
 	}
 
-	private Long save(Object obj) {
-		if(!session.getTransaction().isActive())
-			session.getTransaction().begin();
-
-		Long id = (Long) session.save(obj);
-
-		session.getTransaction().commit();
-
+	private void updateSession() {
 		SessionFactoryHelper sh = new SessionFactoryHelper();
 		session = sh.getSessionFactory().getCurrentSession();
+
+		if(!session.getTransaction().isActive())
+			session.getTransaction().begin();
+	}
+
+	private Long save(Object obj) {
+	    updateSession();
+
+		Long id = null;
+
+		try {
+			id = (Long) session.save(obj);
+			session.getTransaction().commit();
+		}
+		catch (org.hibernate.AssertionFailure err) {
+		    session.clear();
+			// erro hibernate
+		}
+		catch (org.hibernate.exception.ConstraintViolationException err) {
+			session.clear();
+			// registro jï¿½ existe
+		}
 
 		return id;
 	}
@@ -155,7 +169,7 @@ public class BilheteriaBiz {
 	/**
 	 * 
 	 * @param titulo
-	 * @return true se for igual, esse método compara dois nomes e retorna zero se
+	 * @return true se for igual, esse mï¿½todo compara dois nomes e retorna zero se
 	 *         forem iguais
 	 */
 
@@ -207,7 +221,7 @@ public class BilheteriaBiz {
 	}
 
 	/**
-	 * Retorna String Gera o relatório de quantidade de vendas de filmes em 3D e 4D
+	 * Retorna String Gera o relatï¿½rio de quantidade de vendas de filmes em 3D e 4D
 	 * separadamente, e juntos
 	 * 
 	 * @return string
@@ -234,8 +248,8 @@ public class BilheteriaBiz {
 	}
 
 	/**
-	 * Método busca o filme dentro do arrayList de filme e retorna o filme se
-	 * encontra,e null caso não
+	 * Mï¿½todo busca o filme dentro do arrayList de filme e retorna o filme se
+	 * encontra,e null caso nï¿½o
 	 * 
 	 * @param titulo
 	 * @return
@@ -252,7 +266,7 @@ public class BilheteriaBiz {
 	}
 
 	/**
-	 * Método que cadastra novo filme
+	 * Mï¿½todo que cadastra novo filme
 	 *
 	 * @param titulo
 	 * @param classificacaoId
@@ -267,7 +281,6 @@ public class BilheteriaBiz {
 			Long classificacaoId,
 			Long generoId,
 			int duracaoMinutos,
-			int duracaoHoras,
 			int anoLancamento
 	) {
 		FilmeEntity filme = new FilmeEntity();
@@ -275,14 +288,13 @@ public class BilheteriaBiz {
 		filme.setClassificacaoId(classificacaoId);
 		filme.setGeneroId(generoId);
 		filme.setDuracaoMinutos(duracaoMinutos);
-		filme.setDuracaoHoras(duracaoHoras);
 		filme.setAnoLancamento(anoLancamento);
 
 		return save(filme);
 	}
 
 	/**
-	 * Lista todos os gêneros
+	 * Lista todos os gï¿½neros
 	 *
 	 * @return
 	 */
@@ -300,7 +312,7 @@ public class BilheteriaBiz {
 	}
 
 	/**
-	 * Lista todas as classificações
+	 * Lista todas as classificaï¿½ï¿½es
 	 *
 	 * @return
 	 */
@@ -318,7 +330,7 @@ public class BilheteriaBiz {
 	}
 
 	/**
-	 * Método que consulta as sessões entre determinadas datas
+	 * Mï¿½todo que consulta as sessï¿½es entre determinadas datas
 	 * 
 	 * @param dataInicio
 	 * @param quatroD
@@ -335,8 +347,8 @@ public class BilheteriaBiz {
 						// salvar a filme na copia da lista
 						SessaoDisponiveis.add(sessao);
 						int poltronasDisponiveis = sessao.getSalaCinema().getCapacidade() - sessao.getOcupacao();
-						retorno = "\nFilme disponível na sessão das: " + sessao.getHora() + "horas" + "\nContém "
-								+ poltronasDisponiveis + " poltronas disponíveis" + "\nA sessão e 4D: "
+						retorno = "\nFilme disponï¿½vel na sessï¿½o das: " + sessao.getHora() + "horas" + "\nContï¿½m "
+								+ poltronasDisponiveis + " poltronas disponï¿½veis" + "\nA sessï¿½o e 4D: "
 								+ sessao.getSalaCinema().getQuatroD();
 						return retorno;
 					} else
@@ -344,13 +356,13 @@ public class BilheteriaBiz {
 			}
 
 			else
-				return "Sessao não encontrada";
+				return "Sessao nï¿½o encontrada";
 		}
 		return retorno;
 	}
 
 	/**
-	 * Método que faz a venda do bilhete de entrada do cinema
+	 * Mï¿½todo que faz a venda do bilhete de entrada do cinema
 	 * 
 	 * @param horaDesejada
 	 * @param meiaEntrada
@@ -366,7 +378,7 @@ public class BilheteriaBiz {
 		double valorBilhete = 0;
 		for (Sessao sessao : SessaoDisponiveis) {
 			if ((!SessaoDisponiveis.isEmpty()) && (sessao.getHora() == horaDesejada)) {
-				sessao.incrementaOcupacao();// incrementa pois está vendendo mais um bilhete
+				sessao.incrementaOcupacao();// incrementa pois estï¿½ vendendo mais um bilhete
 				if (sessao.getSalaCinema().isQuatroD() && (poltronaInteligente == 1)) { // poltrona comum para sala em
 																						// // 4D
 					valorBilhete = FilmeQuatroD.valorPoltrona1;
@@ -379,12 +391,12 @@ public class BilheteriaBiz {
 					valorBilhete = FilmeTresD.valorOculos1;
 				}
 			}
-			if ((data.getDay() == 1) || (meiaEntrada)) { // estou usando o método depreciado pois quero utilizar a
+			if ((data.getDay() == 1) || (meiaEntrada)) { // estou usando o mï¿½todo depreciado pois quero utilizar a
 				if (data.getDay() == 1)
-					System.out.println("Opa!! Esse dia é bravo, logo todo mundo paga meia entrada. o/ "); // classe Date
+					System.out.println("Opa!! Esse dia ï¿½ bravo, logo todo mundo paga meia entrada. o/ "); // classe Date
 																											// para
 																											// fazer a
-																											// validação
+																											// validaï¿½ï¿½o
 																											// de datas.
 				valorBilhete = valorBilhete / 2; // toda segunda feira, todo mundo paga meia entrada
 
@@ -471,11 +483,11 @@ public class BilheteriaBiz {
 	}
 
 	/**
-	 * método valida o vendedor com base no nome e no id
+	 * mï¿½todo valida o vendedor com base no nome e no id
 	 * 
 	 * @param idUsuario
 	 * @param nome
-	 * @return true se o id for validador, e false caso não.
+	 * @return true se o id for validador, e false caso nï¿½o.
 	 */
 	public boolean validaVendedor(String idUsuario, String nome) {
 		//FuncionarioEntity objFunc = procuraFuncionario(nome);
@@ -490,7 +502,7 @@ public class BilheteriaBiz {
 	}
 
 	/**
-	 * esse método é para iniciar a sessao do vendedor ou do gerente
+	 * esse mï¿½todo ï¿½ para iniciar a sessao do vendedor ou do gerente
 	 * 
 	 * @param nome
 	 * @param idUsuario
@@ -504,7 +516,7 @@ public class BilheteriaBiz {
 	}
 
 	/**
-	 * método que cadastra bilhete (venda)
+	 * mï¿½todo que cadastra bilhete (venda)
 	 *
 	 * @param sessaoId
 	 * @param vendedorId
@@ -525,7 +537,7 @@ public class BilheteriaBiz {
 	}
 
 	/**
-	 * método que cadastra um extra em um bilhete
+	 * mï¿½todo que cadastra um extra em um bilhete
 	 *
 	 * @param extraId
 	 * @param bilheteId
@@ -540,7 +552,7 @@ public class BilheteriaBiz {
 	}
 
 	/**
-	 * método que cadastra um extra em um bilhete
+	 * mï¿½todo que cadastra um extra em um bilhete
 	 *
 	 * @param bilheteId
 	 * @param preco
@@ -555,16 +567,36 @@ public class BilheteriaBiz {
 	}
 
 	/**
+	 * Retorna id de Extra
+	 *
+	 * @param nome
+	 * @return
+	 */
+	public ExtraEntity getExtra(String nome) {
+	    updateSession();
+
+		Query query = session.createQuery("FROM ExtraEntity E" +
+				" WHERE E.nome = :nome");
+
+		ExtraEntity extra;
+		try {
+			extra = (ExtraEntity) query.setParameter("nome", nome).uniqueResult();
+		} catch( javax.persistence.NoResultException err) {
+			extra = null;
+		}
+
+		return extra;
+	}
+
+	/**
 	 * Lista vendedores
 	 *
 	 * @return
 	 */
 	public List<VendedorEntity> listaVendedor() {
-		Query query = session.createQuery("FROM VendedorEntity V " +
-				"INNER JOIN FuncionarioEntity F " +
-				"ON V.funcionarioId = F.funcionarioId " +
-				"INNER JOIN PessoaEntity P " +
-				"ON F.pessoaId = P.pessoaId");
+		updateSession();
+
+		Query query = session.createQuery("FROM VendedorEntity V");
 
 		List<VendedorEntity> vendedores;
 		try {
@@ -585,6 +617,7 @@ public class BilheteriaBiz {
 	 * @return
 	 */
 	public List<SessaoEntity> procuraSessao(String titulo, java.sql.Date data, Long tecnologiaId) {
+		updateSession();
 
 		String queryString = "SELECT S FROM SessaoEntity S, FilmeEntity F" +
 			 " WHERE S.filmeId = F.filmeId" +
@@ -593,7 +626,7 @@ public class BilheteriaBiz {
 			 " AND S.dataFim >= :data" +
 			 "";
 
-		if (tecnologiaId != -1)  // opção "Todas" selecionada
+		if (tecnologiaId != -1)  // opï¿½ï¿½o "Todas" selecionada
 			 queryString += " AND S.tecnologiaId = :tecnologiaId";
 
 		Query query = session.createQuery(queryString);
@@ -614,12 +647,30 @@ public class BilheteriaBiz {
 	}
 
 	/**
+	 * Define um interesse de um cliente
+	 *
+	 * @param clienteId
+	 * @param generoId
+	 * @return
+	 */
+	public Long cadastrarClienteInteresse(Long clienteId, Long generoId) {
+	    ClienteInteresseEntity clienteInteresse = new ClienteInteresseEntity();
+
+	    clienteInteresse.setClienteId(clienteId);
+		clienteInteresse.setGeneroId(generoId);
+
+		return save(clienteInteresse);
+	}
+
+	/**
 	 * Busca cliente, por Nome ou CPF
 	 *
 	 * @param nomeCpf
 	 * @return
 	 */
 	public List<ClienteEntity> procuraCliente(String nomeCpf) {
+		updateSession();
+
 		Query query = session.createQuery(" SELECT C FROM ClienteEntity C, PessoaEntity P" +
 				" WHERE C.pessoaId = P.pessoaId" +
 				" AND (P.nome LIKE :nomeCpf " +
@@ -636,12 +687,43 @@ public class BilheteriaBiz {
 	}
 
 	/**
+	 * Retorna quantidade vendida por um vendedor, em um range de datas
+	 *
+	 * @param vendedorId
+	 * @param dataInicio
+	 * @param dataFim
+	 * @return
+	 */
+	public BigDecimal getTotalVendido(Long vendedorId, Date dataInicio, Date dataFim) {
+		updateSession();
+
+		Query query = session.createQuery("SELECT SUM(P.preco) FROM BilhetePrecoEntity P, BilheteEntity B" +
+				"  WHERE P.bilheteId = B.bilheteId" +
+				" AND B.vendedorId = :vendedorId" +
+				" AND B.data >= :dataInicio" +
+				" AND B.data <= :dataFim");
+		BigDecimal valorTotal;
+		try {
+			valorTotal = (BigDecimal) query
+					.setParameter("vendedorId", vendedorId)
+					.setParameter("dataInicio", dataInicio)
+					.setParameter("dataFim", dataFim)
+					.getSingleResult();
+		} catch( javax.persistence.NoResultException err) {
+			valorTotal = null;
+		}
+
+		return valorTotal;
+	}
+
+	/**
 	 * Retorna tecnologia, por tecnologiaId
 	 *
 	 * @param tecnologiaId
 	 * @return
 	 */
 	public TecnologiaEntity getTecnologia(Long tecnologiaId) {
+		updateSession();
 
 		Query query = session.createQuery("from TecnologiaEntity where tecnologiaId = :tecnologiaId");
 		TecnologiaEntity tecnologia;
@@ -661,6 +743,7 @@ public class BilheteriaBiz {
 	 * @return
 	 */
 	public PessoaEntity getPessoa(Long pessoaId) {
+		updateSession();
 
 		Query query = session.createQuery("from PessoaEntity where pessoaId = :pessoaId");
 		PessoaEntity pessoa;
@@ -674,12 +757,13 @@ public class BilheteriaBiz {
 	}
 
 	/**
-	 * Retorna quantidade de poltronas vagas em uma sessão
+	 * Retorna quantidade de poltronas vagas em uma sessï¿½o
 	 *
 	 * @param sessaoId
 	 * @return
 	 */
 	public int getVagas(Long sessaoId) {
+		updateSession();
 
 		Query queryOcupacoes = session.createQuery("SELECT COUNT(*) FROM BilheteEntity WHERE sessaoId = :sessaoId");
 		Query queryCapacidade = session.createQuery("SELECT SUM(S.capacidade) FROM SalaEntity S, SessaoEntity SS" +
@@ -704,6 +788,7 @@ public class BilheteriaBiz {
 	 * @return
 	 */
 	public FilmeEntity getFilme(Long filmeId) {
+		updateSession();
 
 		Query query = session.createQuery("from FilmeEntity where filmeId = :filmeId");
 		FilmeEntity filme;
@@ -736,7 +821,7 @@ public class BilheteriaBiz {
 	}
 
 	/**
-	 * método que cadastra sessao
+	 * mï¿½todo que cadastra sessao
 	 *
 	 * @param salaId
 	 * @param filmeId
@@ -803,7 +888,7 @@ public class BilheteriaBiz {
 	}
 
 	/**
-	 * Busca por funcionários, por nome
+	 * Busca por funcionï¿½rios, por nome
 	 *
 	 * @param nome
 	 * @return Funcionarios
@@ -822,17 +907,16 @@ public class BilheteriaBiz {
 	}
 
 	/**
-	 * Busca por funcionários, por nome
+	 * Retorna nome de pessoa
 	 *
 	 * @return Funcionarios
 	 */
 	public String getPessoaNome(Long funcionarioId) {
 
 		Query query = session.createQuery("" +
-				"SELECT P.nome FROM PessoaEntity P " +
-				"INNER JOIN FuncionarioEntity F " +
-				"ON P.pessoaId = F.pessoaId " +
-				"WHERE F.funcionarioId = :funcionarioId");
+				"SELECT P.nome FROM PessoaEntity P, FuncionarioEntity F " +
+				"WHERE P.pessoaId = F.pessoaId " +
+				"AND F.funcionarioId = :funcionarioId");
 
 		String pessoaNome;
 		try {
@@ -845,7 +929,7 @@ public class BilheteriaBiz {
 	}
 
 	/**
-	 * Busca por funcionários, por nome
+	 * Busca por funcionï¿½rios, por nome
 	 *
 	 * @return Funcionarios
 	 */
@@ -863,7 +947,20 @@ public class BilheteriaBiz {
 	}
 
 	/**
-	 * método que cadastra pessoa
+	 * mï¿½todo que cadastra cliente
+	 *
+	 * @param pessoaId
+	 * @return
+	 */
+	public Long cadastrarCliente(Long pessoaId) {
+		ClienteEntity cliente = new ClienteEntity();
+		cliente.setPessoaId(pessoaId);
+
+		return save(cliente);
+	}
+
+	/**
+	 * mï¿½todo que cadastra pessoa
 	 *
 	 * @param cpf
 	 * @param nome
@@ -884,7 +981,7 @@ public class BilheteriaBiz {
 	}
 
 	/**
-	 * método que cadastra funcionário
+	 * mï¿½todo que cadastra funcionï¿½rio
 	 * 
 	 * @param pessoaId
 	 * @param usuario
@@ -901,7 +998,7 @@ public class BilheteriaBiz {
 	}
 
 	/**
-	 * método que cadastra telefone de funcionário
+	 * mï¿½todo que cadastra telefone de funcionï¿½rio
 	 *
 	 * @param funcionarioId
 	 * @param telefone
@@ -916,7 +1013,7 @@ public class BilheteriaBiz {
 	}
 
     /**
-     * método que cadastra vendedor
+     * mï¿½todo que cadastra vendedor
      *
      * @param funcionarioId
      * @param gerenteId
@@ -933,7 +1030,7 @@ public class BilheteriaBiz {
     }
 
 	/**
-	 * método que cadastra gerente
+	 * mï¿½todo que cadastra gerente
 	 *
 	 * @param funcionarioId
 	 * @return
@@ -946,9 +1043,9 @@ public class BilheteriaBiz {
 	}
 
 	/**
-	 * Verifica se há alguma sessão cadastrada valida
+	 * Verifica se hï¿½ alguma sessï¿½o cadastrada valida
 	 * 
-	 * @return true caso haja, false caso não
+	 * @return true caso haja, false caso nï¿½o
 	 */
 	public boolean existeSessao() {
 		return !sessoesCadastradas.isEmpty();

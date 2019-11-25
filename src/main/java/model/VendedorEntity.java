@@ -1,5 +1,7 @@
 package model;
 
+import controller.BilheteriaBiz;
+
 import javax.persistence.*;
 
 @Entity
@@ -74,6 +76,12 @@ public class VendedorEntity {
         result = 31 * result + (gerenteId != null ? gerenteId.hashCode() : 0);
         result = 31 * result + metaVendas;
         return result;
+    }
+
+    @Override
+    public String toString() {
+        String pessoaNome = new BilheteriaBiz().getPessoaNome(funcionarioId);
+        return pessoaNome;
     }
 
 }

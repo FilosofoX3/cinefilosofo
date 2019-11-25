@@ -14,12 +14,14 @@ import java.sql.Date;
 import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Random;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class JCadastroGerente extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField txtNome;
-	private JTextField txtCpf;
+	private JFormattedTextField txtCpf;
 	private JTextField txtEmail;
 	private JTextField txtTelefones;
 	private JTextField txtUsuario;
@@ -46,57 +48,62 @@ public class JCadastroGerente extends JFrame {
 		panel.setLayout(null);
 		
 		JLabel lblNome = new JLabel("Nome");
-		lblNome.setBounds(10, 11, 46, 14);
+		lblNome.setBounds(10, 11, 120, 14);
 		panel.add(lblNome);
 		
 		txtNome = new JTextField();
-		txtNome.setBounds(66, 8, 86, 20);
+		txtNome.setBounds(136, 8, 86, 20);
 		panel.add(txtNome);
 		txtNome.setColumns(10);
 		
 		JLabel lblCpf = new JLabel("CPF");
-		lblCpf.setBounds(10, 36, 46, 14);
+		lblCpf.setBounds(10, 36, 120, 14);
 		panel.add(lblCpf);
 		
-		txtCpf = new JTextField();
-		txtCpf.setBounds(66, 33, 86, 20);
+		txtCpf = new JFormattedTextField();
+		txtCpf.setBounds(136, 33, 86, 20);
 		panel.add(txtCpf);
 		txtCpf.setColumns(10);
-		
+
+		try {
+			MaskFormatter cpfMask = new MaskFormatter("###.###.###-##");
+			cpfMask.install(txtCpf);
+		} catch (ParseException err) {}
+
 		JLabel lblEmail = new JLabel("Email");
-		lblEmail.setBounds(10, 70, 46, 14);
+		lblEmail.setBounds(10, 70, 120, 14);
 		panel.add(lblEmail);
 		
 		txtEmail = new JTextField();
-		txtEmail.setBounds(66, 64, 86, 20);
+		txtEmail.setBounds(136, 64, 86, 20);
 		panel.add(txtEmail);
 		txtEmail.setColumns(10);
 		
 		JLabel lblTelefones = new JLabel("Telefones");
-		lblTelefones.setBounds(10, 105, 65, 14);
+		lblTelefones.setBounds(10, 105, 120, 14);
 		panel.add(lblTelefones);
 		
 		txtTelefones = new JTextField();
-		txtTelefones.setBounds(66, 102, 86, 20);
+		txtTelefones.setBounds(136, 102, 86, 20);
 		panel.add(txtTelefones);
 		txtTelefones.setColumns(10);
 		
-		JLabel lblUsuario = new JLabel("ID Usuário");
-		lblUsuario.setBounds(10, 139, 56, 14);
+		JLabel lblUsuario = new JLabel("Usuário");
+		lblUsuario.setBounds(10, 139, 120, 14);
 		panel.add(lblUsuario);
 		
 		txtUsuario = new JTextField();
-		txtUsuario.setBounds(66, 136, 86, 20);
+		txtUsuario.setBounds(136, 136, 86, 20);
 		panel.add(txtUsuario);
 		txtUsuario.setColumns(10);
 
 
 		JLabel lblSenha = new JLabel("Senha");
-		lblSenha.setBounds(10, 175, 56, 14);
+		lblSenha.setBounds(10, 175, 120, 14);
 		panel.add(lblSenha);
 
 		txtSenha = new JPasswordField();
-		txtSenha.setBounds(66, 170, 86, 20);
+		txtSenha.setBounds(136, 170, 86, 20);
 		panel.add(txtSenha);
 		txtSenha.setColumns(30);
 
@@ -104,18 +111,14 @@ public class JCadastroGerente extends JFrame {
 		lblDataNascimento.setBounds(10, 200,120, 14);
 		panel.add(lblDataNascimento);
 
-		JLabel lblDataNascimentoFormat = new JLabel("   (yyyy-mm-dd)");
-		lblDataNascimentoFormat.setBounds(10, 214,120, 14);
-		panel.add(lblDataNascimentoFormat);
-
 		txtDataNascimento = new JFormattedTextField();
 		txtDataNascimento.setBounds(136, 200,76, 20);
-		txtDataNascimento.setInputVerifier(new RegExFieldVerifier("\\d{4}-\\d{2}-\\d{2}"));
+		txtDataNascimento.setInputVerifier(new RegExFieldVerifier("([0-2][0-9]|3[0-1])/(0[1-9]|1[0-2])/(19|20)\\d{2}"));
 		panel.add(txtDataNascimento);
 		txtDataNascimento.setColumns(10);
 
 		try {
-			MaskFormatter dataMask = new MaskFormatter("####-##-##");
+			MaskFormatter dataMask = new MaskFormatter("##/##/####");
 			dataMask.install(txtDataNascimento);
 		} catch (ParseException err) {}
 
@@ -123,12 +126,18 @@ public class JCadastroGerente extends JFrame {
 		btnSalvar.addActionListener(new ActionListener() {
 			@SuppressWarnings("static-access")
 			public void actionPerformed(ActionEvent arg0) {
+				Pattern patternData = Pattern.compile("([0-2][0-9]|3[0-1])/(0[0-9]|1[0-2])/(\\d{4})");
+
+				Matcher matchDataNascimento = patternData.matcher(txtDataNascimento.getText());
+				matchDataNascimento.find();
+				Date dataNascimento = Date.valueOf(matchDataNascimento.group(3) + "-" + matchDataNascimento.group(2) + "-" + matchDataNascimento.group(1));
+
 				Long pessoaId = objBilheteria.cadastrarPessoa(
 						txtCpf.getText(),
 						txtNome.getText(),
 						txtEmail.getText(),
 						new java.sql.Date(Calendar.getInstance().getTime().getTime()),
-						Date.valueOf(txtDataNascimento.getText())
+						dataNascimento
 				);
 
 				Long funcionarioId = objBilheteria.cadastrarFuncionario(

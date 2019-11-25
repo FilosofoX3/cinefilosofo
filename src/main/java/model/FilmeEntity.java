@@ -27,10 +27,6 @@ public class FilmeEntity {
     private int duracaoMinutos;
 
     @Basic
-    @Column(name = "duracao_horas", nullable = false)
-    private int duracaoHoras;
-
-    @Basic
     @Column(name = "ano_lancamento", nullable = false)
     private int anoLancamento;
 
@@ -74,14 +70,6 @@ public class FilmeEntity {
         this.duracaoMinutos = duracaoMinutos;
     }
 
-    public int getDuracaoHoras() {
-        return duracaoHoras;
-    }
-
-    public void setDuracaoHoras(int duracaoHoras) {
-        this.duracaoHoras = duracaoHoras;
-    }
-
     public int getAnoLancamento() {
         return anoLancamento;
     }
@@ -101,7 +89,6 @@ public class FilmeEntity {
         if (titulo != null ? !titulo.equals(that.titulo) : that.titulo != null) return false;
         if (duracaoMinutos != 0 ? duracaoMinutos != that.duracaoMinutos : that.duracaoMinutos != 0)
             return false;
-        if (duracaoHoras != 0 ? duracaoHoras != that.duracaoHoras : that.duracaoHoras != 0) return false;
         if (anoLancamento != 0 ? anoLancamento != that.anoLancamento : that.anoLancamento != 0)
             return false;
 
@@ -113,7 +100,6 @@ public class FilmeEntity {
         int result = filmeId != null ? filmeId.hashCode() : 0;
         result = 31 * result + (titulo != null ? titulo.hashCode() : 0);
         result = 31 * result + duracaoMinutos;
-        result = 31 * result + duracaoHoras;
         result = 31 * result + anoLancamento;
         return result;
     }

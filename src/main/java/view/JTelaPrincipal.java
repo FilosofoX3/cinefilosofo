@@ -1,35 +1,27 @@
 package view;
 
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
+import javax.swing.*;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.Toolkit;
 
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Dimension;
-import javax.swing.JTextField;
-import javax.swing.DropMode;
 import java.awt.Component;
 import java.awt.Cursor;
 
 public class JTelaPrincipal extends JFrame {
 	private JButton Cadastro;
-	private JTextField txtGerenciamentoCinema;
-	private JTextField txtCadastrarFuncionrio;
-	private JTextField txtCadastrarSesses;
-	private JTextField txtVenderBilhete;
+	private JLabel txtGerenciamentoCinema;
+	private JLabel txtCadastrarFuncionrio;
+	private JLabel txtCadastrarSesses;
+	private JLabel txtVenderBilhete;
 	
 	/**
 	 * Launch the application.
@@ -38,6 +30,8 @@ public class JTelaPrincipal extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
+					SplashScreen splashScreen = new SplashScreen(10000);
+					splashScreen.showSplash();
 					JTelaPrincipal frame = new JTelaPrincipal();
 					frame.setVisible(true);
 				} catch (Exception e) {
@@ -65,25 +59,25 @@ public class JTelaPrincipal extends JFrame {
 		setContentPane(panel);
 		setLocationRelativeTo(null);
 
-		
+
 		JLabel label = new JLabel("");
+		label.setHorizontalAlignment(SwingConstants.CENTER);
 		label.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		label.setIcon(new ImageIcon(JTelaPrincipal.class.getResource("/imagens/TelaPrincipal.jpg")));
-		label.setBounds(0, 193, 932, 364);
+		label.setBounds(0, 193, 1050, 364);
 		panel.add(label);
 		
-		txtGerenciamentoCinema = new JTextField();
+		txtGerenciamentoCinema = new JLabel();
+		txtGerenciamentoCinema.setOpaque(true);
+		txtGerenciamentoCinema.setVerticalAlignment(SwingConstants.CENTER);
+		txtGerenciamentoCinema.setHorizontalAlignment(SwingConstants.CENTER);
 		txtGerenciamentoCinema.setBackground(new Color(51, 51, 51));
 		txtGerenciamentoCinema.setForeground(new Color(255, 51, 0));
-		txtGerenciamentoCinema.setCaretColor(new Color(255, 51, 0));
 		txtGerenciamentoCinema.setFont(new Font("Verdana", Font.BOLD, 21));
-		txtGerenciamentoCinema.setSelectedTextColor(new Color(153, 51, 0));
-		txtGerenciamentoCinema.setSelectionColor(new Color(51, 102, 153));
 		txtGerenciamentoCinema.setBounds(0, 0, 1050, 59);
 		panel.add(txtGerenciamentoCinema);
 		txtGerenciamentoCinema.setText("\t\t Gerenciamento  Cinema");
-		txtGerenciamentoCinema.setColumns(10);
-		
+
 		JButton btnNewButton = new JButton("");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -91,19 +85,19 @@ public class JTelaPrincipal extends JFrame {
 				cadFunc.setVisible(true);
 			}
 		});
-		btnNewButton.setIcon(new ImageIcon(getClass().getResource("/imagens/Funcionario.jpg")));
+		btnNewButton.setIcon(new ImageIcon(getClass().getResource("/imagens/employeer.png")));
 		btnNewButton.setBounds(76, 70, 90, 70);
 		panel.add(btnNewButton);
 		
-		txtCadastrarFuncionrio = new JTextField();
+		txtCadastrarFuncionrio = new JLabel();
+		txtCadastrarFuncionrio.setOpaque(true);
 		txtCadastrarFuncionrio.setBackground(new Color(204, 255, 255));
 		txtCadastrarFuncionrio.setForeground(new Color(0, 0, 153));
 		txtCadastrarFuncionrio.setFont(new Font("Yu Gothic", Font.BOLD, 13));
 		txtCadastrarFuncionrio.setText("\t Cadastrar Funcionários");
 		txtCadastrarFuncionrio.setBounds(50, 148, 154, 20);
 		panel.add(txtCadastrarFuncionrio);
-		txtCadastrarFuncionrio.setColumns(10);
-		
+
 		JButton btnCadSessao = new JButton("");
 		btnCadSessao.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -111,15 +105,15 @@ public class JTelaPrincipal extends JFrame {
 				cadSes.setVisible(true);
 			}
 		});
-		btnCadSessao.setIcon(new ImageIcon(getClass().getResource("/imagens/videocamera.png")));
+		btnCadSessao.setIcon(new ImageIcon(getClass().getResource("/imagens/sessao.png")));
 		btnCadSessao.setBounds(250, 70, 81, 70);
 		panel.add(btnCadSessao);
 		
-		txtCadastrarSesses = new JTextField();
+		txtCadastrarSesses = new JLabel();
+		txtCadastrarSesses.setOpaque(true);
 		txtCadastrarSesses.setText("   Cadastrar Sessões");
 		txtCadastrarSesses.setForeground(new Color(0, 0, 153));
 		txtCadastrarSesses.setFont(new Font("Yu Gothic", Font.BOLD, 13));
-		txtCadastrarSesses.setColumns(10);
 		txtCadastrarSesses.setBackground(new Color(204, 255, 255));
 		txtCadastrarSesses.setBounds(214, 148, 146, 20);
 		panel.add(txtCadastrarSesses);
@@ -132,17 +126,57 @@ public class JTelaPrincipal extends JFrame {
 				
 			}
 		});
-		btnNewButton_1.setIcon(new ImageIcon(getClass().getResource("/imagens/videocamera.png")));
+		btnNewButton_1.setIcon(new ImageIcon(getClass().getResource("/imagens/ticket.png")));
 		btnNewButton_1.setBounds(403, 81, 81, 59);
 		panel.add(btnNewButton_1);
 		
-		txtVenderBilhete = new JTextField();
+		txtVenderBilhete = new JLabel();
+		txtVenderBilhete.setOpaque(true);
 		txtVenderBilhete.setText("   Vender Bilhete");
 		txtVenderBilhete.setForeground(new Color(0, 0, 153));
 		txtVenderBilhete.setFont(new Font("Yu Gothic", Font.BOLD, 13));
-		txtVenderBilhete.setColumns(10);
 		txtVenderBilhete.setBackground(new Color(204, 255, 255));
 		txtVenderBilhete.setBounds(380, 148, 126, 20);
+		panel.add(txtVenderBilhete);
+
+		JButton btnNovoFilme = new JButton("");
+		btnNovoFilme.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				JCadastroFilme cadFil = new JCadastroFilme();
+				cadFil.setVisible(true);
+			}
+		});
+		btnNovoFilme.setIcon(new ImageIcon(getClass().getResource("/imagens/video.png")));
+		btnNovoFilme.setBounds(553, 81, 81, 59);
+		panel.add(btnNovoFilme);
+
+		txtVenderBilhete = new JLabel();
+		txtVenderBilhete.setOpaque(true);
+		txtVenderBilhete.setText("   Cadastro de filme");
+		txtVenderBilhete.setForeground(new Color(0, 0, 153));
+		txtVenderBilhete.setFont(new Font("Yu Gothic", Font.BOLD, 13));
+		txtVenderBilhete.setBackground(new Color(204, 255, 255));
+		txtVenderBilhete.setBounds(520, 148, 126, 20);
+		panel.add(txtVenderBilhete);
+
+		JButton btnRelatorioVendas = new JButton("");
+		btnRelatorioVendas.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				JRelatorio relatorio = new JRelatorio();
+				relatorio.setVisible(true);
+			}
+		});
+		btnRelatorioVendas.setIcon(new ImageIcon(getClass().getResource("/imagens/report.png")));
+		btnRelatorioVendas.setBounds(703, 81, 81, 59);
+		panel.add(btnRelatorioVendas);
+
+		txtVenderBilhete = new JLabel();
+		txtVenderBilhete.setOpaque(true);
+		txtVenderBilhete.setText("   Relatorio de vendas");
+		txtVenderBilhete.setForeground(new Color(0, 0, 153));
+		txtVenderBilhete.setFont(new Font("Yu Gothic", Font.BOLD, 13));
+		txtVenderBilhete.setBackground(new Color(204, 255, 255));
+		txtVenderBilhete.setBounds(680, 148, 156, 20);
 		panel.add(txtVenderBilhete);
 
 	}
